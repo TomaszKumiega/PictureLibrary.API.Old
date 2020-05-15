@@ -1,0 +1,24 @@
+name: CD
+
+on: push
+
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Publish image
+        id: docker
+        uses: matootie/github-docker@v2.2.2
+        with:
+          accessToken: ${{github.token}}
+          buildArg: |
+            VERSION=${{github.ref}}
+            COMMIT=${{github.sha}}
+      - name: Deploy docker container 
+        uses: joelwmale/webhook-action@master
+        env:
+          WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL  }}
+          data: "{ 'myField': 'myFieldValue'}"
+
