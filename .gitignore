@@ -75,3 +75,5 @@ _[Ss]cripts
 *.dot[Cc]over
 /.vs/PictureLibrary-RaspberryAPI/DesignTimeBuild
 /obj/*
+/.vs/PictureLibrary-RaspberryAPI/config
+/.vs/PictureLibrary-RaspberryAPI/v16/TestStore/0
