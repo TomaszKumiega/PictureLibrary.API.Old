@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PictureLibraryModel.Services;
 
 namespace PictureLibrary_RaspberryAPI
 {
@@ -13,6 +14,8 @@ namespace PictureLibrary_RaspberryAPI
     {
         public static void Main(string[] args)
         {
+            var fileSystemService = new FileSystemService();
+            System.Console.WriteLine(fileSystemService.GetAllDirectories(".",System.IO.SearchOption.TopDirectoryOnly).Count);
             CreateHostBuilder(args).Build().Run();
         }
 
