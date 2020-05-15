@@ -13,7 +13,7 @@ namespace PictureLibrary_RaspberryAPI.Controllers
 
         public LibrariesController()
         {
-
+            _logger = new Logger<FileSystemService>(new LoggerFactory());
         }
     }
 }
