@@ -24,7 +24,7 @@ namespace PictureLibraryModel.Services
             File.Copy(sourceFilePath, destinationFilePath,overwrite);
         }
 
-        public ObservableCollection<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option)
+        public List<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option)
         {
             if (topDirectory != null)
             {
@@ -41,7 +41,7 @@ namespace PictureLibraryModel.Services
                         _logger.LogError(e, "Couldn't load directories from " + fullPaths);
                     }
 
-                    ObservableCollection<Model.Directory> directories = new ObservableCollection<Model.Directory>();
+                    var directories = new List<Model.Directory>();
 
                     if (fullPaths != null)
                     {
@@ -59,9 +59,9 @@ namespace PictureLibraryModel.Services
             else throw new ArgumentNullException();
         }
 
-        public ObservableCollection<Drive> GetDrives()
+        public List<Drive> GetDrives()
         {
-            var drives = new ObservableCollection<Drive>();
+            var drives = new List<Drive>();
             drives.Add(new Drive("My Computer", new FileSystemService()));
 
             foreach(var driveInfo in System.IO.DriveInfo.GetDrives())

@@ -15,7 +15,7 @@ namespace PictureLibraryModel.Services
         /// Provides a list of directories in specified directory 
         /// </summary>
         /// <returns></returns>
-        ObservableCollection<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option);
+        List<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option);
 
         /// <summary>
         /// Provides a list of image files in current directory
@@ -27,7 +27,7 @@ namespace PictureLibraryModel.Services
         /// Provides an observable collection of drives 
         /// </summary>
         /// <returns></returns>
-        ObservableCollection<Drive> GetDrives();
+        List<Drive> GetDrives();
 
         /// <summary>
         /// Copies file to the specified destination
