@@ -16,4 +16,4 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=publish /app/PictureLibrary-RaspberryAPI/out ./
-ENTRYPOINT ["dotnet", "/PictureLibrary-RaspberryAPI.dll"]
+ENTRYPOINT ["dotnet", "PictureLibrary-RaspberryAPI.dll"]
