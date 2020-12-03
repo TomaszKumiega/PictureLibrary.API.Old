@@ -15,7 +15,7 @@ namespace PictureLibraryModel.Services
         /// Provides a list of directories in specified directory 
         /// </summary>
         /// <returns></returns>
-        List<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option);
+        ObservableCollection<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option);
 
         /// <summary>
         /// Provides a list of image files in current directory
@@ -27,7 +27,7 @@ namespace PictureLibraryModel.Services
         /// Provides an observable collection of drives 
         /// </summary>
         /// <returns></returns>
-        List<Drive> GetDrives();
+        ObservableCollection<Drive> GetDrives();
 
         /// <summary>
         /// Copies file to the specified destination
@@ -44,5 +44,19 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="filePath"></param>
         void DeleteFile(string filePath);
+
+        /// <summary>
+        /// Provides DirectoryInfo of the specified file's parent
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        DirectoryInfo GetParent(string path);
+
+        /// <summary>
+        /// Returns extension of a specified file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        string? GetExtension(string path); 
     }
 }

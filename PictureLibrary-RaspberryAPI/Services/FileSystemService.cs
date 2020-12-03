@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using Microsoft.Extensions.Logging;
 
 namespace PictureLibraryModel.Services
 {
     public class FileSystemService : IFileSystemService
     {
+        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly ILogger<FileSystemService> _logger;
+        private readonly IFileSystemEntitiesFactory _fileSystemEntitiesFactory;
 
-
-        public FileSystemService()
+        public FileSystemService(IFileSystemEntitiesFactory fileSystemEntitiesFactory)
         {
-
+            _fileSystemEntitiesFactory = fileSystemEntitiesFactory;
         }
 
         public void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite) 
@@ -24,7 +23,7 @@ namespace PictureLibraryModel.Services
             File.Copy(sourceFilePath, destinationFilePath,overwrite);
         }
 
-        public List<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option)
+        public ObservableCollection<Model.Directory> GetAllDirectories(string topDirectory, SearchOption option)
         {
             if (topDirectory != null)
             {
@@ -38,16 +37,16 @@ namespace PictureLibraryModel.Services
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e, "Couldn't load directories from " + fullPaths);
+                        _logger.Error(e, "Couldn't load directories from " + fullPaths);
                     }
 
-                    var directories = new List<Model.Directory>();
+                    ObservableCollection<Model.Directory> directories = new ObservableCollection<Model.Directory>();
 
                     if (fullPaths != null)
                     {
                         foreach (var t in fullPaths)
                         {
-                            directories.Add(new Model.Directory(t, (new System.IO.DirectoryInfo(t)).Name, this));
+                            directories.Add(_fileSystemEntitiesFactory.GetDirectory(t, (new System.IO.DirectoryInfo(t)).Name, this));
                         }
                     }
 
@@ -59,14 +58,16 @@ namespace PictureLibraryModel.Services
             else throw new ArgumentNullException();
         }
 
-        public List<Drive> GetDrives()
+        public ObservableCollection<Drive> GetDrives()
         {
-            var drives = new List<Drive>();
-            drives.Add(new Drive("My Computer", new FileSystemService()));
+            var drives = new ObservableCollection<Drive>();
 
-            foreach(var driveInfo in System.IO.DriveInfo.GetDrives())
+            foreach (var driveInfo in System.IO.DriveInfo.GetDrives())
             {
-                drives[0].Children.Add(new Drive(driveInfo.Name, this));
+                if (System.IO.Directory.Exists(driveInfo.Name))
+                {
+                    drives.Add(_fileSystemEntitiesFactory.GetDrive(driveInfo.Name, this));
+                }
             }
 
             return drives;
@@ -84,13 +85,14 @@ namespace PictureLibraryModel.Services
 
                     foreach (var t in listOfFiles.ToList())
                     {
+                        //TODO: insted of is file an image use linq query to search through files
                         if (!ImageFile.IsFileAnImage(t))
                         {
                             listOfFiles.Remove(t);
                         }
                         else
                         {
-                            listOfImageFiles.Add(new ImageFile(t));
+                            listOfImageFiles.Add(_fileSystemEntitiesFactory.GetImageFile(t));
                         }
                     }
 
@@ -111,6 +113,16 @@ namespace PictureLibraryModel.Services
         public void DeleteFile(string filePath)
         {
             File.Delete(filePath);
+        }
+
+        public DirectoryInfo GetParent(string path)
+        {
+            return System.IO.Directory.GetParent(path);
+        }
+
+        public string? GetExtension(string path)
+        {
+           return Path.GetExtension(path);
         }
     }
 }
