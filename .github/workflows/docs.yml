@@ -15,4 +15,4 @@ jobs:
         with:
           # github access token
           github_token: ${{secrets.TOKEN}}
-          docsify_args: docsify init ./docs
+          dir: ./docs
