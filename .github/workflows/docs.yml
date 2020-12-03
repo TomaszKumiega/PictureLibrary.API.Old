@@ -1,0 +1,17 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: docsify-action
+        uses: tool3/docsify-action@v1.1
+        with:
+          # github access token
+          github_token: ${{github.token}}
