@@ -1,4 +1,5 @@
-﻿using PictureLibraryModel.Model;
+﻿using Microsoft.Extensions.Logging;
+using PictureLibraryModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ namespace PictureLibraryModel.Services
 {
     public class FileSystemService : IFileSystemService
     {
-        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly ILogger<Drive> _logger;
 
         private readonly IFileSystemEntitiesFactory _fileSystemEntitiesFactory;
 
@@ -37,7 +38,7 @@ namespace PictureLibraryModel.Services
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "Couldn't load directories from " + fullPaths);
+                        _logger.LogError(e, "Couldn't load directories from " + fullPaths);
                     }
 
                     ObservableCollection<Model.Directory> directories = new ObservableCollection<Model.Directory>();
