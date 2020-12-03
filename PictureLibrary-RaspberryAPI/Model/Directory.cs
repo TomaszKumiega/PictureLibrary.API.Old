@@ -17,6 +17,8 @@ namespace PictureLibraryModel.Model
 
         public Directory(string fullPath, string name, IFileSystemService fileSystemService)
         {
+
+            if (!System.IO.Directory.Exists(fullPath)) throw new DirectoryNotFoundException();
             FullPath = fullPath;
             Name = name;
             FileSystemService = fileSystemService;
@@ -30,6 +32,7 @@ namespace PictureLibraryModel.Model
         /// <param name="children"></param>
         public Directory(string fullPath, ObservableCollection<object> children)
         {
+            if (!System.IO.Directory.Exists(fullPath)) throw new DirectoryNotFoundException();
             FullPath = fullPath;
             Name = (new System.IO.DirectoryInfo(fullPath)).Name;
             FileSystemService = null;
