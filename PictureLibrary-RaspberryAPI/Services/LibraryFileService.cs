@@ -1,4 +1,5 @@
-﻿using PictureLibraryModel.Model;
+﻿using Microsoft.Extensions.Logging;
+using PictureLibraryModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace PictureLibraryModel.Services
 {
     public class LibraryFileService : ILibraryFileService
     {
-        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly ILogger<Drive> _logger;
         private readonly IFileSystemService _fileSystemService;
         private readonly ILibraryEntitiesFactory _libraryEntitiesFactory;
         public LibraryFileService(IFileSystemService fileSystemService, ILibraryEntitiesFactory libraryEntitiesFactory)
@@ -59,7 +60,7 @@ namespace PictureLibraryModel.Services
                                 }
                                 catch (Exception e)
                                 {
-                                    _logger.Debug(e, e.Message);
+                                    _logger.LogDebug(e, e.Message);
                                 }
 
                             } while (reader.ReadToNextSibling("image"));
@@ -100,7 +101,7 @@ namespace PictureLibraryModel.Services
             }
             catch (IOException e)
             {
-                _logger.Debug(e, e.Message);
+                _logger.LogDebug(e, e.Message);
                 throw new Exception("Library already exists");
             }
 
@@ -147,11 +148,11 @@ namespace PictureLibraryModel.Services
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    _logger.Debug(e, "Unauthorized access exception while looking for libraries");
+                    _logger.LogDebug(e, "Unauthorized access exception while looking for libraries");
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e,e.Message);
+                    _logger.LogError(e,e.Message);
                 }
 
                 if(items !=null && items.Count !=0)
@@ -164,7 +165,7 @@ namespace PictureLibraryModel.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, e.Message);
+                    _logger.LogError(e, e.Message);
                 }
             }
         }
@@ -207,7 +208,7 @@ namespace PictureLibraryModel.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, e.Message);
+                    _logger.LogError(e, e.Message);
                 }
             }
         }
