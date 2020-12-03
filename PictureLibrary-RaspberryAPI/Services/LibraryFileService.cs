@@ -115,7 +115,7 @@ namespace PictureLibraryModel.Services
             
             foreach (var t in System.IO.DriveInfo.GetDrives())
             {
-                files.AddRange(Task.Run(() => FindLibrariesInDirectory(t.RootDirectory.ToString())).Result);
+                files.AddRange(await Task.Run(() => FindLibrariesInDirectory(t.RootDirectory.ToString())));
             }
 
             var libraries = new ObservableCollection<Library>();
@@ -123,7 +123,7 @@ namespace PictureLibraryModel.Services
             foreach (var t in files)
             {
                 var fileStream = new FileStream(t, FileMode.Open);
-                libraries.Add(LoadLibraryAsync(fileStream).Result);
+                await Task.Run(()=> libraries.Add(LoadLibraryAsync(fileStream).Result));
             }
 
             return libraries;
@@ -203,7 +203,7 @@ namespace PictureLibraryModel.Services
                         xmlWriter.Formatting = Formatting.Indented;
                         xmlWriter.Indentation = 4;
 
-                        libraryElement.Save(xmlWriter);
+                        await Task.Run(()=>libraryElement.Save(xmlWriter));
                     }
                 }
                 catch (Exception e)
