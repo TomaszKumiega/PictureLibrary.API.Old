@@ -29,7 +29,7 @@ namespace PictureLibraryModel.Model
             this.FileSystemService = fileSystemService;
 
             ImageSource = "pack://application:,,,/Icons/DiskIcon.png";
-            Initialize();
+            Task.Run(() => Initialize()).Wait();
         }
 
         public bool IsExpanded
@@ -42,7 +42,7 @@ namespace PictureLibraryModel.Model
             set
             {
                 _isExpanded = value;
-                LoadChildrenDirectories();
+                Task.Run(() => LoadChildrenDirectories()).Wait();
             }
         }
 

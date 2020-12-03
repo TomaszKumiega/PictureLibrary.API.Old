@@ -65,7 +65,7 @@ namespace PictureLibraryModel.Model
             set
             {
                 _isExpanded = value;
-                LoadChildrenDirectories();
+                Task.Run(()=>LoadChildrenDirectories()).Wait();
             }
         }
 
