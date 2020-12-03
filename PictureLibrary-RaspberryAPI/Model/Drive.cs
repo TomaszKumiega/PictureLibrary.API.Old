@@ -12,12 +12,10 @@ namespace PictureLibraryModel.Model
     {
         private readonly ILogger<Drive> _logger;
 
-        private bool _isExpanded;
         private IFileSystemService FileSystemService { get; }
 
         public string Name { get; }
         public string FullPath { get; }
-        public string ImageSource { get; }
         public ObservableCollection<object> Children { get; set; }
         
 
@@ -28,23 +26,9 @@ namespace PictureLibraryModel.Model
             this.Children = new ObservableCollection<object>();
             this.FileSystemService = fileSystemService;
 
-            ImageSource = "pack://application:,,,/Icons/DiskIcon.png";
             Task.Run(() => Initialize()).Wait();
         }
 
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = value;
-                Task.Run(() => LoadChildrenDirectories()).Wait();
-            }
-        }
 
         private async Task Initialize()
         {

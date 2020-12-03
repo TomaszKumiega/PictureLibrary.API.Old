@@ -8,12 +8,10 @@ namespace PictureLibraryModel.Model
 {
     public class Directory : IFileSystemEntity
     {
-        private bool _isExpanded;
         private IFileSystemService FileSystemService { get; }
 
         public string FullPath { get; }
         public string Name { get; }
-        public string ImageSource { get; }
         public ObservableCollection<object> Children { get; }
 
 
@@ -22,7 +20,6 @@ namespace PictureLibraryModel.Model
             FullPath = fullPath;
             Name = name;
             FileSystemService = fileSystemService;
-            ImageSource = "pack://application:,,,/Icons/FolderIcon.png";
             this.Children = new ObservableCollection<object>();
         }
 
@@ -36,7 +33,6 @@ namespace PictureLibraryModel.Model
             FullPath = fullPath;
             Name = (new System.IO.DirectoryInfo(fullPath)).Name;
             FileSystemService = null;
-            ImageSource = "pack://application:,,,/Icons/FolderIcon.png";
             this.Children = children;
         }
 
@@ -51,23 +47,9 @@ namespace PictureLibraryModel.Model
             FullPath = null;
             FileSystemService = null;
             Name = name;
-            ImageSource = "pack://application:,,,/Icons/FolderIcon.png";
             this.Children = children;
         }
 
-        public bool IsExpanded
-        {
-            get
-            {
-                return _isExpanded;
-            }
-
-            set
-            {
-                _isExpanded = value;
-                Task.Run(()=>LoadChildrenDirectories()).Wait();
-            }
-        }
 
         private async Task LoadChildrenDirectories()
         {
