@@ -14,4 +14,4 @@ jobs:
         uses: tool3/docsify-action@v1.1
         with:
           # github access token
-          github_token: ${{github.token}}
+          github_token: ${{secrets.TOKEN}}
