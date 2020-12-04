@@ -1,7 +1,5 @@
 site_name: API Documentation
 repo_url: https://github.com/TomaszKumiega/PictureLibrary-API
-theme:
-  name: material
 nav: 
   - 'index.md'
   - 'project_structure.md'
