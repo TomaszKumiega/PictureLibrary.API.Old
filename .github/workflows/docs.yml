@@ -4,15 +4,23 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+
 jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: docsify-action
-        uses: tool3/docsify-action@v1.1
+      - name: Unshallow repo
+        run: git fetch --prune --unshallow
+      - name: Setup Python
+        uses: actions/setup-python@v1
         with:
-          # github access token
-          github_token: ${{secrets.TOKEN}}
-          dir: ./docs
+          python-version: 3.x
+      - name: Install mkdocs
+        run: pip install mkdocs mkdocs-material pygments
+      - name: Deploy docs
+        run: mkdocs gh-deploy
