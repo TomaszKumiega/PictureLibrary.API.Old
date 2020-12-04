@@ -14,7 +14,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+      - name: Unshallow repo
+        run: git fetch --prune --unshallow
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - name: Install mkdocs
+        run: pip install mkdocs mkdocs-material pygments
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: mkdocs gh-deploy
