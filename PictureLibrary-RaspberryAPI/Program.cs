@@ -13,9 +13,7 @@ namespace PictureLibrary_RaspberryAPI
     public class Program
     {
         public static void Main(string[] args)
-        {
-            var fileSystemService = new FileSystemService();
-            System.Console.WriteLine(fileSystemService.GetAllDirectories(".",System.IO.SearchOption.TopDirectoryOnly).Count);
+        { 
             CreateHostBuilder(args).Build().Run();
         }
 
