@@ -3,4 +3,6 @@ repo_url: https://github.com/TomaszKumiega/PictureLibrary-API
 theme: material
 nav: 
   - 'index.md'
+  - 'data-model.md'
   - 'project_structure.md'
+  - 'endpoints.md'
