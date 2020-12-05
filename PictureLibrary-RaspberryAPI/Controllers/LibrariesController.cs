@@ -35,5 +35,13 @@ namespace PictureLibrary_RaspberryAPI.Controllers
 
             return Ok(library);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
+        {
+            var libraries = await _libraryFileService.GetAllLibrariesAsync();
+
+            return Ok(libraries);
+        }
     }
 }
