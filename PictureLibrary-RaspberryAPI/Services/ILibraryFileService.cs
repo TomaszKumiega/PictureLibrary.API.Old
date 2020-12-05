@@ -39,5 +39,7 @@ namespace PictureLibraryModel.Services
         Task UpdateLibrary(Library library);
         Task AddLibrary(Library library);
 
+        Task DeleteLibrary(Library library);
+
     }
 }

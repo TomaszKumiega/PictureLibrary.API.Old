@@ -229,5 +229,10 @@ namespace PictureLibraryModel.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task DeleteLibrary(Library library)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
