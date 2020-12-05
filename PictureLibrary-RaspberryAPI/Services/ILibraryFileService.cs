@@ -37,6 +37,7 @@ namespace PictureLibraryModel.Services
         Task<Library> FindLibrary(string name);
 
         Task UpdateLibrary(Library library);
+        Task AddLibrary(Library library);
 
     }
 }

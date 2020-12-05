@@ -220,7 +220,12 @@ namespace PictureLibraryModel.Services
             return libraries.FirstOrDefault(l => l.Name == name);
         }
 
-        public Task UpdateLibrary(Library library)
+        public async Task UpdateLibrary(Library library)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddLibrary(Library library)
         {
             throw new NotImplementedException();
         }
