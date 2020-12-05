@@ -219,5 +219,10 @@ namespace PictureLibraryModel.Services
 
             return libraries.FirstOrDefault(l => l.Name == name);
         }
+
+        public Task UpdateLibrary(Library library)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
