@@ -80,5 +80,20 @@ namespace PictureLibrary_RaspberryAPI.Controllers
 
             return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
         }
+
+        [HttpDelete("name")]
+        public async Task<ActionResult<Library>> DeleteLibrary(string name)
+        {
+            var library = await _libraryFileService.FindLibrary(name);
+
+            if(library == null)
+            {
+                return NotFound();
+            }
+
+            await _libraryFileService.DeleteLibrary(library);
+
+            return library;
+        }
     }
 }
