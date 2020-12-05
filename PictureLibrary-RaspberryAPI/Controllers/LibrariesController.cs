@@ -43,5 +43,26 @@ namespace PictureLibrary_RaspberryAPI.Controllers
 
             return Ok(libraries);
         }
+
+        [HttpPut("{name}")]
+        public async Task<IActionResult> PutLibrary(string name, [FromBody] Library library)
+        {
+            if(name != library.Name)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _libraryFileService.UpdateLibrary(library);
+            }
+            catch(Exception e)
+            {
+                //TODO: add more exception cases
+                throw;
+            }
+
+            return NoContent();
+        }
     }
 }
