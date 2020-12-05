@@ -212,5 +212,12 @@ namespace PictureLibraryModel.Services
                 }
             }
         }
+
+        public async Task<Library> FindLibrary(string name)
+        {
+            var libraries = await GetAllLibrariesAsync();
+
+            return libraries.FirstOrDefault(l => l.Name == name);
+        }
     }
 }

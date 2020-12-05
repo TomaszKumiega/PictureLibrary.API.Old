@@ -34,5 +34,7 @@ namespace PictureLibraryModel.Services
         /// <returns>Object of <see cref="Library"></see> class/></returns>
         Task<Library> LoadLibraryAsync(FileStream fileStream);
 
+        Task<Library> FindLibrary(string name);
+
     }
 }
