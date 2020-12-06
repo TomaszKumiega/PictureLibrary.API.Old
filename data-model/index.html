@@ -382,31 +382,30 @@
                   </a>
                 
                 
-                <h1 id="data-model">Data Model<a class="headerlink" href="#data-model" title="Permanent link">&para;</a></h1>
-<h2 id="user">User<a class="headerlink" href="#user" title="Permanent link">&para;</a></h2>
+                <h1 id="data-model">Data Model</h1>
+<h2 id="user">User</h2>
 <p>API has user authentication.
 Diffrent users can have their own libraries on the same device.</p>
-<h2 id="library">Library<a class="headerlink" href="#library" title="Permanent link">&para;</a></h2>
+<h2 id="library">Library</h2>
 <p>Library represents .xml file that contains albums names and its pictures.</p>
-<h3 id="xml-file-structure">Xml file structure<a class="headerlink" href="#xml-file-structure" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<span class="nt">&lt;library</span> <span class="na">name =</span> <span class="s">&quot;libraryName&quot;</span> <span class="na">owner =</span> <span class="s">&quot;userGuid&quot;</span><span class="nt">&gt;</span>
+<h3 id="xml-file-structure">Xml file structure</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;library name = &quot;libraryName&quot; owner = &quot;userGuid&quot;&gt;
 
-    <span class="nt">&lt;album</span> <span class="na">name =</span> <span class="s">&quot;albumName1&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1642252321.jpg&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1246531451.png&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/album&gt;</span>
+    &lt;album name = &quot;albumName1&quot;&gt;
+      &lt;imageFile name = &quot;1642252321.jpg&quot;/&gt;
+      &lt;imageFile name = &quot;1246531451.png&quot;/&gt;
+    &lt;/album&gt;
 
-    <span class="nt">&lt;album</span> <span class="na">name =</span> <span class="s">&quot;albumName2&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1513515311.jpg&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/album&gt;</span>
+    &lt;album name = &quot;albumName2&quot;&gt;
+      &lt;imageFile name = &quot;1513515311.jpg&quot;/&gt;
+    &lt;/album&gt;
 
-<span class="nt">&lt;/library&gt;</span>
-</code></pre></div>
-
-<h2 id="album">Album<a class="headerlink" href="#album" title="Permanent link">&para;</a></h2>
+&lt;/library&gt;
+</code></pre>
+<h2 id="album">Album</h2>
 <p>Element in library.xml file. Organizes images. </p>
-<h2 id="imagefile">ImageFile<a class="headerlink" href="#imagefile" title="Permanent link">&para;</a></h2>
+<h2 id="imagefile">ImageFile</h2>
 <p>ImageFile is representation of image on the storage.
 One image can be stored in multiple albums without multiplication of its file but every library has it's own copy of the image.</p>
                 
