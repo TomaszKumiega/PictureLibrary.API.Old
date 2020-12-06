@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using PictureLibraryModel.Model;
 using PictureLibraryModel.Services;
 
-namespace PictureLibrary_RaspberryAPI.Controllers
+namespace PictureLibrary_API.Controllers
 {
     [Route("[controller]")]
     [ApiController]

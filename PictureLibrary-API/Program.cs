@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PictureLibraryModel.Services;
 
-namespace PictureLibrary_RaspberryAPI
+namespace PictureLibrary_API
 {
     public class Program
     {

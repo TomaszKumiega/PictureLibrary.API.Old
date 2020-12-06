@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace PictureLibrary_RaspberryAPI
+namespace PictureLibrary_API
 {
     public class Startup
     {

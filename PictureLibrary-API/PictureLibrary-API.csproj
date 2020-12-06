@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>PictureLibrary_RaspberryAPI</RootNamespace>
+    <RootNamespace>PictureLibrary_API</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateProgramFile>false</GenerateProgramFile>
