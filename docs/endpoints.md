@@ -4,13 +4,13 @@
 
 ### Endpoint
 
-```HTTP
+```http
 POST /users/authenticate
 ```
 
 ### Content
 
-```javascript
+```json
 {
     username: "user",
     password: "password123"
@@ -19,7 +19,7 @@ POST /users/authenticate
 
 ### Result
 
-```javascript
+```json
 HTTP/1.1 200 OK
 {
     id: "33df9fba-1a02-45c7-afa4-886b6c751e15",
@@ -37,13 +37,13 @@ HTTP/1.1 200 OK
 
 ### Endpoint
 
-```HTTP
+```http
 POST /users/register
 ```
 
 ### Content
 
-```javascript
+```json
 {
     username: "user",
     firstName: "name",
@@ -54,7 +54,7 @@ POST /users/register
 ```
 ### Response
 
-```javascript
+```json
 HTTP/1.1 201 Created
 {
     id: "33df9fba-1a02-45c7-afa4-886b6c751e15",
@@ -69,13 +69,13 @@ HTTP/1.1 201 Created
 
 ### Endpoint
 
-```HTTP
+```http
 GET /libraries
 ```
 
 ### Response
 
-```javascript
+```json
 HTTP/1.1 200 OK
 [
     TODO
@@ -86,13 +86,13 @@ HTTP/1.1 200 OK
 
 ### Endpoint
 
-```HTTP
+```http
 GET /libraries/{name}
 ```
 
 ### Response
 
-```javascript
+```json
 HTTP/1.1 200 OK
 {
     TODO
@@ -103,13 +103,13 @@ HTTP/1.1 200 OK
 
 ### Endpoint
 
-```HTTP
+```http
 POST /libraries
 ```
 
 ### Content
 
-```javascript
+```json
 {
     TODO
 }
@@ -117,7 +117,7 @@ POST /libraries
 
 ### Response
 
-```javascript
+```json
 HTTP/1.1 201 Created
 {
     TODO
@@ -128,13 +128,13 @@ HTTP/1.1 201 Created
 
 ### Endpoint
 
-```HTTP
+```http
 PUT /libraries/{name}
 ```
 
 ### Content
 
-```javascript
+```json
 {
     TODO
 }
@@ -142,7 +142,7 @@ PUT /libraries/{name}
 
 ### Response
 
-```HTTP
+```http
 HTTP/1.1 204 No Content
 ```
 
@@ -150,13 +150,13 @@ HTTP/1.1 204 No Content
 
 ### Endpoint
 
-```HTTP
+```http
 DELETE /libraries/{name}
 ```
 
 ### Response
 
-```HTTP
+```http
 HTTP/1.1 200 OK
 {
     TODO
