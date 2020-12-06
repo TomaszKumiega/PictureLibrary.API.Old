@@ -737,16 +737,16 @@
                 <h1 id="endpoints">Endpoints</h1>
 <h2 id="authenticate">Authenticate</h2>
 <h3 id="endpoint">Endpoint</h3>
-<pre><code class="language-HTTP">POST /users/authenticate
+<pre><code class="language-http">POST /users/authenticate
 </code></pre>
 <h3 id="content">Content</h3>
-<pre><code class="language-javascript">{
+<pre><code class="language-json">{
     username: &quot;user&quot;,
     password: &quot;password123&quot;
 }
 </code></pre>
 <h3 id="result">Result</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
+<pre><code class="language-json">HTTP/1.1 200 OK
 {
     id: &quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;,
     username: &quot;user
@@ -760,10 +760,10 @@
 </code></pre>
 <h2 id="register">Register</h2>
 <h3 id="endpoint_1">Endpoint</h3>
-<pre><code class="language-HTTP">POST /users/register
+<pre><code class="language-http">POST /users/register
 </code></pre>
 <h3 id="content_1">Content</h3>
-<pre><code class="language-javascript">{
+<pre><code class="language-json">{
     username: &quot;user&quot;,
     firstName: &quot;name&quot;,
     lastName: &quot;surname&quot;,
@@ -772,7 +772,7 @@
 }
 </code></pre>
 <h3 id="response">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 201 Created
+<pre><code class="language-json">HTTP/1.1 201 Created
 {
     id: &quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;,
     username: &quot;user&quot;,
@@ -783,57 +783,57 @@
 </code></pre>
 <h2 id="get-all-libraries">Get all Libraries</h2>
 <h3 id="endpoint_2">Endpoint</h3>
-<pre><code class="language-HTTP">GET /libraries
+<pre><code class="language-http">GET /libraries
 </code></pre>
 <h3 id="response_1">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
+<pre><code class="language-json">HTTP/1.1 200 OK
 [
     TODO
 ]
 </code></pre>
 <h2 id="get-library">Get Library</h2>
 <h3 id="endpoint_3">Endpoint</h3>
-<pre><code class="language-HTTP">GET /libraries/{name}
+<pre><code class="language-http">GET /libraries/{name}
 </code></pre>
 <h3 id="response_2">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
+<pre><code class="language-json">HTTP/1.1 200 OK
 {
     TODO
 }
 </code></pre>
 <h2 id="add-library">Add Library</h2>
 <h3 id="endpoint_4">Endpoint</h3>
-<pre><code class="language-HTTP">POST /libraries
+<pre><code class="language-http">POST /libraries
 </code></pre>
 <h3 id="content_2">Content</h3>
-<pre><code class="language-javascript">{
+<pre><code class="language-json">{
     TODO
 }
 </code></pre>
 <h3 id="response_3">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 201 Created
+<pre><code class="language-json">HTTP/1.1 201 Created
 {
     TODO
 }
 </code></pre>
 <h2 id="update-library">Update Library</h2>
 <h3 id="endpoint_5">Endpoint</h3>
-<pre><code class="language-HTTP">PUT /libraries/{name}
+<pre><code class="language-http">PUT /libraries/{name}
 </code></pre>
 <h3 id="content_3">Content</h3>
-<pre><code class="language-javascript">{
+<pre><code class="language-json">{
     TODO
 }
 </code></pre>
 <h3 id="response_4">Response</h3>
-<pre><code class="language-HTTP">HTTP/1.1 204 No Content
+<pre><code class="language-http">HTTP/1.1 204 No Content
 </code></pre>
 <h2 id="remove-library">Remove Library</h2>
 <h3 id="endpoint_6">Endpoint</h3>
-<pre><code class="language-HTTP">DELETE /libraries/{name}
+<pre><code class="language-http">DELETE /libraries/{name}
 </code></pre>
 <h3 id="response_5">Response</h3>
-<pre><code class="language-HTTP">HTTP/1.1 200 OK
+<pre><code class="language-http">HTTP/1.1 200 OK
 {
     TODO
 }
