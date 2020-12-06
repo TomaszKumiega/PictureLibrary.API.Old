@@ -29,7 +29,7 @@ Library represents .xml file that contains albums names and its pictures.
 
 ## Album
 
-Element in library.xml file. Organizes images. 
+Element in library.xml file. Organizes images in diffrent categories. 
 
 
 ## ImageFile
