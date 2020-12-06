@@ -14,13 +14,16 @@ Library represents .xml file that contains albums names and its pictures.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <library name = "libraryName" owner = "userGuid">
+    
     <album name = "albumName1">
       <imageFile name = "1642252321.jpg"/>
       <imageFile name = "1246531451.png"/>
     </album>
+    
     <album name = "albumName2">
       <imageFile name = "1513515311.jpg"/>
     </album>
+    
 </library>
 ```
 
