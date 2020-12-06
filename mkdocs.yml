@@ -1,6 +1,11 @@
 site_name: PictureLibrary-API Documentation
 repo_url: https://github.com/TomaszKumiega/PictureLibrary-API
 theme: material
+markdown_extensions:
+  - codehilite
+  - admonition
+  - toc:
+      permalink: true
 nav: 
   - 'index.md'
   - 'data-model.md'
