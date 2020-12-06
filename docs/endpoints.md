@@ -2,13 +2,13 @@
 
 ## Authenticate
 
-### Endpoint
+**Endpoint**
 
 ```http
 POST /users/authenticate
 ```
 
-### Content
+**Content**
 
 ```json
 {
@@ -17,13 +17,13 @@ POST /users/authenticate
 }
 ```
 
-### Result
+**Result**
 
 ```json
 HTTP/1.1 200 OK
 {
     "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
-    "username": "user"
+    "username": "user",
     "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
   eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4
   cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
@@ -35,13 +35,13 @@ HTTP/1.1 200 OK
 
 ## Register
 
-### Endpoint
+**Endpoint**
 
 ```http
 POST /users/register
 ```
 
-### Content
+**Content**
 
 ```json
 {
@@ -52,7 +52,7 @@ POST /users/register
     "password": "password123"
 }
 ```
-### Response
+**Response**
 
 ```json
 HTTP/1.1 201 Created
@@ -67,13 +67,13 @@ HTTP/1.1 201 Created
 
 ## Get all Libraries
 
-### Endpoint
+**Endpoint**
 
 ```http
 GET /libraries
 ```
 
-### Response
+**Response**
 
 ```json
 HTTP/1.1 200 OK
@@ -84,13 +84,13 @@ HTTP/1.1 200 OK
 
 ## Get Library
 
-### Endpoint
+**Endpoint**
 
 ```http
 GET /libraries/{name}
 ```
 
-### Response
+**Response**
 
 ```json
 HTTP/1.1 200 OK
@@ -101,13 +101,13 @@ HTTP/1.1 200 OK
 
 ## Add Library
 
-### Endpoint
+**Endpoint**
 
 ```http
 POST /libraries
 ```
 
-### Content
+**Content**
 
 ```json
 {
@@ -115,7 +115,7 @@ POST /libraries
 }
 ```
 
-### Response
+**Response**
 
 ```json
 HTTP/1.1 201 Created
@@ -126,13 +126,13 @@ HTTP/1.1 201 Created
 
 ## Update Library
 
-### Endpoint
+**Endpoint**
 
 ```http
 PUT /libraries/{name}
 ```
 
-### Content
+**Content**
 
 ```json
 {
@@ -140,7 +140,7 @@ PUT /libraries/{name}
 }
 ```
 
-### Response
+**Response**
 
 ```http
 HTTP/1.1 204 No Content
@@ -148,15 +148,112 @@ HTTP/1.1 204 No Content
 
 ## Remove Library
 
-### Endpoint
+**Endpoint**
 
 ```http
 DELETE /libraries/{name}
 ```
 
-### Response
+**Response**
+
+```json
+HTTP/1.1 200 OK
+{
+    TODO
+}
+```
+
+## Get Images From Library
+
+**Endpoint**
 
 ```http
+GET /images/all/{libraryName}
+```
+
+**Response**
+
+```json
+HTTP/1.1 200 OK
+{
+    TODO
+}
+```
+
+## Get Specific Image
+
+**Endpoint**
+
+```http
+GET /images/{imageSource}
+```
+
+**Response**
+
+```json
+HTTP/1.1 200 OK
+{
+    TODO
+}
+```
+
+## Add Image
+
+**Endpoint**
+
+```http
+POST /images/{libraryName}
+```
+
+**Content**
+
+```json
+{
+    TODO
+}
+```
+
+**Response**
+
+```json
+HTTP/1.1 201 Created
+{
+    TODO
+}
+```
+
+## Update image
+
+**Endpoint**
+
+```http
+PUT /images/{imageSource}
+```
+
+**Content**
+
+```json
+{
+    TODO
+}
+```
+
+**Response**
+
+```http
+HTTP/1.1 204 No Content
+```
+
+## Remove image
+
+**Endpoint**
+
+```http
+DELETE /images/{imageSource}
+```
+
+**Response**
+```json
 HTTP/1.1 200 OK
 {
     TODO
