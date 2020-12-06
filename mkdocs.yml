@@ -2,8 +2,7 @@ site_name: PictureLibrary-API Documentation
 repo_url: https://github.com/TomaszKumiega/PictureLibrary-API
 theme: 
     name: material
-    theme:
-      palette:
+    palette:
         scheme: slate
         primary: teal
 markdown_extensions:
