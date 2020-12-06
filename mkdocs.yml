@@ -8,3 +8,6 @@ nav:
   - 'data-model.md'
   - 'project_structure.md'
   - 'endpoints.md'
+markdown_extensions:
+  - 'pymdownx.highlight'
+  - 'pymdownx.superfences'
