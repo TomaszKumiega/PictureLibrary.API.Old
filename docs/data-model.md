@@ -9,7 +9,7 @@ Diffrent users can have their own libraries on the same device.
 
 Library represents .xml file that contains albums names and its pictures.
 
-### Xml file structure
+**Xml file structure**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
