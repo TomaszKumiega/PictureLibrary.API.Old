@@ -734,110 +734,127 @@
                   </a>
                 
                 
-                <h1 id="endpoints">Endpoints</h1>
-<h2 id="authenticate">Authenticate</h2>
-<h3 id="endpoint">Endpoint</h3>
-<pre><code class="language-HTTP">POST /users/authenticate
-</code></pre>
-<h3 id="content">Content</h3>
-<pre><code class="language-javascript">{
-    username: &quot;user&quot;,
-    password: &quot;password123&quot;
-}
-</code></pre>
-<h3 id="result">Result</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
-{
-    id: &quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;,
-    username: &quot;user
-    token:&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
-  eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4
-  cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
-  ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr
-  ZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQ
-  cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.KF1oNcLQ2rcovBWOapa2mh-oIGtmskT5NirenRckLjc&quot;  
-}
-</code></pre>
-<h2 id="register">Register</h2>
-<h3 id="endpoint_1">Endpoint</h3>
-<pre><code class="language-HTTP">POST /users/register
-</code></pre>
-<h3 id="content_1">Content</h3>
-<pre><code class="language-javascript">{
-    username: &quot;user&quot;,
-    firstName: &quot;name&quot;,
-    lastName: &quot;surname&quot;,
-    email: &quot;email@example.com&quot;,
-    password: &quot;password123&quot;
-}
-</code></pre>
-<h3 id="response">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 201 Created
-{
-    id: &quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;,
-    username: &quot;user&quot;,
-    firstName: &quot;name&quot;,
-    lastName: &quot;surname&quot;,
-    email: &quot;email@example.com&quot;
-}
-</code></pre>
-<h2 id="get-all-libraries">Get all Libraries</h2>
-<h3 id="endpoint_2">Endpoint</h3>
-<pre><code class="language-HTTP">GET /libraries
-</code></pre>
-<h3 id="response_1">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
-[
+                <h1 id="endpoints">Endpoints<a class="headerlink" href="#endpoints" title="Permanent link">&para;</a></h1>
+<h2 id="authenticate">Authenticate<a class="headerlink" href="#authenticate" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint">Endpoint<a class="headerlink" href="#endpoint" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">POST /users/authenticate</span>
+</code></pre></div>
+
+<h3 id="content">Content<a class="headerlink" href="#content" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="nx">password</span><span class="o">:</span> <span class="s2">&quot;password123&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="result">Result<a class="headerlink" href="#result" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mf">200</span> <span class="nx">OK</span>
+<span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;</span><span class="p">,</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;user</span>
+<span class="s2">    token:&quot;</span><span class="nx">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</span><span class="p">.</span>
+  <span class="nx">eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4</span>
+  <span class="nx">cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t</span>
+  <span class="nx">ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr</span>
+  <span class="nx">ZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQ</span>
+  <span class="nx">cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0</span><span class="p">.</span><span class="nx">KF1oNcLQ2rcovBWOapa2mh</span><span class="o">-</span><span class="nx">oIGtmskT5NirenRckLjc</span><span class="err">&quot;</span>  
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="register">Register<a class="headerlink" href="#register" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_1">Endpoint<a class="headerlink" href="#endpoint_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">POST /users/register</span>
+</code></pre></div>
+
+<h3 id="content_1">Content<a class="headerlink" href="#content_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+    <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;email@example.com&quot;</span><span class="p">,</span>
+    <span class="nx">password</span><span class="o">:</span> <span class="s2">&quot;password123&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mf">201</span> <span class="nx">Created</span>
+<span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;33df9fba-1a02-45c7-afa4-886b6c751e15&quot;</span><span class="p">,</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+    <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;email@example.com&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="get-all-libraries">Get all Libraries<a class="headerlink" href="#get-all-libraries" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_2">Endpoint<a class="headerlink" href="#endpoint_2" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">GET /libraries</span>
+</code></pre></div>
+
+<h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mf">200</span> <span class="nx">OK</span>
+<span class="p">[</span>
+    <span class="nx">TODO</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<h2 id="get-library">Get Library<a class="headerlink" href="#get-library" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_3">Endpoint<a class="headerlink" href="#endpoint_3" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">GET /libraries/{name}</span>
+</code></pre></div>
+
+<h3 id="response_2">Response<a class="headerlink" href="#response_2" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mf">200</span> <span class="nx">OK</span>
+<span class="p">{</span>
+    <span class="nx">TODO</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="add-library">Add Library<a class="headerlink" href="#add-library" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_4">Endpoint<a class="headerlink" href="#endpoint_4" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">POST /libraries</span>
+</code></pre></div>
+
+<h3 id="content_2">Content<a class="headerlink" href="#content_2" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nx">TODO</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="response_3">Response<a class="headerlink" href="#response_3" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mf">201</span> <span class="nx">Created</span>
+<span class="p">{</span>
+    <span class="nx">TODO</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="update-library">Update Library<a class="headerlink" href="#update-library" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_5">Endpoint<a class="headerlink" href="#endpoint_5" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">PUT /libraries/{name}</span>
+</code></pre></div>
+
+<h3 id="content_3">Content<a class="headerlink" href="#content_3" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nx">TODO</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="response_4">Response<a class="headerlink" href="#response_4" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">204</span> <span class="ne">No Content</span>
+</code></pre></div>
+
+<h2 id="remove-library">Remove Library<a class="headerlink" href="#remove-library" title="Permanent link">&para;</a></h2>
+<h3 id="endpoint_6">Endpoint<a class="headerlink" href="#endpoint_6" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="err">DELETE /libraries/{name}</span>
+</code></pre></div>
+
+<h3 id="response_5">Response<a class="headerlink" href="#response_5" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="err">{</span>
     TODO
-]
-</code></pre>
-<h2 id="get-library">Get Library</h2>
-<h3 id="endpoint_3">Endpoint</h3>
-<pre><code class="language-HTTP">GET /libraries/{name}
-</code></pre>
-<h3 id="response_2">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 200 OK
-{
-    TODO
 }
-</code></pre>
-<h2 id="add-library">Add Library</h2>
-<h3 id="endpoint_4">Endpoint</h3>
-<pre><code class="language-HTTP">POST /libraries
-</code></pre>
-<h3 id="content_2">Content</h3>
-<pre><code class="language-javascript">{
-    TODO
-}
-</code></pre>
-<h3 id="response_3">Response</h3>
-<pre><code class="language-javascript">HTTP/1.1 201 Created
-{
-    TODO
-}
-</code></pre>
-<h2 id="update-library">Update Library</h2>
-<h3 id="endpoint_5">Endpoint</h3>
-<pre><code class="language-HTTP">PUT /libraries/{name}
-</code></pre>
-<h3 id="content_3">Content</h3>
-<pre><code class="language-javascript">{
-    TODO
-}
-</code></pre>
-<h3 id="response_4">Response</h3>
-<pre><code class="language-HTTP">HTTP/1.1 204 No Content
-</code></pre>
-<h2 id="remove-library">Remove Library</h2>
-<h3 id="endpoint_6">Endpoint</h3>
-<pre><code class="language-HTTP">DELETE /libraries/{name}
-</code></pre>
-<h3 id="response_5">Response</h3>
-<pre><code class="language-HTTP">HTTP/1.1 200 OK
-{
-    TODO
-}
-</code></pre>
+</code></pre></div>
                 
               
               
