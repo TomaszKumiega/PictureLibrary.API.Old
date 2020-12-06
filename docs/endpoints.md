@@ -12,8 +12,8 @@ POST /users/authenticate
 
 ```json
 {
-    username: "user",
-    password: "password123"
+    "username": "user",
+    "password": "password123"
 }
 ```
 
@@ -22,9 +22,9 @@ POST /users/authenticate
 ```json
 HTTP/1.1 200 OK
 {
-    id: "33df9fba-1a02-45c7-afa4-886b6c751e15",
-    username: "user
-    token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
+    "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
+    "username": "user"
+    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
   eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4
   cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
   ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr
@@ -45,11 +45,11 @@ POST /users/register
 
 ```json
 {
-    username: "user",
-    firstName: "name",
-    lastName: "surname",
-    email: "email@example.com",
-    password: "password123"
+    "username": "user",
+    "firstName": "name",
+    "lastName": "surname",
+    "email": "email@example.com",
+    "password": "password123"
 }
 ```
 ### Response
@@ -57,11 +57,11 @@ POST /users/register
 ```json
 HTTP/1.1 201 Created
 {
-    id: "33df9fba-1a02-45c7-afa4-886b6c751e15",
-    username: "user",
-    firstName: "name",
-    lastName: "surname",
-    email: "email@example.com"
+    "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
+    "username": "user",
+    "firstName": "name",
+    "lastName": "surname",
+    "email": "email@example.com"
 }
 ```
 
