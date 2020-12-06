@@ -19,8 +19,11 @@ POST /users/authenticate
 
 **Result**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
     "username": "user",
@@ -54,8 +57,11 @@ POST /users/register
 ```
 **Response**
 
-```json
+```http
 HTTP/1.1 201 Created
+```
+
+```json
 {
     "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
     "username": "user",
@@ -75,8 +81,11 @@ GET /libraries
 
 **Response**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 [
     TODO
 ]
@@ -92,8 +101,11 @@ GET /libraries/{name}
 
 **Response**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     TODO
 }
@@ -117,8 +129,11 @@ POST /libraries
 
 **Response**
 
-```json
+```http
 HTTP/1.1 201 Created
+```
+
+```json
 {
     TODO
 }
@@ -156,8 +171,11 @@ DELETE /libraries/{name}
 
 **Response**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     TODO
 }
@@ -173,8 +191,11 @@ GET /images/all/{libraryName}
 
 **Response**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     TODO
 }
@@ -190,8 +211,11 @@ GET /images/{imageSource}
 
 **Response**
 
-```json
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     TODO
 }
@@ -215,8 +239,11 @@ POST /images/{libraryName}
 
 **Response**
 
-```json
+```http
 HTTP/1.1 201 Created
+```
+
+```json
 {
     TODO
 }
@@ -253,8 +280,12 @@ DELETE /images/{imageSource}
 ```
 
 **Response**
-```json
+
+```http
 HTTP/1.1 200 OK
+```
+
+```json
 {
     TODO
 }
