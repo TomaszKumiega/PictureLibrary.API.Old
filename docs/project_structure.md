@@ -6,4 +6,4 @@ Controllers are provided with data through:
 - LibraryFileService - provides library structure saved in library file
 - UserService - provides users from database
 
-![flowchart](https://lucid.app/publicSegments/view/c2f51de1-f85a-4b22-944c-d881794040af/image.png)
+![flowchart](https://lucid.app/publicSegments/view/ed99bf21-0b66-4efc-b129-0ff2105faca4/image.png)
