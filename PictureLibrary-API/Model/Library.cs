@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using PictureLibraryModel.Services;
 
 namespace PictureLibraryModel.Model
@@ -28,16 +29,6 @@ namespace PictureLibraryModel.Model
             FullPath = fullPath;
             Name = name;
             Albums = albums;
-        }
-
-        public void AddImage(List<string> albumNames, string path)
-        {
-
-        }
-
-        public void AddAlbum(string albumName)
-        {
-
         }
     }
 }
