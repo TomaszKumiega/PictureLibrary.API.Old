@@ -44,7 +44,7 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        FileStream GetFileAsFileStream(string path);
+        FileStream GetFileAsFileStream(string path, FileMode mode);
 
         /// <summary>
         /// Returns contents of a file as byte array

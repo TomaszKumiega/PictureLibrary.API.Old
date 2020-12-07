@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Internal;
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.Extensions.Logging;
 using PictureLibraryModel.Model;
 using System;
@@ -59,9 +60,9 @@ namespace PictureLibraryModel.Services
             return File.ReadAllBytes(path);
         }
 
-        public FileStream GetFileAsFileStream(string path)
+        public FileStream GetFileAsFileStream(string path, FileMode mode)
         {
-            throw new NotImplementedException();
+            return new FileStream(path, mode);
         }
     }
 }
