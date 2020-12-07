@@ -10,12 +10,48 @@ namespace PictureLibraryModel.Services
     /// </summary>
     public interface IFileSystemService
     {
+        /// <summary>
+        /// Finds all files in a root directory matching the search pattern
+        /// </summary>
+        /// <param name="rootDirectory"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        IEnumerable<FileStream> FindFiles(string rootDirectory, string searchPattern);
+
+        /// <summary>
+        /// Finds all files matching the search pattern from all drives
+        /// </summary>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        IEnumerable<FileStream> FindFiles(string searchPattern);
+
+        /// <summary>
+        /// Creates a file in specified directory and returns FileStream
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="directory"></param>
+        /// <returns></returns>
+        FileStream CreateFile(string fileName, string directory);
 
         /// <summary>
         /// Deletes specified file 
         /// </summary>
         /// <param name="filePath"></param>
         void DeleteFile(string filePath);
+
+        /// <summary>
+        /// Returns a FileStream of a file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        FileStream GetFileAsFileStream(string path);
+
+        /// <summary>
+        /// Returns contents of a file as byte array
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        byte[] GetFileAsByteArray(string path);
 
         /// <summary>
         /// Returns extension of a specified file

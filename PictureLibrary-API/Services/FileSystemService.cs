@@ -19,14 +19,39 @@ namespace PictureLibraryModel.Services
             _fileSystemEntitiesFactory = fileSystemEntitiesFactory;
         }
 
+        public FileStream CreateFile(string fileName, string directory)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteFile(string filePath)
         {
             File.Delete(filePath);
         }
 
+        public IEnumerable<FileStream> FindFiles(string rootDirectory, string searchPattern)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<FileStream> FindFiles(string searchPattern)
+        {
+            throw new NotImplementedException();
+        }
+
         public string? GetExtension(string path)
         {
            return Path.GetExtension(path);
+        }
+
+        public byte[] GetFileAsByteArray(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public FileStream GetFileAsFileStream(string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }
