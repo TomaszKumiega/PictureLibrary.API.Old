@@ -7,19 +7,19 @@ namespace PictureLibraryModel.Model
 {
     public class LibraryEntitiesFactory : ILibraryEntitiesFactory
     {
-        public Library GetLibrary(IFileSystemService fileSystemService)
+        public Library GetLibrary()
         {
-            return new Library(fileSystemService);
+            return new Library();
         }
 
-        public Library GetLibrary(string fullPath, string name, IFileSystemService fileSystemService)
+        public Library GetLibrary(string fullPath, string name)
         {
-            return new Library(fullPath, name, fileSystemService);
+            return new Library(fullPath, name);
         }
 
-        public Library GetLibrary(string fullPath, string name, List<Album> albums, IFileSystemService fileSystemService)
+        public Library GetLibrary(string fullPath, string name, List<Album> albums)
         {
-            return new Library(fullPath, name, albums, fileSystemService);
+            return new Library(fullPath, name, albums);
         }
 
         public ImageFile GetImageFile(string path)

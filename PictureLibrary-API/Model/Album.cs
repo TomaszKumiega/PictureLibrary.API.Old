@@ -9,9 +9,6 @@ namespace PictureLibraryModel.Model
         public string Name { get; }
         public List<ImageFile> Images { get; }
 
-        //TODO: Add image source
-        public string ImageSource => throw new NotImplementedException();
-
         public Album(string name)
         {
             Name = name;

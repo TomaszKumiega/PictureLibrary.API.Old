@@ -9,13 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using Directory = PictureLibraryModel.Model.Directory;
 
 namespace PictureLibraryModel.Services
 {
     public class LibraryFileService : ILibraryFileService
     {
-        private readonly ILogger<Drive> _logger;
+        private readonly ILogger<LibraryFileService> _logger;
         private readonly IFileSystemService _fileSystemService;
         private readonly ILibraryEntitiesFactory _libraryEntitiesFactory;
         public LibraryFileService(IFileSystemService fileSystemService, ILibraryEntitiesFactory libraryEntitiesFactory)
@@ -78,7 +77,7 @@ namespace PictureLibraryModel.Services
                 }
             }
 
-            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName, albumsList, _fileSystemService);
+            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName, albumsList);
         }
 
         public Library CreateLibrary(string libraryName, FileStream fileStream)
@@ -105,7 +104,7 @@ namespace PictureLibraryModel.Services
                 throw new Exception("Library already exists");
             }
 
-            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName, _fileSystemService);
+            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName);
         }
 
 

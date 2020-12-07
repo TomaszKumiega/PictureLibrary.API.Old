@@ -6,7 +6,6 @@ namespace PictureLibraryModel.Model
 {
     public interface ILibraryEntity
     {
-        string ImageSource { get; }
         string Name { get; }
     }
 }

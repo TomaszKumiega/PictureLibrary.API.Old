@@ -12,13 +12,11 @@ namespace PictureLibraryModel.Services
 {
     public class FileSystemService : IFileSystemService
     {
-        private readonly ILogger<Drive> _logger;
+        private readonly ILogger<FileSystemService> _logger;
 
-        private readonly IFileSystemEntitiesFactory _fileSystemEntitiesFactory;
-
-        public FileSystemService(IFileSystemEntitiesFactory fileSystemEntitiesFactory)
+        public FileSystemService()
         {
-            _fileSystemEntitiesFactory = fileSystemEntitiesFactory;
+
         }
 
         public FileStream CreateFile(string fileName, string directory)
