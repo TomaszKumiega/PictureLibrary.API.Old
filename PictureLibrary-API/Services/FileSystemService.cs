@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Castle.Core.Internal;
+using Microsoft.Extensions.Logging;
 using PictureLibraryModel.Model;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,16 @@ namespace PictureLibraryModel.Services
 
         public FileStream CreateFile(string fileName, string directory)
         {
-            throw new NotImplementedException();
+            if (fileName.IsNullOrEmpty() || directory.IsNullOrEmpty()) throw new ArgumentException();
+            
+            if(directory.EndsWith('/'))
+            {
+                return File.Create(directory + fileName);
+            }
+            else
+            {
+                return File.Create(directory + '/' + fileName);
+            }
         }
 
         public void DeleteFile(string filePath)
