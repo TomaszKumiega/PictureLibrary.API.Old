@@ -385,8 +385,54 @@ Diffrent users can have their own libraries on the same device.</p>
 <h2 id="album">Album</h2>
 <p>Element in library.xml file. Organizes images in diffrent categories. </p>
 <h2 id="imagefile">ImageFile</h2>
-<p>ImageFile is representation of image on the storage.
+<p>ImageFile describes an image and provides a way to access a file from the remote storage.
 One image can be stored in multiple albums without multiplication of its file but every library has it's own copy of the image.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>string</td>
+<td>Name of the image file</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>string</td>
+<td>File extension (jpg, png etc.)</td>
+</tr>
+<tr>
+<td>Source</td>
+<td>string</td>
+<td>Path of the file</td>
+</tr>
+<tr>
+<td>CreationTime</td>
+<td>DateTime</td>
+<td>The time of file creation</td>
+</tr>
+<tr>
+<td>LastAccessTime</td>
+<td>DateTime</td>
+<td>The time file was last accessed</td>
+</tr>
+<tr>
+<td>LastWriteTime</td>
+<td>DateTime</td>
+<td>The time file was last written to</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>long</td>
+<td>Size of the file in bytes</td>
+</tr>
+</tbody>
+</table>
                 
               
               
