@@ -16,11 +16,9 @@ namespace PictureLibraryModel.Services
     {
         private readonly ILogger<LibraryFileService> _logger;
         private readonly IFileSystemService _fileSystemService;
-        private readonly ILibraryEntitiesFactory _libraryEntitiesFactory;
-        public LibraryFileService(IFileSystemService fileSystemService, ILibraryEntitiesFactory libraryEntitiesFactory)
+        public LibraryFileService(IFileSystemService fileSystemService)
         {
             _fileSystemService = fileSystemService;
-            _libraryEntitiesFactory = libraryEntitiesFactory;
         }
 
         public async Task<Library> LoadLibraryAsync(FileStream fileStream)
@@ -54,7 +52,7 @@ namespace PictureLibraryModel.Services
 
                                 try
                                 {
-                                    var image = _libraryEntitiesFactory.GetImageFile(imageElement.Attribute("path").Value);
+                                    var image = new ImageFile(imageElement.Attribute("path").Value);
                                     imageList.Add(image);
                                 }
                                 catch (Exception e)
@@ -64,7 +62,7 @@ namespace PictureLibraryModel.Services
 
                             } while (reader.ReadToNextSibling("image"));
 
-                            albumsList.Add(_libraryEntitiesFactory.GetAlbum(albumName, imageList));
+                            albumsList.Add(new Album(albumName, imageList));
                         }
 
                         if (reader.Name == "library")
@@ -77,7 +75,7 @@ namespace PictureLibraryModel.Services
                 }
             }
 
-            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName, albumsList);
+            return new Library(fileStream.Name, libraryName, albumsList);
         }
 
         public Library CreateLibrary(string libraryName, FileStream fileStream)
@@ -104,7 +102,7 @@ namespace PictureLibraryModel.Services
                 throw new Exception("Library already exists");
             }
 
-            return _libraryEntitiesFactory.GetLibrary(fileStream.Name, libraryName);
+            return new Library(fileStream.Name, libraryName);
         }
 
 
