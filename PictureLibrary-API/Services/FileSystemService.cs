@@ -56,7 +56,7 @@ namespace PictureLibraryModel.Services
 
         public byte[] GetFileAsByteArray(string path)
         {
-            throw new NotImplementedException();
+            return File.ReadAllBytes(path);
         }
 
         public FileStream GetFileAsFileStream(string path)
