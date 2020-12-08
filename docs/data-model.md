@@ -16,25 +16,43 @@ API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/end
 
 ## Library
 
-Library represents .xml file that contains albums names and its pictures.
+Library represents .xml file that contains tags and images.
 
 **Xml file structure**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<library name = "libraryName" owner = "userGuid">
+<library name = "libraryName" description = "Family picture library" owner = "userGuid">
     
-    <album name = "albumName1">
-      <imageFile name = "1642252321.jpg"/>
-      <imageFile name = "1246531451.png"/>
-    </album>
+    <tags>
+        <tag name = "Portraits" description = "" />
+        <tag name = "Vacation" description = "All pictures from vacation time" />
+    </tags>        
     
-    <album name = "albumName2">
-      <imageFile name = "1513515311.jpg"/>
-    </album>
-    
+    <images>
+        <imageFile name = "1642252321" extension = "jpg" source = "C:/Pictures/Library1/images/1642252321.jpg" CreationTime = "2008-10-01T17:04:32.0000000" 
+                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "5130500"/>
+        
+        <imageFile name = "1246531451" extension = "png" source = "C:/Pictures/Library1/images/1246531451.png" CreationTime = "2008-10-01T17:04:32.0000000" 
+                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "3003000"/>
+        
+        <imageFile name = "1513515311" extension = "jpg" source = "C:/Pictures/Library1/images/1513515311.jpg" CreationTime = "2008-10-01T17:04:32.0000000" 
+                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "2050000" />
+    </images>    
+
 </library>
 ```
+
+**Properties**
+
+| Name | Type | Notes |
+|------|------|-------|
+| Name | string | Name of the library | 
+| FullPath | string | Full path to the library |
+| Description | string | - |
+| Tags | List<Tag> | List of all tags used in the library |
+| Images | List<ImageFIle> | List of all files in the library |
+| Owner | User | Owner of the library |
 
 ## Tag
 
