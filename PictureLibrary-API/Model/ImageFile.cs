@@ -7,39 +7,28 @@ namespace PictureLibraryModel.Model
 {
     public class ImageFile : ILibraryEntity
     {
-        public FileInfo FileInfo { get; set; }
-        public string Name { get; }
-        public string FullPath { get; set; }
-        public string ImageSource { get; set; }
+        public string Name { get; set; }
+        public string Extension { get; set; }
+        public string Source { get; set; }
+        public DateTime CreationTime { get; set; }
+        public DateTime LastAccessTime { get; set; }
+        public DateTime LastWriteTime { get; set; }
+        public long Size { get; set; }
 
         public ImageFile()
         {
 
         }
 
-        public ImageFile(string path)
+        public ImageFile(string name, string extension, string source, DateTime creationTime, DateTime lastAccessTime, DateTime lastWriteTime, long size)
         {
-            if (File.Exists(path) && (IsFileAnImage(path)==true))
-            {
-                FullPath = path;
-                FileInfo = new FileInfo(path);
-                Name = FileInfo.Name;
-                ImageSource = path;
-            }
-            else throw new Exception("File not found");
-        }
-
-        public static bool IsFileAnImage(string path)
-        {
-            string[] supportedExtensions = { ".jpg", ".jpeg", ".jpe", ".png", ".jfif", ".bmp", ".tif", ".tiff", ".gif" };
-            bool pathEndsWithSupportedExtension = false;
-            
-            foreach(string t in supportedExtensions)
-            {
-                if (path.EndsWith(t)) pathEndsWithSupportedExtension = true;
-            }
-
-            return pathEndsWithSupportedExtension;
+            Name = name;
+            Extension = extension;
+            Source = source;
+            CreationTime = creationTime;
+            LastAccessTime = lastAccessTime;
+            LastWriteTime = lastWriteTime;
+            Size = size;
         }
     }
 }
