@@ -23,7 +23,7 @@ namespace PictureLibraryModel.Services
 
         public async Task<Library> LoadLibraryAsync(FileStream fileStream)
         {
-            var albumsList = new List<Album>();
+            var albumsList = new List<Tag>();
             string libraryName = null;
 
             if (fileStream.Length==0) throw new ArgumentException("Given stream is empty");
@@ -62,7 +62,7 @@ namespace PictureLibraryModel.Services
 
                             } while (reader.ReadToNextSibling("image"));
 
-                            albumsList.Add(new Album(albumName, imageList));
+                            albumsList.Add(new Tag(albumName, imageList));
                         }
 
                         if (reader.Name == "library")
