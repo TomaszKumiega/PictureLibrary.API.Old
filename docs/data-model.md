@@ -36,9 +36,18 @@ Library represents .xml file that contains albums names and its pictures.
 </library>
 ```
 
-## Album
+## Tag
 
-Element in library.xml file. Organizes images in diffrent categories. 
+Tags are used for image organization.
+All tags existing in a library are stored in library xml file.
+Every image is assigned at least one tag.
+
+**Properties**
+
+| Name | Type | Notes |
+|------|------|-------|
+| Name | string | - |
+| Description | string | - |
 
 
 ## ImageFile
@@ -50,7 +59,7 @@ One image can be stored in multiple albums without multiplication of its file bu
 
 | Name | Type | Notes |
 |------|------|-------|
-| Name | string | Name of the image file |
+| Name | string | Name of the image file without extension |
 | Extension | string | File extension (jpg, png etc.) |
 | Source | string | Path of the file |
 | CreationTime | DateTime | The time of file creation |
