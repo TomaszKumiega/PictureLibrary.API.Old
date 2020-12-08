@@ -248,8 +248,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#album" class="md-nav__link">
-    Album
+  <a href="#tag" class="md-nav__link">
+    Tag
   </a>
   
 </li>
@@ -330,8 +330,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#album" class="md-nav__link">
-    Album
+  <a href="#tag" class="md-nav__link">
+    Tag
   </a>
   
 </li>
@@ -410,8 +410,32 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <span class="nt">&lt;/library&gt;</span>
 </code></pre></div>
 
-<h2 id="album">Album</h2>
-<p>Element in library.xml file. Organizes images in diffrent categories. </p>
+<h2 id="tag">Tag</h2>
+<p>Tags are used for image organization.
+All tags existing in a library are stored in library xml file.
+Every image is assigned at least one tag.</p>
+<p><strong>Properties</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>string</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>string</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h2 id="imagefile">ImageFile</h2>
 <p>ImageFile describes an image and provides a way to access a file from the remote storage.
 One image can be stored in multiple albums without multiplication of its file but every library has it's own copy of the image.</p>
@@ -428,7 +452,7 @@ One image can be stored in multiple albums without multiplication of its file bu
 <tr>
 <td>Name</td>
 <td>string</td>
-<td>Name of the image file</td>
+<td>Name of the image file without extension</td>
 </tr>
 <tr>
 <td>Extension</td>
