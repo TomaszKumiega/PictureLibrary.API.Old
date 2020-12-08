@@ -362,8 +362,36 @@
                 
                 <h1 id="data-model">Data Model</h1>
 <h2 id="user">User</h2>
-<p>API has user authentication.
-Diffrent users can have their own libraries on the same device.</p>
+<p>User is the owner of library.
+Diffrent users can have their own libraries on the same device.
+API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate">Authentication</a>.</p>
+<p><strong>Properties</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Id</td>
+<td>Guid</td>
+<td>User Id</td>
+</tr>
+<tr>
+<td>Username</td>
+<td>string</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>string</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h2 id="library">Library</h2>
 <p>Library represents .xml file that contains albums names and its pictures.</p>
 <p><strong>Xml file structure</strong></p>
