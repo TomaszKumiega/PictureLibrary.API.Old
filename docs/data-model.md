@@ -2,8 +2,17 @@
 
 ## User
 
-API has user authentication.
+User is the owner of library.
 Diffrent users can have their own libraries on the same device.
+API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate).
+
+**Properties**
+
+| Name | Type | Notes |
+|------|------|-------|
+| Id | Guid | User Id | 
+| Username | string | - |
+| Email | string | - |
 
 ## Library
 
