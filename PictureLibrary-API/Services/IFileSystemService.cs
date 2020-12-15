@@ -44,14 +44,14 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        FileStream GetFileAsFileStream(string path, FileMode mode);
+        FileStream OpenFile(string path, FileMode mode);
 
         /// <summary>
         /// Returns contents of a file as byte array
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        byte[] GetFileAsByteArray(string path);
+        byte[] GetFile(string path);
 
         /// <summary>
         /// Returns extension of a specified file

@@ -53,12 +53,12 @@ namespace PictureLibraryModel.Services
            return Path.GetExtension(path);
         }
 
-        public byte[] GetFileAsByteArray(string path)
+        public byte[] GetFile(string path)
         {
             return File.ReadAllBytes(path);
         }
 
-        public FileStream GetFileAsFileStream(string path, FileMode mode)
+        public FileStream OpenFile(string path, FileMode mode)
         {
             return new FileStream(path, mode);
         }
