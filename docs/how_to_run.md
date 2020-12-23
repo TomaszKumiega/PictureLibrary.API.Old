@@ -15,6 +15,11 @@ To specify a directory on host device, where data will be stored, change the sou
 When you need to use multiple directories, for example when you want to use multiple drives, use --mount syntax multiple times.
 With every new directory, change the number of the target directory as follows:
 
+- Directory1
+- Directory2
+- Directory3
+- ...
+
 ```sh
 --mount type=bind,source=MY_DIRECTORY/,target=Directory1 --mount type=bind,source=MY_OTHER_DIRECTORY/,target=Directory2
 ```
