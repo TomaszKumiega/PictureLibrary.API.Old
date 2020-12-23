@@ -8,3 +8,10 @@ theme:
 markdown_extensions:
   - codehilite
   - admonition
+  
+nav:
+  - 'index.md'
+  - 'how_to_run.md'
+  - 'data_model.md'
+  - 'project_structure.md'
+  - 'endpoints.md'

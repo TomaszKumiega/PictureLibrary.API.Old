@@ -4,6 +4,7 @@
 
 User is the owner of library.
 Diffrent users can have their own libraries on the same device.
+One library can have multiple owners.
 API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate).
 
 **Properties**
@@ -22,7 +23,7 @@ Library represents .xml file that contains tags and images.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<library name = "libraryName" description = "Family picture library" owner = "userGuid">
+<library name = "libraryName" description = "Family picture library" owners = "userGuid, userGuid">
     
     <tags>
         <tag name = "Portraits" description = "" />
@@ -52,7 +53,7 @@ Library represents .xml file that contains tags and images.
 | Description | string | - |
 | Tags | List<Tag> | List of all tags used in the library |
 | Images | List<ImageFIle> | List of all files in the library |
-| Owner | User | Owner of the library |
+| Owners | List<User> | Owners of the library |
 
 ## Tag
 
