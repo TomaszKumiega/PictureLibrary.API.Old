@@ -13,10 +13,30 @@ namespace PictureLibraryModel.Services
     public class FileSystemService : IFileSystemService
     {
         private readonly ILogger<FileSystemService> _logger;
+        private List<string> TargetDirectories { get; set; }
 
         public FileSystemService()
         {
+            LoadTargetDirectories();
+        }
 
+        private void LoadTargetDirectories()
+        {
+            string path;
+
+            for(int i=0;i<100;i++)
+            {
+                path = "Directory" + i.ToString();
+
+                if (Directory.Exists(path))
+                {
+                    TargetDirectories.Add(path);
+                }
+                else
+                {
+                    return;
+                }
+            }
         }
 
         public FileStream CreateFile(string fileName, string directory)
