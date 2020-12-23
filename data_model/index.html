@@ -389,6 +389,7 @@
 <h2 id="user">User</h2>
 <p>User is the owner of library.
 Diffrent users can have their own libraries on the same device.
+One library can have multiple owners.
 API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate">Authentication</a>.</p>
 <p><strong>Properties</strong></p>
 <table>
@@ -421,7 +422,7 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <p>Library represents .xml file that contains tags and images.</p>
 <p><strong>Xml file structure</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<span class="nt">&lt;library</span> <span class="na">name =</span> <span class="s">&quot;libraryName&quot;</span> <span class="na">description =</span> <span class="s">&quot;Family picture library&quot;</span> <span class="na">owner =</span> <span class="s">&quot;userGuid&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;library</span> <span class="na">name =</span> <span class="s">&quot;libraryName&quot;</span> <span class="na">description =</span> <span class="s">&quot;Family picture library&quot;</span> <span class="na">owners =</span> <span class="s">&quot;userGuid, userGuid&quot;</span><span class="nt">&gt;</span>
 
     <span class="nt">&lt;tags&gt;</span>
         <span class="nt">&lt;tag</span> <span class="na">name =</span> <span class="s">&quot;Portraits&quot;</span> <span class="na">description =</span> <span class="s">&quot;&quot;</span> <span class="nt">/&gt;</span>
@@ -478,9 +479,9 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <td>List of all files in the library</td>
 </tr>
 <tr>
-<td>Owner</td>
-<td>User</td>
-<td>Owner of the library</td>
+<td>Owners</td>
+<td>List<User></td>
+<td>Owners of the library</td>
 </tr>
 </tbody>
 </table>
