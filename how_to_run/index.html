@@ -10,7 +10,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.73f7c429.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.3b61ea93.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
@@ -254,6 +254,40 @@
     2. Run the container using terminal on linux or powershell on windows
   </a>
   
+    <nav class="md-nav" aria-label="2. Run the container using terminal on linux or powershell on windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mounting-storage" class="md-nav__link">
+    Mounting storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-multiple-directories-and-drives-for-storage" class="md-nav__link">
+    Using multiple directories and drives for storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-drives" class="md-nav__link">
+    Recovery drives
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-container" class="md-nav__link">
+    Run the container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -338,6 +372,40 @@
     2. Run the container using terminal on linux or powershell on windows
   </a>
   
+    <nav class="md-nav" aria-label="2. Run the container using terminal on linux or powershell on windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mounting-storage" class="md-nav__link">
+    Mounting storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-multiple-directories-and-drives-for-storage" class="md-nav__link">
+    Using multiple directories and drives for storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-drives" class="md-nav__link">
+    Recovery drives
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-container" class="md-nav__link">
+    Run the container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -358,13 +426,15 @@
                 
                 
                 <h1 id="running-picture-library-api">Running Picture Library API</h1>
-<h3 id="1-install-docker">1. <a href="https://www.docker.com/get-started">Install Docker</a></h3>
-<h3 id="2-run-the-container-using-terminal-on-linux-or-powershell-on-windows">2. Run the container using terminal on linux or powershell on windows</h3>
+<h2 id="1-install-docker">1. <a href="https://www.docker.com/get-started">Install Docker</a></h2>
+<h2 id="2-run-the-container-using-terminal-on-linux-or-powershell-on-windows">2. Run the container using terminal on linux or powershell on windows</h2>
+<h3 id="mounting-storage">Mounting storage</h3>
 <p>When running the container, you need to specify which directories will be used to store data by using --mount syntax.</p>
 <p>To specify a directory on host device, where data will be stored, change the source parameter value:</p>
 <div class="codehilite"><pre><span></span><code>--mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_DIRECTORY/,target<span class="o">=</span>Directory1
 </code></pre></div>
 
+<h3 id="using-multiple-directories-and-drives-for-storage">Using multiple directories and drives for storage</h3>
 <p>When you need to use multiple directories, for example when you want to use multiple drives, use --mount syntax multiple times.
 With every new directory, change the number of the target directory as follows:</p>
 <ul>
@@ -378,6 +448,13 @@ With every new directory, change the number of the target directory as follows:<
 
 <p><strong>WARNING</strong> 
 It's important to name target directories by following this convention, because application uses this naming scheme to recognize where it's supposed to store data.</p>
+<h3 id="recovery-drives">Recovery drives</h3>
+<p>To setup recovery drives, use --mount syntax the same way as for other drives and change target directory name to RecoveryDirectory:</p>
+<div class="codehilite"><pre><span></span><code>--mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_RECOVERY_DRIVE/,target<span class="o">=</span>RecoveryDirectory1
+</code></pre></div>
+
+<p>Recovery drives will mirror the data stored on storage directories.</p>
+<h3 id="run-the-container">Run the container</h3>
 <p>Run the container by using this command and modifying CONTAINER_NAME and --mount syntax as shown above:</p>
 <div class="codehilite"><pre><span></span><code>docker run -d -it -p <span class="m">5000</span>:5000 -p <span class="m">5001</span>:5001 --name CONTAINER_NAME --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>DIRECTORY,target<span class="o">=</span>Directory1/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibrary-api:master
 </code></pre></div>
