@@ -1,9 +1,10 @@
 # Running Picture Library API
 
-### 1. [Install Docker](https://www.docker.com/get-started)
+## 1. [Install Docker](https://www.docker.com/get-started)
 
-### 2. Run the container using terminal on linux or powershell on windows
+## 2. Run the container using terminal on linux or powershell on windows
 
+### Mounting storage
 When running the container, you need to specify which directories will be used to store data by using --mount syntax.
 
 To specify a directory on host device, where data will be stored, change the source parameter value:
@@ -11,6 +12,8 @@ To specify a directory on host device, where data will be stored, change the sou
 ```sh
 --mount type=bind,source=MY_DIRECTORY/,target=Directory1
 ```
+
+### Using multiple directories and drives for storage
 
 When you need to use multiple directories, for example when you want to use multiple drives, use --mount syntax multiple times.
 With every new directory, change the number of the target directory as follows:
@@ -26,6 +29,18 @@ With every new directory, change the number of the target directory as follows:
 
 **WARNING** 
 It's important to name target directories by following this convention, because application uses this naming scheme to recognize where it's supposed to store data.
+
+### Recovery drives
+
+To setup recovery drives, use --mount syntax the same way as for other drives and change target directory name to RecoveryDirectory:
+
+```sh
+--mount type=bind,source=MY_RECOVERY_DRIVE/,target=RecoveryDirectory1
+```
+
+Recovery drives will mirror the data stored on storage directories.
+
+### Run the container
 
 Run the container by using this command and modifying CONTAINER_NAME and --mount syntax as shown above:
 
