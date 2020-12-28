@@ -14,10 +14,12 @@ namespace PictureLibraryModel.Services
     {
         private readonly ILogger<FileSystemService> _logger;
         private List<string> TargetDirectories { get; set; }
+        private List<string> RecoveryDirectories { get; set; }
 
         public FileSystemService()
         {
             LoadTargetDirectories();
+            LoadRecoveryDirectories();
         }
 
         private void LoadTargetDirectories()
@@ -31,6 +33,25 @@ namespace PictureLibraryModel.Services
                 if (Directory.Exists(path))
                 {
                     TargetDirectories.Add(path);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        private void LoadRecoveryDirectories()
+        {
+            string path;
+
+            for(int i=0;i<100;i++)
+            {
+                path = "RecoveryDirectory" + i.ToString();
+
+                if(Directory.Exists(path))
+                {
+                    RecoveryDirectories.Add(path);
                 }
                 else
                 {
