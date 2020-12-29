@@ -85,7 +85,7 @@ namespace PictureLibrary_API.Repositories
 
         public void AddRange(IEnumerable<Library> entities)
         {
-            throw new NotImplementedException();
+            foreach (var l in entities) Add(l);
         }
 
         public Library Find(Predicate<Library> predicate)
