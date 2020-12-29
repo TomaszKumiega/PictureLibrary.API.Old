@@ -63,15 +63,41 @@ namespace PictureLibraryModel.Services
         public FileStream CreateFile(string fileName, string directory)
         {
             if (fileName.IsNullOrEmpty() || directory.IsNullOrEmpty()) throw new ArgumentException();
-            
-            if(directory.EndsWith('/'))
+
+            if (!TargetDirectories.Any()) throw new Exception("There aren't any target directories to write to");
+
+            foreach (var t in TargetDirectories)
             {
-                return File.Create(directory + fileName);
+                try
+                {
+                    var fileStream = File.Create(t + directory + '/' + fileName);
+
+                    if(RecoveryDirectories.Any())
+                    {
+                        foreach(var r in RecoveryDirectories)
+                        {
+                            try
+                            {
+                                File.Create(r + directory + '/' + fileName);
+                                break;
+                            }
+                            catch(Exception e)
+                            {
+                                _logger.LogDebug(e, e.Message);
+                            }
+                        }
+                    }
+
+                    return fileStream;
+
+                }
+                catch (Exception e)
+                {
+                    _logger.LogDebug(e, e.Message);
+                }
             }
-            else
-            {
-                return File.Create(directory + '/' + fileName);
-            }
+
+            throw new Exception("Operation failed");
         }
 
         public void DeleteFile(string filePath)

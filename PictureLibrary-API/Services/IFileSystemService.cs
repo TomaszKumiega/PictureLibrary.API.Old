@@ -26,10 +26,9 @@ namespace PictureLibraryModel.Services
         IEnumerable<FileStream> FindFiles(string searchPattern);
 
         /// <summary>
-        /// Creates a file in specified directory and returns FileStream
+        /// Creates a file and returns FileStream
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="directory"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
         FileStream CreateFile(string fileName, string directory);
 
