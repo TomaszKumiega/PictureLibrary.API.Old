@@ -1,10 +1,8 @@
 ﻿using Castle.Core.Internal;
-using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.Extensions.Logging;
-using PictureLibraryModel.Model;
+using PictureLibrary_API.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 

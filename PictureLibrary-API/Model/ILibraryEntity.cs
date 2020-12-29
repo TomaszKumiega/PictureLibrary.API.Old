@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PictureLibraryModel.Model
+﻿namespace PictureLibrary_API.Model
 {
     public interface ILibraryEntity
     {

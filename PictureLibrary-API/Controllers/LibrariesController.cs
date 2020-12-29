@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Model;
 using PictureLibrary_API.Repositories;
-using PictureLibraryModel.Model;
 
 namespace PictureLibrary_API.Controllers
 {

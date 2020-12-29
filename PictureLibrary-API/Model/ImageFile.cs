@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 
-namespace PictureLibraryModel.Model
+namespace PictureLibrary_API.Model
 {
     public class ImageFile : ILibraryEntity
     {

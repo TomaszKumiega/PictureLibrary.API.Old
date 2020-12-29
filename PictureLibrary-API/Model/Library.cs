@@ -1,12 +1,6 @@
-﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using PictureLibrary_API.Model;
-using PictureLibraryModel.Services;
+﻿using System.Collections.Generic;
 
-namespace PictureLibraryModel.Model
+namespace PictureLibrary_API.Model
 {
     public class Library : ILibraryEntity
     {
