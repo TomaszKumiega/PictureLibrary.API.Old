@@ -16,8 +16,9 @@ namespace PictureLibraryModel.Services
         private List<string> TargetDirectories { get; set; }
         private List<string> RecoveryDirectories { get; set; }
 
-        public FileSystemService()
+        public FileSystemService(ILogger<FileSystemService> logger)
         {
+            _logger = logger;
             LoadTargetDirectories();
             LoadRecoveryDirectories();
         }

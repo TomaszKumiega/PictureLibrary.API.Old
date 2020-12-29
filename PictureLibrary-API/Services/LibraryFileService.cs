@@ -16,8 +16,9 @@ namespace PictureLibraryModel.Services
     {
         private readonly ILogger<LibraryFileService> _logger;
         private readonly IFileSystemService _fileSystemService;
-        public LibraryFileService(IFileSystemService fileSystemService)
+        public LibraryFileService(IFileSystemService fileSystemService, ILogger<LibraryFileService> logger)
         {
+            _logger = logger;
             _fileSystemService = fileSystemService;
         }
 
