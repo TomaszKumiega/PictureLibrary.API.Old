@@ -100,6 +100,45 @@ namespace PictureLibraryModel.Services
             throw new Exception("Operation failed");
         }
 
+        public string AddFile(string fileName, byte[] file)
+        {
+            if (fileName.IsNullOrEmpty()) throw new ArgumentException();
+            if (!TargetDirectories.Any()) throw new Exception("There aren't any target directories to write to");
+
+            foreach (var t in TargetDirectories)
+            {
+                try
+                {
+                    File.WriteAllBytes(t + fileName, file);
+
+                    if (RecoveryDirectories.Any())
+                    {
+                        foreach (var r in RecoveryDirectories)
+                        {
+                            try
+                            {
+                                File.WriteAllBytes(t + fileName, file);
+                                break;
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.LogDebug(e, e.Message);
+                            }
+                        }
+                    }
+
+                    return t+fileName;
+
+                }
+                catch (Exception e)
+                {
+                    _logger.LogDebug(e, e.Message);
+                }
+            }
+
+            throw new Exception("Operation failed");
+        }
+
         public void DeleteFile(string filePath)
         {
             File.Delete(filePath);
