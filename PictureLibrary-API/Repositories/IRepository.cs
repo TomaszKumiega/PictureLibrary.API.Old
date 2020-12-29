@@ -8,12 +8,12 @@ namespace PictureLibrary_API.Repositories
     public interface IRepository<T>
     {
         IEnumerable<T> GetAll();
-        T GetById(Guid id);
+        T GetByName(string name);
 
         void Add(T entity);
         void AddRange(IEnumerable<T> entities);
 
-        void Remove(Guid id);
+        void Remove(string name);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
 

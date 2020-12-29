@@ -39,12 +39,12 @@ namespace PictureLibrary_API.Repositories
             throw new NotImplementedException();
         }
 
-        public Library GetById(Guid id)
+        public Library GetByName(string name)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Guid id)
+        public void Remove(string name)
         {
             throw new NotImplementedException();
         }
