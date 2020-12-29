@@ -26,7 +26,7 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
-            var library = await _libraryRepository.FindLibrary(name);
+            var library = await Task.Run(() => _libraryRepository.Find(x => x.Name == name));
 
             if (library == null)
             {
@@ -39,7 +39,7 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
-            var libraries = await _libraryRepository.GetAllLibrariesAsync();
+            var libraries = await Task.Run(() => _libraryRepository.GetAll());
 
             return Ok(libraries);
         }
@@ -54,7 +54,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                await _libraryRepository.UpdateLibrary(library);
+                await Task.Run(() => _libraryRepository.Update(library));
             }
             catch(Exception e)
             {
@@ -70,7 +70,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                await _libraryRepository.AddLibrary(library);
+                await Task.Run(() => _libraryRepository.Add(library));
             }
             catch (Exception e)
             {
@@ -84,14 +84,14 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete("name")]
         public async Task<ActionResult<Library>> DeleteLibrary(string name)
         {
-            var library = await _libraryRepository.FindLibrary(name);
+            var library = await Task.Run(() => _libraryRepository.Find(x => x.Name == name));
 
             if(library == null)
             {
                 return NotFound();
             }
 
-            await _libraryRepository.DeleteLibrary(library);
+            await Task.Run(() => _libraryRepository.Remove(library));
 
             return library;
         }
