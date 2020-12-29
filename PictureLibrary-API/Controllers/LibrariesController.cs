@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Repositories;
 using PictureLibraryModel.Model;
-using PictureLibraryModel.Services;
 
 namespace PictureLibrary_API.Controllers
 {
@@ -14,19 +14,19 @@ namespace PictureLibrary_API.Controllers
     public class LibrariesController : ControllerBase
     {
         private readonly ILogger<LibrariesController> _logger;
-        private ILibraryFileService _libraryFileService;
+        private IRepository<Library> _libraryRepository;
 
-        public LibrariesController(ILogger<LibrariesController> logger, ILibraryFileService libraryFileService)
+        public LibrariesController(ILogger<LibrariesController> logger, IRepository<Library> libraryFileService)
         {
             _logger = logger;
-            _libraryFileService = libraryFileService;
+            _libraryRepository = libraryFileService;
         }
 
 
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
-            var library = await _libraryFileService.FindLibrary(name);
+            var library = await _libraryRepository.FindLibrary(name);
 
             if (library == null)
             {
@@ -39,7 +39,7 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
-            var libraries = await _libraryFileService.GetAllLibrariesAsync();
+            var libraries = await _libraryRepository.GetAllLibrariesAsync();
 
             return Ok(libraries);
         }
@@ -54,7 +54,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                await _libraryFileService.UpdateLibrary(library);
+                await _libraryRepository.UpdateLibrary(library);
             }
             catch(Exception e)
             {
@@ -70,7 +70,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                await _libraryFileService.AddLibrary(library);
+                await _libraryRepository.AddLibrary(library);
             }
             catch (Exception e)
             {
@@ -84,14 +84,14 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete("name")]
         public async Task<ActionResult<Library>> DeleteLibrary(string name)
         {
-            var library = await _libraryFileService.FindLibrary(name);
+            var library = await _libraryRepository.FindLibrary(name);
 
             if(library == null)
             {
                 return NotFound();
             }
 
-            await _libraryFileService.DeleteLibrary(library);
+            await _libraryRepository.DeleteLibrary(library);
 
             return library;
         }

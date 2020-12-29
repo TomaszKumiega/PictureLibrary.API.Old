@@ -28,7 +28,6 @@ namespace PictureLibrary_API
         {
             services.AddControllers();
             services.AddTransient<IFileSystemService, FileSystemService>();
-            services.AddTransient<ILibraryFileService, LibraryFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
