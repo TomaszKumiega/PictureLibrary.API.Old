@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Model;
+using PictureLibrary_API.Repositories;
 using PictureLibraryModel.Services;
 
 namespace PictureLibrary_API
@@ -28,6 +30,7 @@ namespace PictureLibrary_API
         {
             services.AddControllers();
             services.AddTransient<IFileSystemService, FileSystemService>();
+            services.AddTransient<IRepository<Library>, LibraryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
