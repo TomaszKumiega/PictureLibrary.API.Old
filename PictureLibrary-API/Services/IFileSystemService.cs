@@ -9,14 +9,6 @@ namespace PictureLibraryModel.Services
     public interface IFileSystemService
     {
         /// <summary>
-        /// Finds all files in a root directory matching the search pattern
-        /// </summary>
-        /// <param name="rootDirectory"></param>
-        /// <param name="searchPattern"></param>
-        /// <returns></returns>
-        IEnumerable<FileStream> FindFiles(string rootDirectory, string searchPattern);
-
-        /// <summary>
         /// Finds all files matching the search pattern from all drives
         /// </summary>
         /// <param name="searchPattern"></param>

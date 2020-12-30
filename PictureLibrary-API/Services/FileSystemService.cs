@@ -143,11 +143,6 @@ namespace PictureLibraryModel.Services
             File.Delete(filePath);
         }
 
-        public IEnumerable<FileStream> FindFiles(string rootDirectory, string searchPattern)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<FileStream> FindFiles(string searchPattern)
         {
             throw new NotImplementedException();
