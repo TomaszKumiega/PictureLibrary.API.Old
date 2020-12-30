@@ -149,7 +149,73 @@ namespace PictureLibrary_API.Repositories
 
         private Library ReadLibraryFromFileStream(FileStream fileStream)
         {
-            return null;
+            var tags = new List<Tag>();
+            var images = new List<ImageFile>();
+            var library = new Library();
+
+            if (fileStream.Length == 0) throw new ArgumentException("Given stream is empty");
+
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.DtdProcessing = DtdProcessing.Parse;
+
+            using (var reader = XmlReader.Create(fileStream, settings))
+            {
+                while(reader.Read())
+                {
+                    if(reader.NodeType == XmlNodeType.Element)
+                    {
+                        switch (reader.Name)
+                        {
+                            case "library":
+                                {
+                                    var libraryElement = XNode.ReadFrom(reader) as XElement;
+
+                                    library.Name = libraryElement.Attribute("name").Value;
+                                    library.FullPath = fileStream.Name;
+                                    library.Description = libraryElement.Attribute("description").Value;
+
+                                    foreach (var t in libraryElement.Attribute("owners").Value.Split(','))
+                                    {
+                                        library.Owners.Add(Guid.Parse(t));
+                                    }
+                                }
+                                break;
+                            case "tag":
+                                {
+                                    var tagElement = XNode.ReadFrom(reader) as XElement;
+
+                                    var tag = new Tag();
+                                    tag.Name = tagElement.Attribute("name").Value;
+                                    tag.Description = tagElement.Attribute("description").Value;
+
+                                    tags.Add(tag);
+                                }
+                                break;
+                            case "imageFile":
+                                {
+                                    var imageElement = XNode.ReadFrom(reader) as XElement;
+
+                                    var imageFile = new ImageFile();
+                                    imageFile.Name = imageElement.Attribute("name").Value;
+                                    imageFile.Extension = imageElement.Attribute("extension").Value;
+                                    imageFile.Source = imageElement.Attribute("source").Value;
+                                    imageFile.CreationTime = DateTime.Parse(imageElement.Attribute("creationTime").Value);
+                                    imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
+                                    imageFile.LastWriteTime = DateTime.Parse(imageElement.Attribute("lastWriteTime").Value);
+                                    imageFile.Size = long.Parse(imageElement.Attribute("size").Value);
+
+                                    images.Add(imageFile);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+            library.Tags = tags;
+            library.Images = images;
+
+            return library;
         }
     }
 }
