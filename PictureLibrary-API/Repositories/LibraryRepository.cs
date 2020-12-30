@@ -95,7 +95,15 @@ namespace PictureLibrary_API.Repositories
 
         public IEnumerable<Library> GetAll()
         {
-            throw new NotImplementedException();
+            var fileStreams = _fileSystemService.FindFiles("*.plib");
+            var libraries = new List<Library>();
+
+            foreach(var f in fileStreams)
+            {
+                libraries.Add(ReadLibraryFromFileStream(f));
+            }
+
+            return libraries;
         }
 
         public Library GetByName(string name)
@@ -121,6 +129,11 @@ namespace PictureLibrary_API.Repositories
         public void Update(Library entity)
         {
             throw new NotImplementedException();
+        }
+
+        private Library ReadLibraryFromFileStream(FileStream fileStream)
+        {
+            return null;
         }
     }
 }
