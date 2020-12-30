@@ -143,9 +143,24 @@ namespace PictureLibraryModel.Services
             File.Delete(filePath);
         }
 
-        public IEnumerable<FileStream> FindFiles(string searchPattern)
+        public List<FileStream> FindFiles(string searchPattern)
         {
-            throw new NotImplementedException();
+            var files = new List<string>();
+            var fileStreams = new List<FileStream>();
+
+            foreach(var t in TargetDirectories)
+            {
+                var items = Directory.GetFiles(t, "*.plib", SearchOption.AllDirectories).ToList();
+                files.AddRange(items);
+            }
+
+            foreach(var f in files)
+            {
+                fileStreams.Add(OpenFile(f, FileMode.Open));
+            }
+
+            return fileStreams;
+            
         }
 
         public string? GetExtension(string path)

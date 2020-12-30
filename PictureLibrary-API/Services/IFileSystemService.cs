@@ -13,7 +13,7 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="searchPattern"></param>
         /// <returns></returns>
-        IEnumerable<FileStream> FindFiles(string searchPattern);
+        List<FileStream> FindFiles(string searchPattern);
 
         /// <summary>
         /// Creates a file and returns FileStream
