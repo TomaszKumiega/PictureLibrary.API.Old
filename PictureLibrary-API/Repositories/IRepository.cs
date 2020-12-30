@@ -7,18 +7,18 @@ namespace PictureLibrary_API.Repositories
 {
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T GetByName(string name);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByNameAsync(string name);
 
-        T Add(T entity);
-        IEnumerable<T> AddRange(IEnumerable<T> entities);
+        Task<T> AddAsync(T entity);
+        Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
-        void Remove(string name);
-        void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+        Task RemoveAsync(string name);
+        Task RemoveAsync(T entity);
+        Task RemoveRangeAsync(IEnumerable<T> entities);
 
-        T Find(System.Predicate<T> predicate);
+        Task<T> FindAsync(System.Predicate<T> predicate);
 
-        void Update(T entity);
+        Task UpdateAsync(T entity);
     }
 }

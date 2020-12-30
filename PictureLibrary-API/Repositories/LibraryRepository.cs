@@ -22,101 +22,105 @@ namespace PictureLibrary_API.Repositories
             _fileSystemService = fileSystemService;
         }
 
-        public Library Add(Library entity)
+        public async Task<Library> AddAsync(Library entity)
         {
             
-            var fileStream = _fileSystemService.CreateFile(entity.Name, "Libraries/");
+            var fileStream = await Task.Run(()=>_fileSystemService.CreateFile(entity.Name, "Libraries/"));
 
-            WriteLibraryToFileStream(fileStream, entity);
+            await WriteLibraryToFileStreamAsync(fileStream, entity);
 
             entity.FullPath = fileStream.Name;
             return entity;
         }
 
-        public IEnumerable<Library> AddRange(IEnumerable<Library> entities)
+        public async Task<IEnumerable<Library>> AddRangeAsync(IEnumerable<Library> entities)
         {
-            foreach (var l in entities)
-            {
-                yield return Add(l);
-            }
-        }
-
-        public Library Find(Predicate<Library> predicate)
-        {
-            var libraries = GetAll();
-
-            return libraries.ToList().Find(predicate);
-        }
-
-        public IEnumerable<Library> GetAll()
-        {
-            var fileStreams = _fileSystemService.FindFiles("*.plib");
             var libraries = new List<Library>();
 
-            foreach(var f in fileStreams)
+            foreach (var l in entities)
             {
-                libraries.Add(ReadLibraryFromFileStream(f));
+                libraries.Add(await AddAsync(l));
             }
 
             return libraries;
         }
 
-        public Library GetByName(string name)
+        public async Task<Library> FindAsync(Predicate<Library> predicate)
         {
-            var libraries = GetAll();
+            var libraries = await GetAllAsync();
+
+            return libraries.ToList().Find(predicate);
+        }
+
+        public async Task<IEnumerable<Library>> GetAllAsync()
+        {
+            var fileStreams = await Task.Run(()=>_fileSystemService.FindFiles("*.plib"));
+            var libraries = new List<Library>();
+
+            foreach(var f in fileStreams)
+            {
+                libraries.Add(await ReadLibraryFromFileStreamAsync(f));
+            }
+
+            return libraries;
+        }
+
+        public async Task<Library> GetByNameAsync(string name)
+        {
+            var libraries = await GetAllAsync();
             return libraries.ToList().Find(x => x.Name == name);
         }
 
-        public void Remove(string name)
+        public async Task RemoveAsync(string name)
         {
-            var library = Find(x => x.Name == name);
+            var library = await FindAsync(x => x.Name == name);
 
             if (library == null) throw new ArgumentException();
 
-            Remove(library);
+            await RemoveAsync(library);
         }
 
-        public void Remove(Library entity)
+        public async Task RemoveAsync(Library entity)
         {
             if (entity == null) throw new ArgumentException();
 
-            _fileSystemService.DeleteFile(entity.FullPath);
+            await Task.Run(()=>_fileSystemService.DeleteFile(entity.FullPath));
         }
 
-        public void RemoveRange(IEnumerable<Library> entities)
+        public async Task RemoveRangeAsync(IEnumerable<Library> entities)
         {
             if (entities == null) throw new ArgumentException();
 
-            foreach (var l in entities) Remove(l); 
+            foreach (var l in entities) await RemoveAsync(l); 
         }
 
-        public void Update(Library entity)
+        public async Task UpdateAsync(Library entity)
         {
             if (entity == null) throw new ArgumentException();
             if (!File.Exists(entity.FullPath)) throw new ArgumentException();
 
             // Load file for eventual recovery
             XmlDocument document = new XmlDocument();
-            document.Load(entity.FullPath);
+            await Task.Run(()=>document.Load(entity.FullPath));
 
             // Remove contents of the file
             string[] text = { "" };
-            File.WriteAllLines(entity.FullPath, text);
+            await Task.Run(()=>File.WriteAllLines(entity.FullPath, text));
 
             try
             {
                 // Write library to the file
                 var fileStream = _fileSystemService.OpenFile(entity.FullPath, FileMode.Open);
-                WriteLibraryToFileStream(fileStream, entity);
+                await WriteLibraryToFileStreamAsync(fileStream, entity);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
-                document.Save(entity.FullPath);
+                await Task.Run(()=>document.Save(entity.FullPath));
             }
         }
 
-        private Library ReadLibraryFromFileStream(FileStream fileStream)
+        private async Task<Library> ReadLibraryFromFileStreamAsync(FileStream fileStream)
         {
             var tags = new List<Tag>();
             var images = new List<ImageFile>();
@@ -137,7 +141,7 @@ namespace PictureLibrary_API.Repositories
                         {
                             case "library":
                                 {
-                                    var libraryElement = XNode.ReadFrom(reader) as XElement;
+                                    var libraryElement = await Task.Run(() => XNode.ReadFrom(reader)) as XElement;
 
                                     library.Name = libraryElement.Attribute("name").Value;
                                     library.FullPath = fileStream.Name;
@@ -151,7 +155,7 @@ namespace PictureLibrary_API.Repositories
                                 break;
                             case "tag":
                                 {
-                                    var tagElement = XNode.ReadFrom(reader) as XElement;
+                                    var tagElement = await Task.Run(() => XNode.ReadFrom(reader)) as XElement;
 
                                     var tag = new Tag();
                                     tag.Name = tagElement.Attribute("name").Value;
@@ -162,7 +166,7 @@ namespace PictureLibrary_API.Repositories
                                 break;
                             case "imageFile":
                                 {
-                                    var imageElement = XNode.ReadFrom(reader) as XElement;
+                                    var imageElement = await Task.Run(()=>XNode.ReadFrom(reader)) as XElement;
 
                                     var imageFile = new ImageFile();
                                     imageFile.Name = imageElement.Attribute("name").Value;
@@ -187,7 +191,7 @@ namespace PictureLibrary_API.Repositories
             return library;
         }
 
-        private void WriteLibraryToFileStream(FileStream fileStream, Library entity)
+        private async Task WriteLibraryToFileStreamAsync(FileStream fileStream, Library entity)
         {
             if (fileStream == null) throw new Exception("File creation error");
 
@@ -235,7 +239,7 @@ namespace PictureLibrary_API.Repositories
                     xmlWriter.Formatting = Formatting.Indented;
                     xmlWriter.Indentation = 4;
 
-                    libraryElement.Save(xmlWriter);
+                    await Task.Run(()=>libraryElement.Save(xmlWriter));
                 }
             }
             catch (Exception e)

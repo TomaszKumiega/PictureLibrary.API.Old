@@ -26,7 +26,7 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
-            var library = await Task.Run(() => _libraryRepository.Find(x => x.Name == name));
+            var library = await Task.Run(() => _libraryRepository.FindAsync(x => x.Name == name));
 
             if (library == null)
             {
@@ -39,7 +39,7 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
-            var libraries = await Task.Run(() => _libraryRepository.GetAll());
+            var libraries = await Task.Run(() => _libraryRepository.GetAllAsync());
 
             return Ok(libraries);
         }
@@ -54,7 +54,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                await Task.Run(() => _libraryRepository.Update(library));
+                await Task.Run(() => _libraryRepository.UpdateAsync(library));
             }
             catch(Exception e)
             {
@@ -70,7 +70,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                await Task.Run(() => _libraryRepository.Add(library));
+                await Task.Run(() => _libraryRepository.AddAsync(library));
             }
             catch (Exception e)
             {
@@ -84,14 +84,14 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete("name")]
         public async Task<ActionResult<Library>> DeleteLibrary(string name)
         {
-            var library = await Task.Run(() => _libraryRepository.Find(x => x.Name == name));
+            var library = await Task.Run(() => _libraryRepository.FindAsync(x => x.Name == name));
 
             if(library == null)
             {
                 return NotFound();
             }
 
-            await Task.Run(() => _libraryRepository.Remove(library));
+            await Task.Run(() => _libraryRepository.RemoveAsync(library));
 
             return library;
         }
