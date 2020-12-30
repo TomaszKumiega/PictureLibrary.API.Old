@@ -110,7 +110,8 @@ namespace PictureLibrary_API.Repositories
 
         public Library GetByName(string name)
         {
-            throw new NotImplementedException();
+            var libraries = GetAll();
+            return libraries.ToList().Find(x => x.Name == name);
         }
 
         public void Remove(string name)
