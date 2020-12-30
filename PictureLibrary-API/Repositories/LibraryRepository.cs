@@ -90,7 +90,9 @@ namespace PictureLibrary_API.Repositories
 
         public Library Find(Predicate<Library> predicate)
         {
-            throw new NotImplementedException();
+            var libraries = GetAll();
+
+            return libraries.ToList().Find(predicate);
         }
 
         public IEnumerable<Library> GetAll()
