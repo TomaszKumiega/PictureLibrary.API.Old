@@ -6,4 +6,4 @@ Picture Library API is part of [PictureLibrary](https://github.com/TomaszKumiega
 
 ## Status
 
-API is still very much in developement
+API is still in developement
