@@ -23,7 +23,7 @@ Library represents .xml file that contains tags and images.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<library name = "libraryName" description = "Family picture library" owners = "userGuid, userGuid">
+<library name = "libraryName" description = "Family picture library" owners = "userGuid,userGuid">
     
     <tags>
         <tag name = "Portraits" description = "" />
@@ -31,14 +31,14 @@ Library represents .xml file that contains tags and images.
     </tags>        
     
     <images>
-        <imageFile name = "1642252321" extension = "jpg" source = "C:/Pictures/Library1/images/1642252321.jpg" CreationTime = "2008-10-01T17:04:32.0000000" 
-                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "5130500"/>
+        <imageFile name = "1642252321" extension = "jpg" source = "C:/Pictures/Library1/images/1642252321.jpg" creationTime = "2008-10-01T17:04:32.0000000" 
+                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "5130500"/>
         
-        <imageFile name = "1246531451" extension = "png" source = "C:/Pictures/Library1/images/1246531451.png" CreationTime = "2008-10-01T17:04:32.0000000" 
-                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "3003000"/>
+        <imageFile name = "1246531451" extension = "png" source = "C:/Pictures/Library1/images/1246531451.png" creationTime = "2008-10-01T17:04:32.0000000" 
+                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "3003000"/>
         
-        <imageFile name = "1513515311" extension = "jpg" source = "C:/Pictures/Library1/images/1513515311.jpg" CreationTime = "2008-10-01T17:04:32.0000000" 
-                   LastAccessTime = "2008-10-01T17:04:32.0000000" LastWriteTime = "2008-10-01T17:04:32.0000000" size = "2050000" />
+        <imageFile name = "1513515311" extension = "jpg" source = "C:/Pictures/Library1/images/1513515311.jpg" creationTime = "2008-10-01T17:04:32.0000000" 
+                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "2050000" />
     </images>    
 
 </library>
@@ -51,9 +51,9 @@ Library represents .xml file that contains tags and images.
 | Name | string | Name of the library | 
 | FullPath | string | Full path to the library |
 | Description | string | - |
-| Tags | List<Tag> | List of all tags used in the library |
-| Images | List<ImageFIle> | List of all files in the library |
-| Owners | List<User> | Owners of the library |
+| Tags | List of Tags | List of all tags used in the library |
+| Images | List of ImageFiles | List of all files in the library |
+| Owners | List of Users | Owners of the library |
 
 ## Tag
 
