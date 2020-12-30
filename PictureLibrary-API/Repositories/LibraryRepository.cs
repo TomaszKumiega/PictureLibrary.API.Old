@@ -22,7 +22,7 @@ namespace PictureLibrary_API.Repositories
             _fileSystemService = fileSystemService;
         }
 
-        public void Add(Library entity)
+        public Library Add(Library entity)
         {
             // create library file
             var fileStream = _fileSystemService.CreateFile(entity.Name, "Libraries/");
@@ -81,11 +81,16 @@ namespace PictureLibrary_API.Repositories
                 _logger.LogError(e, e.Message);
             }
 
+            entity.FullPath = fileStream.Name;
+            return entity;
         }
 
-        public void AddRange(IEnumerable<Library> entities)
+        public IEnumerable<Library> AddRange(IEnumerable<Library> entities)
         {
-            foreach (var l in entities) Add(l);
+            foreach (var l in entities)
+            {
+                yield return Add(l);
+            }
         }
 
         public Library Find(Predicate<Library> predicate)
@@ -121,7 +126,7 @@ namespace PictureLibrary_API.Repositories
 
         public void Remove(Library entity)
         {
-            throw new NotImplementedException();
+            _fileSystemService.DeleteFile(entity.FullPath);
         }
 
         public void RemoveRange(IEnumerable<Library> entities)

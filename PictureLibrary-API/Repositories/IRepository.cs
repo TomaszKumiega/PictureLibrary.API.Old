@@ -10,8 +10,8 @@ namespace PictureLibrary_API.Repositories
         IEnumerable<T> GetAll();
         T GetByName(string name);
 
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
+        T Add(T entity);
+        IEnumerable<T> AddRange(IEnumerable<T> entities);
 
         void Remove(string name);
         void Remove(T entity);
