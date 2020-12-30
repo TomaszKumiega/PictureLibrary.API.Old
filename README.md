@@ -9,6 +9,6 @@ API works on windows, linux or mac os devices where pictures will be stored and 
 
 ### Status
 
-API is still very much in developement
+API is still in developement
 
 [Documentation](https://tomaszkumiega.github.io/PictureLibrary-API/)
