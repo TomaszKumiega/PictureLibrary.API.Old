@@ -92,7 +92,28 @@ namespace PictureLibrary_API.Repositories
 
         public void Update(Library entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ArgumentException();
+            if (!File.Exists(entity.FullPath)) throw new ArgumentException();
+
+            // Load file for eventual recovery
+            XmlDocument document = new XmlDocument();
+            document.Load(entity.FullPath);
+
+            // Remove contents of the file
+            string[] text = { "" };
+            File.WriteAllLines(entity.FullPath, text);
+
+            try
+            {
+                // Write library to the file
+                var fileStream = _fileSystemService.OpenFile(entity.FullPath, FileMode.Open);
+                WriteLibraryToFileStream(fileStream, entity);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                document.Save(entity.FullPath);
+            }
         }
 
         private Library ReadLibraryFromFileStream(FileStream fileStream)
