@@ -31,7 +31,7 @@ namespace PictureLibrary_API.Repositories
 
             // write all owners in one string
             string owners = "";
-            foreach (var o in entity.Owners) owners += o.Id.ToString() + ',';
+            foreach (var o in entity.Owners) owners += o.ToString() + ',';
 
             // create library element
             var libraryElement = new XElement("library", new XAttribute("name", entity.Name),
