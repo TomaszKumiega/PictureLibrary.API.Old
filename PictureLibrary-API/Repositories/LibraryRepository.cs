@@ -115,7 +115,7 @@ namespace PictureLibrary_API.Repositories
 
         public void RemoveRange(IEnumerable<Library> entities)
         {
-            throw new NotImplementedException();
+            foreach (var l in entities) Remove(l); 
         }
 
         public void Update(Library entity)
