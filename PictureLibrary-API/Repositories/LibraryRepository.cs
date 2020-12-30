@@ -121,16 +121,24 @@ namespace PictureLibrary_API.Repositories
 
         public void Remove(string name)
         {
-            throw new NotImplementedException();
+            var library = Find(x => x.Name == name);
+
+            if (library == null) throw new ArgumentException();
+
+            Remove(library);
         }
 
         public void Remove(Library entity)
         {
+            if (entity == null) throw new ArgumentException();
+
             _fileSystemService.DeleteFile(entity.FullPath);
         }
 
         public void RemoveRange(IEnumerable<Library> entities)
         {
+            if (entities == null) throw new ArgumentException();
+
             foreach (var l in entities) Remove(l); 
         }
 
