@@ -48,5 +48,26 @@ namespace PictureLibrary_API.Controllers
 
             return Ok(images);
         }
+
+        [HttpPut("{source}")]
+        public async Task<IActionResult> PutImage(string source, [FromBody] ImageFile imageFile)
+        {
+            if(source != imageFile.Source)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _imageRepository.UpdateAsync(imageFile);
+            }
+            catch(Exception e)
+            {
+                //TODO
+                throw;
+            }
+
+            return NoContent();
+        }
     }
 }
