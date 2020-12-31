@@ -81,7 +81,7 @@ namespace PictureLibrary_API.Controllers
             return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
         }
 
-        [HttpDelete("name")]
+        [HttpDelete("{name}")]
         public async Task<ActionResult<Library>> DeleteLibrary(string name)
         {
             var library = await Task.Run(() => _libraryRepository.FindAsync(x => x.Name == name));
