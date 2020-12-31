@@ -35,5 +35,18 @@ namespace PictureLibrary_API.Controllers
 
             return Ok(image);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Library>>> GetImages()
+        {
+            var images = await _imageRepository.GetAllAsync();
+
+            if(images == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(images);
+        }
     }
 }
