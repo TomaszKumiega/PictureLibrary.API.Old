@@ -37,7 +37,7 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Library>>> GetImages()
+        public async Task<ActionResult<IEnumerable<byte[]>>> GetImages()
         {
             var images = await _imageRepository.GetAllAsync();
 
