@@ -15,12 +15,25 @@ namespace PictureLibrary_API.Controllers
     public class ImageController : ControllerBase
     {
         private readonly ILogger<ImageController> _logger;
-        private IRepository<Dictionary<ImageFile, byte[]>> _imageRepository;
+        private IImageRepository _imageRepository;
 
-        public ImageController(ILogger<ImageController> logger, IRepository<Dictionary<ImageFile,byte[]>> imageRepository)
+        public ImageController(ILogger<ImageController> logger, IImageRepository imageRepository)
         {
             _logger = logger;
             _imageRepository = imageRepository;
+        }
+
+        [HttpGet("{source}")]
+        public async Task<ActionResult<byte[]>> GetImage(string source)
+        {
+            var image = await _imageRepository.GetBySourceAsync(source);
+
+            if(image == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(image);
         }
     }
 }
