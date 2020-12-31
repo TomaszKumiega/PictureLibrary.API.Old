@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Repositories
 {
-   public interface IImageRepository : IRepository<byte[]>
+   public interface IImageRepository 
     {
+        Task<IEnumerable<byte[]>> GetAllAsync();
+        Task<byte[]> GetBySourceAsync(string source);
+
+        Task<ImageFile> AddAsync(byte[] entity);
+        Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<byte[]> entities);
+
+        Task RemoveAsync(string source);
+
         Task RemoveAsync(ImageFile entity);
         Task RemoveRangeAsync(IEnumerable<ImageFile> entities);
 
