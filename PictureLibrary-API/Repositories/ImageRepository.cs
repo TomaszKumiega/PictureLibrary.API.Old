@@ -6,29 +6,34 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Repositories
 {
-    public class ImageRepository : IRepository<Dictionary<ImageFile, byte[]>>
+    public class ImageRepository : IImageRepository
     {
-        public Task<Dictionary<ImageFile, byte[]>> AddAsync(Dictionary<ImageFile, byte[]> entity)
+        public Task<byte[]> AddAsync(byte[] entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Dictionary<ImageFile, byte[]>>> AddRangeAsync(IEnumerable<Dictionary<ImageFile, byte[]>> entities)
+        public Task<IEnumerable<byte[]>> AddRangeAsync(IEnumerable<byte[]> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Dictionary<ImageFile, byte[]>> FindAsync(Predicate<Dictionary<ImageFile, byte[]>> predicate)
+        public Task<byte[]> FindAsync(Predicate<ImageFile> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Dictionary<ImageFile, byte[]>>> GetAllAsync()
+        public Task<IEnumerable<byte[]>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Dictionary<ImageFile, byte[]>> GetBySourceAsync(string source)
+        public Task<byte[]> GetBySourceAsync(string source)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync(ImageFile entity)
         {
             throw new NotImplementedException();
         }
@@ -38,17 +43,12 @@ namespace PictureLibrary_API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(Dictionary<ImageFile, byte[]> entity)
+        public Task RemoveRangeAsync(IEnumerable<ImageFile> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveRangeAsync(IEnumerable<Dictionary<ImageFile, byte[]>> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Dictionary<ImageFile, byte[]> entity)
+        public Task UpdateAsync(ImageFile entity)
         {
             throw new NotImplementedException();
         }

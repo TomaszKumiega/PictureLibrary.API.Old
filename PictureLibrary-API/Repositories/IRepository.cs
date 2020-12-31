@@ -14,11 +14,5 @@ namespace PictureLibrary_API.Repositories
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
 
         Task RemoveAsync(string source);
-        Task RemoveAsync(T entity);
-        Task RemoveRangeAsync(IEnumerable<T> entities);
-
-        Task<T> FindAsync(System.Predicate<T> predicate);
-
-        Task UpdateAsync(T entity);
     }
 }

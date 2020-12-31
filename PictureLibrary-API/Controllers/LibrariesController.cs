@@ -14,9 +14,9 @@ namespace PictureLibrary_API.Controllers
     public class LibrariesController : ControllerBase
     {
         private readonly ILogger<LibrariesController> _logger;
-        private IRepository<Library> _libraryRepository;
+        private ILibraryRepository _libraryRepository;
 
-        public LibrariesController(ILogger<LibrariesController> logger, IRepository<Library> libraryFileService)
+        public LibrariesController(ILogger<LibrariesController> logger, ILibraryRepository libraryFileService)
         {
             _logger = logger;
             _libraryRepository = libraryFileService;
