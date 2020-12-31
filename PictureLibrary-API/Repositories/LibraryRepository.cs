@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Castle.Core.Internal;
+using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
 using PictureLibraryModel.Services;
 using System;
@@ -65,19 +66,21 @@ namespace PictureLibrary_API.Repositories
             return libraries;
         }
 
-        public async Task<Library> GetByNameAsync(string name)
+        public async Task<Library> GetBySourceAsync(string source)
         {
-            var libraries = await GetAllAsync();
-            return libraries.ToList().Find(x => x.Name == name);
+            if (source.IsNullOrEmpty()) throw new ArgumentException();
+
+            var fileStream = await Task.Run(() => _fileSystemService.OpenFile(source, FileMode.Open));
+            var library = await ReadLibraryFromFileStreamAsync(fileStream);
+
+            return library;
         }
 
-        public async Task RemoveAsync(string name)
+        public async Task RemoveAsync(string source)
         {
-            var library = await FindAsync(x => x.Name == name);
+            if (source.IsNullOrEmpty()) throw new ArgumentException();
 
-            if (library == null) throw new ArgumentException();
-
-            await RemoveAsync(library);
+            await Task.Run(() => _fileSystemService.DeleteFile(source));
         }
 
         public async Task RemoveAsync(Library entity)

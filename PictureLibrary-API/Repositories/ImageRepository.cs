@@ -28,12 +28,12 @@ namespace PictureLibrary_API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Dictionary<ImageFile, byte[]>> GetByNameAsync(string name)
+        public Task<Dictionary<ImageFile, byte[]>> GetBySourceAsync(string source)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(string name)
+        public Task RemoveAsync(string source)
         {
             throw new NotImplementedException();
         }
