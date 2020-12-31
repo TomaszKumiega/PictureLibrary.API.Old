@@ -85,5 +85,20 @@ namespace PictureLibrary_API.Controllers
 
             return CreatedAtAction("GetImage", new { name = name }, image);
         }
+
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteImage(string source)
+        {
+            try
+            {
+                await _imageRepository.RemoveAsync(source);
+            }
+            catch(Exception e)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
     }
 }
