@@ -69,5 +69,21 @@ namespace PictureLibrary_API.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("{name}")]
+        public async Task<ActionResult<ImageFile>> PostImage(string name, [FromBody] byte[] image)
+        {
+            try
+            {
+                await _imageRepository.AddAsync(image);
+            }
+            catch(Exception e)
+            {
+                //TODO
+                throw;
+            }
+
+            return CreatedAtAction("GetImage", new { name = name }, image);
+        }
     }
 }
