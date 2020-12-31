@@ -150,7 +150,7 @@ namespace PictureLibraryModel.Services
 
             foreach(var t in TargetDirectories)
             {
-                var items = Directory.GetFiles(t, "*.plib", SearchOption.AllDirectories).ToList();
+                var items = Directory.GetFiles(t, searchPattern, SearchOption.AllDirectories).ToList();
                 files.AddRange(items);
             }
 
