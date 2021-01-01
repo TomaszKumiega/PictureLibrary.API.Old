@@ -11,130 +11,59 @@ namespace PictureLibraryModel.Services
     public class FileSystemService : IFileSystemService
     {
         private readonly ILogger<FileSystemService> _logger;
-        private List<string> TargetDirectories { get; set; }
-        private List<string> RecoveryDirectories { get; set; }
+        private string TargetDirectory { get; set; }
 
         public FileSystemService(ILogger<FileSystemService> logger)
         {
             _logger = logger;
-            LoadTargetDirectories();
-            LoadRecoveryDirectories();
+            InitializeTargetDirectory();
         }
 
-        private void LoadTargetDirectories()
+        private void InitializeTargetDirectory()
         {
-            string path;
-
-            for(int i=0;i<100;i++)
+            if (Directory.Exists("PictureLibraryFileSystem/"))
             {
-                path = "Directory" + i.ToString();
-
-                if (Directory.Exists(path))
-                {
-                    TargetDirectories.Add(path);
-                }
-                else
-                {
-                    return;
-                }
+                TargetDirectory = "PictureLibraryFileSystem/";
+            }
+            else
+            {
+                throw new Exception("Target directory not found");
             }
         }
 
-        private void LoadRecoveryDirectories()
-        {
-            string path;
-
-            for(int i=0;i<100;i++)
-            {
-                path = "RecoveryDirectory" + i.ToString();
-
-                if(Directory.Exists(path))
-                {
-                    RecoveryDirectories.Add(path);
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
 
         public FileStream CreateFile(string fileName, string directory)
         {
             if (fileName.IsNullOrEmpty() || directory.IsNullOrEmpty()) throw new ArgumentException();
 
-            if (!TargetDirectories.Any()) throw new Exception("There aren't any target directories to write to");
-
-            foreach (var t in TargetDirectories)
+            try
             {
-                try
-                {
-                    var fileStream = File.Create(t + directory + '/' + fileName);
-
-                    if(RecoveryDirectories.Any())
-                    {
-                        foreach(var r in RecoveryDirectories)
-                        {
-                            try
-                            {
-                                File.Create(r + directory + '/' + fileName);
-                                break;
-                            }
-                            catch(Exception e)
-                            {
-                                _logger.LogDebug(e, e.Message);
-                            }
-                        }
-                    }
-
-                    return fileStream;
-
-                }
-                catch (Exception e)
-                {
-                    _logger.LogDebug(e, e.Message);
-                }
+                var fileStream = File.Create(TargetDirectory + directory + '/' + fileName);
+                return fileStream;
             }
-
+            catch (Exception e)
+            {
+                _logger.LogDebug(e, e.Message);
+            }
+            
             throw new Exception("Operation failed");
         }
 
         public string AddFile(string fileName, byte[] file)
         {
             if (fileName.IsNullOrEmpty()) throw new ArgumentException();
-            if (!TargetDirectories.Any()) throw new Exception("There aren't any target directories to write to");
 
-            foreach (var t in TargetDirectories)
+            try
             {
-                try
-                {
-                    File.WriteAllBytes(t + fileName, file);
+                File.WriteAllBytes(TargetDirectory + fileName, file);
 
-                    if (RecoveryDirectories.Any())
-                    {
-                        foreach (var r in RecoveryDirectories)
-                        {
-                            try
-                            {
-                                File.WriteAllBytes(t + fileName, file);
-                                break;
-                            }
-                            catch (Exception e)
-                            {
-                                _logger.LogDebug(e, e.Message);
-                            }
-                        }
-                    }
-
-                    return t+fileName;
-
-                }
-                catch (Exception e)
-                {
-                    _logger.LogDebug(e, e.Message);
-                }
+                return TargetDirectory + fileName;
             }
-
+            catch (Exception e)
+            {
+                _logger.LogDebug(e, e.Message);
+            }
+           
             throw new Exception("Operation failed");
         }
 
@@ -145,14 +74,9 @@ namespace PictureLibraryModel.Services
 
         public List<FileStream> FindFiles(string searchPattern)
         {
-            var files = new List<string>();
             var fileStreams = new List<FileStream>();
 
-            foreach(var t in TargetDirectories)
-            {
-                var items = Directory.GetFiles(t, searchPattern, SearchOption.AllDirectories).ToList();
-                files.AddRange(items);
-            }
+            var files = Directory.GetFiles(TargetDirectory, searchPattern, SearchOption.AllDirectories).ToList();
 
             foreach(var f in files)
             {
@@ -160,7 +84,6 @@ namespace PictureLibraryModel.Services
             }
 
             return fileStreams;
-            
         }
 
         public string? GetExtension(string path)
