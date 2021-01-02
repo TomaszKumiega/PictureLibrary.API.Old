@@ -78,9 +78,35 @@ namespace PictureLibrary_API.Services
             return _databaseContext.Users.Find(id);
         }
 
-        public void Update(User user, string password = null)
+        public void Update(User userParam, string password = null)
         {
-            throw new NotImplementedException();
+            var user = _databaseContext.Users.Find(userParam.Id);
+
+            if (user == null)
+                throw new Exception("User not found");
+
+            // update username if it has changed
+            if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
+            {
+                // throw error if the new username is already taken
+                if (_databaseContext.Users.Any(x => x.Username == userParam.Username))
+                    throw new Exception("Username " + userParam.Username + " is already taken");
+
+                user.Username = userParam.Username;
+            }
+
+            // update password if provided
+            if (!string.IsNullOrWhiteSpace(password))
+            {
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
+
+            _databaseContext.Users.Update(user);
+            _databaseContext.SaveChanges();
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
