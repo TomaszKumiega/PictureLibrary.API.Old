@@ -72,12 +72,13 @@ namespace PictureLibrary_API.Controllers
 
             //TODO: check if current user has access to the library
 
+            var updatedImage = await _imageRepository.UpdateAsync(imageFile);
+
             library.Images.Remove(library.Images.Find(x => x.Source == imageFile.Source));
-            library.Images.Add(imageFile);
+            library.Images.Add(updatedImage);
 
             await _libraryRepository.UpdateAsync(library);
-            await _imageRepository.UpdateAsync(imageFile);
-
+            
             return NoContent();
         }
 
