@@ -16,11 +16,13 @@ namespace PictureLibrary_API.Controllers
     {
         private readonly ILogger<ImageController> _logger;
         private IImageRepository _imageRepository;
+        private ILibraryRepository _libraryRepository;
 
-        public ImageController(ILogger<ImageController> logger, IImageRepository imageRepository)
+        public ImageController(ILogger<ImageController> logger, IImageRepository imageRepository, ILibraryRepository libraryRepository)
         {
             _logger = logger;
             _imageRepository = imageRepository;
+            _libraryRepository = libraryRepository;
         }
 
         [HttpGet("{source}")]
