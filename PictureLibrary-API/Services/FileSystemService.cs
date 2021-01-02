@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic.FileIO;
 using PictureLibrary_API.Model;
 using System;
 using System.Collections.Generic;
@@ -96,9 +97,9 @@ namespace PictureLibraryModel.Services
             return new FileStream(path, mode);
         }
 
-        public void MoveFile(string sourceFilePath, string destinationFilePath)
+        public void RenameFile(string file, string newName)
         {
-            File.Move(sourceFilePath, destinationFilePath);
+            FileSystem.RenameFile(file, newName);
         }
     }
 }
