@@ -80,9 +80,11 @@ namespace PictureLibrary_API.Repositories
             return icons;
         }
 
-        public Task<byte[]> GetBySourceAsync(string source)
+        public async Task<byte[]> GetBySourceAsync(string source)
         {
-            throw new NotImplementedException();
+            var image = await Task.Run(() => _fileSystemService.GetFile(source));
+
+            return image;
         }
 
         public Task RemoveAsync(string source)
