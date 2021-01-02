@@ -92,9 +92,11 @@ namespace PictureLibrary_API.Repositories
             await Task.Run(() => _fileSystemService.DeleteFile(source));
         }
 
-        public Task RemoveAsync(ImageFile entity)
+        public async Task RemoveAsync(ImageFile entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ArgumentException();
+
+            await RemoveAsync(entity.Source);
         }
 
         public Task RemoveRangeAsync(IEnumerable<ImageFile> entities)
