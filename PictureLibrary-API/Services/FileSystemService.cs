@@ -72,7 +72,7 @@ namespace PictureLibraryModel.Services
             File.Delete(filePath);
         }
 
-        public List<string> FindFiles(string searchPattern)
+        public List<string> FindFiles(string searchPattern, string directory)
         {
             var fileStreams = new List<FileStream>();
 
