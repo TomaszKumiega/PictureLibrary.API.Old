@@ -67,5 +67,22 @@ namespace PictureLibrary_API.Controllers
                 Token = tokenString
             });
         }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterModel model)
+        {
+            var user = _mapper.Map<User>(model);
+
+            try
+            {
+                _userService.Create(user, model.Password);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
