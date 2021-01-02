@@ -107,20 +107,21 @@ namespace PictureLibrary_API.Controllers
             return NoContent();
         }
 
-        [HttpPost("{name}")]
-        public async Task<ActionResult<ImageFile>> PostImage(string name, [FromBody] byte[] image)
+        [HttpPost]
+        public async Task<ActionResult<ImageFile>> PostImage([FromBody] Image image)
         {
-            try
-            {
-                await _imageRepository.AddAsync(image);
-            }
-            catch(Exception e)
-            {
-                //TODO
-                throw;
-            }
+            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibrarySource);
 
-            return CreatedAtAction("GetImage", new { name = name }, image);
+            if (library == null) return BadRequest("Library doesn't exist");
+
+            //TODO: check if current user has access to the library
+
+            var imageFile = await _imageRepository.AddAsync(image);
+
+            library.Images.Add(imageFile);
+            await _libraryRepository.UpdateAsync(library);
+
+            return CreatedAtAction("GetImage", new { name = imageFile.Name }, imageFile);
         }
 
         [HttpDelete("{name}")]
