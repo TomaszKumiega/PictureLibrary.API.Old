@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Repositories;
+using Image = PictureLibrary_API.Model.Image;
 
 namespace PictureLibrary_API.Controllers
 {
@@ -146,6 +148,20 @@ namespace PictureLibrary_API.Controllers
             await _libraryRepository.UpdateAsync(library);
 
             return Ok();
+        }
+
+        [HttpGet("icons/{librarySource}")]
+        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string librarySource)
+        {
+            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+
+            if (library == null) return BadRequest("Library doesn't exist");
+
+            //TODO: check if current user has access to the library
+
+            var icons = await _imageRepository.GetAllIconsAsync(library.Name);
+
+            return Ok(icons);
         }
     }
 }
