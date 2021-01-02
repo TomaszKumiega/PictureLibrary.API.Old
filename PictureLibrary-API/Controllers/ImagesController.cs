@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ using Image = PictureLibrary_API.Model.Image;
 
 namespace PictureLibrary_API.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ImagesController : ControllerBase
@@ -40,7 +42,8 @@ namespace PictureLibrary_API.Controllers
                 return BadRequest();
             }
 
-            //TODO: check if library is owned by the current user
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var image = await _imageRepository.GetBySourceAsync(imageFile.Source);
 
@@ -59,7 +62,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest();
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var images = await _imageRepository.GetAllAsync(library.Name);
 
@@ -78,7 +82,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest();
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var updatedImage = await _imageRepository.UpdateAsync(imageFile);
 
@@ -97,7 +102,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest();
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var updatedImage = await _imageRepository.UpdateAsync(image);
 
@@ -116,7 +122,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest("Library doesn't exist");
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var imageFile = await _imageRepository.AddAsync(image);
 
@@ -133,7 +140,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest("Library doesn't exist");
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             try
             {
@@ -157,7 +165,8 @@ namespace PictureLibrary_API.Controllers
 
             if (library == null) return BadRequest("Library doesn't exist");
 
-            //TODO: check if current user has access to the library
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             var icons = await _imageRepository.GetAllIconsAsync(library.Name);
 
