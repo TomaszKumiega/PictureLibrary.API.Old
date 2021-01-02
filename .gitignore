@@ -78,3 +78,4 @@ _[Ss]cripts
 /.vs/PictureLibrary-RaspberryAPI/config
 /.vs/PictureLibrary-RaspberryAPI/v16/TestStore/0/
 /.vs/*
+/PictureLibrary-API/Migrations/
