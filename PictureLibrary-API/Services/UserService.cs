@@ -60,7 +60,12 @@ namespace PictureLibrary_API.Services
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var user = _databaseContext.Users.Find(id);
+            if (user != null)
+            {
+                _databaseContext.Users.Remove(user);
+                _databaseContext.SaveChanges();
+            }
         }
 
         public IEnumerable<User> GetAll()
