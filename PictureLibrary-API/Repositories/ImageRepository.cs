@@ -67,9 +67,17 @@ namespace PictureLibrary_API.Repositories
             return images;
         }
 
-        public Task<IEnumerable<Icon>> GetAllIconsAsync(string libraryName)
+        public async Task<IEnumerable<Icon>> GetAllIconsAsync(string libraryName)
         {
-            throw new NotImplementedException();
+            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", libraryName + "/Images"));
+            var icons = new List<Icon>();
+
+            foreach(var i in imagePaths)
+            {
+                icons.Add(await Task.Run(() => Icon.ExtractAssociatedIcon(i)));
+            }
+
+            return icons;
         }
 
         public Task<byte[]> GetBySourceAsync(string source)
