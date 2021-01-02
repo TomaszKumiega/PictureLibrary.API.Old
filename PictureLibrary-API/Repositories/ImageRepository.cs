@@ -4,6 +4,7 @@ using PictureLibraryModel.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Image = PictureLibrary_API.Model.Image;
@@ -21,9 +22,24 @@ namespace PictureLibrary_API.Repositories
             _fileSystemService = fileSystemService;
         }
 
-        public Task<ImageFile> AddAsync(Image image)
+        public async Task<ImageFile> AddAsync(Image image)
         {
-            throw new NotImplementedException();
+            var filePath = Path.GetFileNameWithoutExtension(image.ImageFile.LibrarySource) + '/' + image.ImageFile.Name + image.ImageFile.Extension;
+            var path = await Task.Run(() => _fileSystemService.AddFile(filePath, image.ImageContent));
+            var imageFile = new ImageFile();
+
+            var fileInfo = new FileInfo(path);
+
+            imageFile.Name = image.ImageFile.Name;
+            imageFile.Extension = image.ImageFile.Extension;
+            imageFile.Source = path;
+            imageFile.LibrarySource = image.ImageFile.LibrarySource;
+            imageFile.CreationTime = fileInfo.CreationTime;
+            imageFile.LastAccessTime = fileInfo.LastAccessTimeUtc;
+            imageFile.LastWriteTime = fileInfo.LastWriteTimeUtc;
+            imageFile.Size = fileInfo.Length;
+
+            return imageFile;
         }
 
         public Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<Image> entities)
