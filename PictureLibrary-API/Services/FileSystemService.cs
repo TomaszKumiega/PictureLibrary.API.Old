@@ -76,7 +76,7 @@ namespace PictureLibraryModel.Services
         {
             var fileStreams = new List<FileStream>();
 
-            var files = Directory.GetFiles(TargetDirectory, searchPattern, SearchOption.AllDirectories).ToList();
+            var files = Directory.GetFiles(TargetDirectory + "\\" + directory, searchPattern, SearchOption.AllDirectories).ToList();
 
             return files;
         }
