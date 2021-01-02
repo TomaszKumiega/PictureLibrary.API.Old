@@ -75,7 +75,7 @@ namespace PictureLibrary_API.Services
 
         public User GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _databaseContext.Users.Find(id);
         }
 
         public void Update(User user, string password = null)
