@@ -99,9 +99,15 @@ namespace PictureLibrary_API.Repositories
             await RemoveAsync(entity.Source);
         }
 
-        public Task RemoveRangeAsync(IEnumerable<ImageFile> entities)
+        public async Task RemoveRangeAsync(IEnumerable<ImageFile> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null) throw new ArgumentException();
+            if (!entities.Any()) throw new ArgumentException();
+
+            foreach(var i in entities)
+            {
+                await RemoveAsync(i.Source);
+            }
         }
 
         public Task<ImageFile> UpdateAsync(ImageFile entity)
