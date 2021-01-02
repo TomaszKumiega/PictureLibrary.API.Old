@@ -70,7 +70,7 @@ namespace PictureLibrary_API.Services
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _databaseContext.Users;
         }
 
         public User GetById(Guid id)
