@@ -124,17 +124,26 @@ namespace PictureLibrary_API.Controllers
             return CreatedAtAction("GetImage", new { name = imageFile.Name }, imageFile);
         }
 
-        [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteImage(string source)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteImage([FromBody] ImageFile imageFile)
         {
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
+
+            if (library == null) return BadRequest("Library doesn't exist");
+
+            //TODO: check if current user has access to the library
+
             try
             {
-                await _imageRepository.RemoveAsync(source);
+                await _imageRepository.RemoveAsync(imageFile.Source);
             }
-            catch(Exception e)
+            catch
             {
                 return NotFound();
             }
+
+            library.Images.Remove(library.Images.Find(x => x.Source == imageFile.Source));
+            await _libraryRepository.UpdateAsync(library);
 
             return Ok();
         }
