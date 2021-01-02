@@ -49,7 +49,7 @@ namespace PictureLibrary_API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(ImageFile entity)
+        public Task<ImageFile> UpdateAsync(ImageFile entity)
         {
             throw new NotImplementedException();
         }

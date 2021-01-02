@@ -21,6 +21,6 @@ namespace PictureLibrary_API.Repositories
         Task RemoveAsync(ImageFile entity);
         Task RemoveRangeAsync(IEnumerable<ImageFile> entities);
 
-        Task UpdateAsync(ImageFile entity);
+        Task<ImageFile> UpdateAsync(ImageFile entity);
     }
 }
