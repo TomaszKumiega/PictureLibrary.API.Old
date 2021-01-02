@@ -55,12 +55,13 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<IEnumerable<Library>> GetAllAsync()
         {
-            var fileStreams = await Task.Run(()=>_fileSystemService.FindFiles("*.plib"));
+            var filePaths = await Task.Run(()=>_fileSystemService.FindFiles("*.plib", ""));
             var libraries = new List<Library>();
 
-            foreach(var f in fileStreams)
+            foreach(var f in filePaths)
             {
-                libraries.Add(await ReadLibraryFromFileStreamAsync(f));
+                var fileStream = await Task.Run(() => _fileSystemService.OpenFile(f, FileMode.Open));
+                libraries.Add(await ReadLibraryFromFileStreamAsync(fileStream));
             }
 
             return libraries;
