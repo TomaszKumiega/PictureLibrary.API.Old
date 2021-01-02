@@ -1,4 +1,6 @@
-﻿using PictureLibrary_API.Model;
+﻿using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Model;
+using PictureLibraryModel.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +12,15 @@ namespace PictureLibrary_API.Repositories
 {
     public class ImageRepository : IImageRepository
     {
+        private readonly ILogger<ImageRepository> _logger;
+        private IFileSystemService _fileSystemService;
+
+        public ImageRepository(ILogger<ImageRepository> logger, IFileSystemService fileSystemService)
+        {
+            _logger = logger;
+            _fileSystemService = fileSystemService;
+        }
+
         public Task<ImageFile> AddAsync(Image image)
         {
             throw new NotImplementedException();
