@@ -125,9 +125,13 @@ namespace PictureLibrary_API.Repositories
             return imageFile;
         }
 
-        public Task<ImageFile> UpdateAsync(Image entity)
+        public async Task<ImageFile> UpdateAsync(Image entity)
         {
-            throw new NotImplementedException();
+            var path = await Task.Run(() => _fileSystemService.AddFile(entity.ImageFile.Source, entity.ImageContent));
+
+            var fileInfo = new FileInfo(path);
+
+            return entity.ImageFile;
         }
     }
 }
