@@ -110,9 +110,19 @@ namespace PictureLibrary_API.Repositories
             }
         }
 
-        public Task<ImageFile> UpdateAsync(ImageFile entity)
+        public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) throw new ArgumentException();
+
+            await Task.Run(() => _fileSystemService.RenameFile(entity.Source, entity.Name + entity.Extension));
+
+            var oldFileInfo = await Task.Run(() => _fileSystemService.GetFileInfo(entity.Source));
+            var newFileInfo = await Task.Run(() => _fileSystemService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + entity.Extension));
+
+            var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibrarySource, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
+                , newFileInfo.LastWriteTimeUtc, newFileInfo.Length);
+
+            return imageFile;
         }
 
         public Task<ImageFile> UpdateAsync(Image entity)
