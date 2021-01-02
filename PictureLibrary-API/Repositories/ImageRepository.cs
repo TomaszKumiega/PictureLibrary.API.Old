@@ -87,9 +87,9 @@ namespace PictureLibrary_API.Repositories
             return image;
         }
 
-        public Task RemoveAsync(string source)
+        public async Task RemoveAsync(string source)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => _fileSystemService.DeleteFile(source));
         }
 
         public Task RemoveAsync(ImageFile entity)
