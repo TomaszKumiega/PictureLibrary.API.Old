@@ -55,6 +55,13 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        string? GetExtension(string path); 
+        string? GetExtension(string path);
+
+        /// <summary>
+        /// Moves file to specified destination
+        /// </summary>
+        /// <param name="sourceFilePath"></param>
+        /// <param name="destinationFilePath"></param>
+        void MoveFile(string sourceFilePath, string destinationFilePath);
     }
 }

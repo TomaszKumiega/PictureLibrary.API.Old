@@ -95,5 +95,10 @@ namespace PictureLibraryModel.Services
         {
             return new FileStream(path, mode);
         }
+
+        public void MoveFile(string sourceFilePath, string destinationFilePath)
+        {
+            File.Move(sourceFilePath, destinationFilePath);
+        }
     }
 }
