@@ -72,18 +72,13 @@ namespace PictureLibraryModel.Services
             File.Delete(filePath);
         }
 
-        public List<FileStream> FindFiles(string searchPattern)
+        public List<string> FindFiles(string searchPattern)
         {
             var fileStreams = new List<FileStream>();
 
             var files = Directory.GetFiles(TargetDirectory, searchPattern, SearchOption.AllDirectories).ToList();
 
-            foreach(var f in files)
-            {
-                fileStreams.Add(OpenFile(f, FileMode.Open));
-            }
-
-            return fileStreams;
+            return files;
         }
 
         public string? GetExtension(string path)
