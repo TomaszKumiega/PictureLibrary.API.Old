@@ -14,8 +14,8 @@ namespace PictureLibrary_API.Repositories
         Task<IEnumerable<byte[]>> GetAllAsync(string libraryName);
         Task<byte[]> GetBySourceAsync(string source);
 
-        Task<ImageFile> AddAsync(byte[] entity);
-        Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<byte[]> entities);
+        Task<ImageFile> AddAsync(Image image);
+        Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<Image> entities);
 
         Task RemoveAsync(string source);
 

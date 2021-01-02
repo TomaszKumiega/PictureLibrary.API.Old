@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Image = PictureLibrary_API.Model.Image;
 
 namespace PictureLibrary_API.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        public Task<ImageFile> AddAsync(byte[] entity)
+        public Task<ImageFile> AddAsync(Image image)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<byte[]> entities)
+        public Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<Image> entities)
         {
             throw new NotImplementedException();
         }
@@ -54,7 +55,7 @@ namespace PictureLibrary_API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ImageFile> UpdateAsync(Model.Image entity)
+        public Task<ImageFile> UpdateAsync(Image entity)
         {
             throw new NotImplementedException();
         }
