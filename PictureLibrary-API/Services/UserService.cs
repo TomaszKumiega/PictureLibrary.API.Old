@@ -39,7 +39,23 @@ namespace PictureLibrary_API.Services
 
         public User Create(User user, string password)
         {
-            throw new NotImplementedException();
+            // validation
+            if (string.IsNullOrWhiteSpace(password))
+                throw new Exception("Password is required");
+
+            if (_databaseContext.Users.Any(x => x.Username == user.Username))
+                throw new Exception("Username \"" + user.Username + "\" is already taken");
+
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _databaseContext.Users.Add(user);
+            _databaseContext.SaveChanges();
+
+            return user;
         }
 
         public void Delete(Guid id)
