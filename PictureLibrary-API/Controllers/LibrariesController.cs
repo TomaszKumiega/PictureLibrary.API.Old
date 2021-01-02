@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
@@ -9,6 +10,7 @@ using PictureLibrary_API.Repositories;
 
 namespace PictureLibrary_API.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class LibrariesController : ControllerBase
@@ -28,9 +30,16 @@ namespace PictureLibrary_API.Controllers
         {
             var library = await Task.Run(() => _libraryRepository.FindAsync(x => x.Name == name));
 
+            var userId = User?.Identity.Name;
+
             if (library == null)
             {
                 return NotFound();
+            }
+
+            if (!library.Owners.Where(x=>x.ToString() == userId).Any())
+            {
+                return Unauthorized();
             }
 
             return Ok(library);
@@ -39,7 +48,18 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
-            var libraries = await Task.Run(() => _libraryRepository.GetAllAsync());
+            var allLibraries = await Task.Run(() => _libraryRepository.GetAllAsync());
+            var libraries = new List<Library>();
+
+            var userId = User?.Identity.Name;
+
+            if(allLibraries != null)
+            {
+                foreach(var l in allLibraries)
+                {
+                    if (l.Owners.Where(x => x.ToString() == userId).Any()) libraries.Add(l);
+                }
+            }
 
             return Ok(libraries);
         }
@@ -51,6 +71,10 @@ namespace PictureLibrary_API.Controllers
             {
                 return BadRequest();
             }
+
+            var userId = User?.Identity.Name;
+
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
             try
             {
@@ -68,6 +92,11 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Library>> PostLibrary([FromBody] Library library)
         {
+
+            var userId = User?.Identity.Name;
+
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+
             try
             {
                 await Task.Run(() => _libraryRepository.AddAsync(library));
@@ -86,7 +115,11 @@ namespace PictureLibrary_API.Controllers
         {
             var library = await Task.Run(() => _libraryRepository.FindAsync(x => x.Name == name));
 
-            if(library == null)
+            var userId = User?.Identity.Name;
+
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+
+            if (library == null)
             {
                 return NotFound();
             }
