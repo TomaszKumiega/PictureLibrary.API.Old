@@ -25,10 +25,19 @@ namespace PictureLibrary_API.Controllers
             _libraryRepository = libraryRepository;
         }
 
-        [HttpGet("{source}")]
-        public async Task<ActionResult<byte[]>> GetImage(string source)
+        [HttpGet]
+        public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            var image = await _imageRepository.GetBySourceAsync(source);
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
+
+            if (library.Images.Find(x => x.Source == imageFile.Source) == null)
+            {
+                return BadRequest();
+            }
+
+            //TODO: check if library is owned by the current user
+
+            var image = await _imageRepository.GetBySourceAsync(imageFile.Source);
 
             if(image == null)
             {
