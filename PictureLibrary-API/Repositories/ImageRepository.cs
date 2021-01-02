@@ -53,5 +53,10 @@ namespace PictureLibrary_API.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<ImageFile> UpdateAsync(Model.Image entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

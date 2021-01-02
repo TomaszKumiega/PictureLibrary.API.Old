@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Image = PictureLibrary_API.Model.Image;
 
 namespace PictureLibrary_API.Repositories
 {
@@ -22,5 +23,6 @@ namespace PictureLibrary_API.Repositories
         Task RemoveRangeAsync(IEnumerable<ImageFile> entities);
 
         Task<ImageFile> UpdateAsync(ImageFile entity);
+        Task<ImageFile> UpdateAsync(Image entity);
     }
 }
