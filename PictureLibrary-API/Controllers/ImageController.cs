@@ -65,23 +65,18 @@ namespace PictureLibrary_API.Controllers
             return Ok(images);
         }
 
-        [HttpPut("{source}")]
-        public async Task<IActionResult> PutImage(string source, [FromBody] ImageFile imageFile)
+        [HttpPut("imageFile")]
+        public async Task<IActionResult> PutImage([FromBody] ImageFile imageFile)
         {
-            if(source != imageFile.Source)
-            {
-                return BadRequest();
-            }
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
 
-            try
-            {
-                await _imageRepository.UpdateAsync(imageFile);
-            }
-            catch(Exception e)
-            {
-                //TODO
-                throw;
-            }
+            //TODO: check if current user has access to the library
+
+            library.Images.Remove(library.Images.Find(x => x.Source == imageFile.Source));
+            library.Images.Add(imageFile);
+
+            await _libraryRepository.UpdateAsync(library);
+            await _imageRepository.UpdateAsync(imageFile);
 
             return NoContent();
         }
