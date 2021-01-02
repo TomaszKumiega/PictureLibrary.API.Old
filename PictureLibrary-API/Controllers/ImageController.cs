@@ -31,6 +31,8 @@ namespace PictureLibrary_API.Controllers
         {
             var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
 
+            if (library == null) return BadRequest();
+
             if (library.Images.Find(x => x.Source == imageFile.Source) == null)
             {
                 return BadRequest();
@@ -53,6 +55,8 @@ namespace PictureLibrary_API.Controllers
         {
             var library = await _libraryRepository.GetBySourceAsync(librarySource);
 
+            if (library == null) return BadRequest();
+
             //TODO: check if current user has access to the library
 
             var images = await _imageRepository.GetAllAsync(library.Name);
@@ -70,6 +74,8 @@ namespace PictureLibrary_API.Controllers
         {
             var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
 
+            if (library == null) return BadRequest();
+
             //TODO: check if current user has access to the library
 
             var updatedImage = await _imageRepository.UpdateAsync(imageFile);
@@ -86,6 +92,8 @@ namespace PictureLibrary_API.Controllers
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
             var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibrarySource);
+
+            if (library == null) return BadRequest();
 
             //TODO: check if current user has access to the library
 
