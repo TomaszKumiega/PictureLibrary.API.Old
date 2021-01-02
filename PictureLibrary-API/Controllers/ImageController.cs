@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -47,10 +48,14 @@ namespace PictureLibrary_API.Controllers
             return Ok(image);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<byte[]>>> GetImages()
+        [HttpGet("{librarySource}")]
+        public async Task<ActionResult<IEnumerable<byte[]>>> GetImages(string librarySource)
         {
-            var images = await _imageRepository.GetAllAsync();
+            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+
+            //TODO: check if current user has access to the library
+            
+            var images = await _imageRepository.GetAllAsync(library.Name);
 
             if(images == null)
             {
