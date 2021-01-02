@@ -101,5 +101,10 @@ namespace PictureLibraryModel.Services
         {
             FileSystem.RenameFile(file, newName);
         }
+
+        public FileInfo GetFileInfo(string path)
+        {
+            return new FileInfo(path);
+        }
     }
 }

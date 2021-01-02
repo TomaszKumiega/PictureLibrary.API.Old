@@ -51,17 +51,17 @@ namespace PictureLibraryModel.Services
         byte[] GetFile(string path);
 
         /// <summary>
-        /// Returns extension of a specified file
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        string? GetExtension(string path);
-
-        /// <summary>
         /// Renames the file
         /// </summary>
         /// <param name="file"></param>
         /// <param name="newName"></param>
         void RenameFile(string file, string newName);
+
+       /// <summary>
+       /// Provides file info of specified file
+       /// </summary>
+       /// <param name="path"></param>
+       /// <returns></returns>
+        FileInfo GetFileInfo(string path);
     }
 }
