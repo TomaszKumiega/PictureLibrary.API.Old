@@ -1,4 +1,5 @@
-﻿using PictureLibrary_API.Model;
+﻿using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,15 @@ namespace PictureLibrary_API.Services
 {
     public class UserService : IUserService
     {
+        private DatabaseContext _databaseContext;
+        private readonly ILogger<UserService> _logger;
+
+        public UserService(ILogger<UserService> logger, DatabaseContext databaseContext)
+        {
+            _logger = logger;
+            _databaseContext = databaseContext;
+        }
+
         public User Authenticate(string username, string password)
         {
             throw new NotImplementedException();
