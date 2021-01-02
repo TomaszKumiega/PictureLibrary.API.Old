@@ -42,9 +42,16 @@ namespace PictureLibrary_API.Repositories
             return imageFile;
         }
 
-        public Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<Image> entities)
+        public async Task<IEnumerable<ImageFile>> AddRangeAsync(IEnumerable<Image> entities)
         {
-            throw new NotImplementedException();
+            var imageFiles = new List<ImageFile>();
+
+            foreach (var i in entities)
+            {
+                imageFiles.Add(await AddAsync(i));
+            }
+
+            return imageFiles;
         }
 
         public Task<IEnumerable<byte[]>> GetAllAsync(string libraryName)
