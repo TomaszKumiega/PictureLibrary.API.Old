@@ -15,13 +15,13 @@ namespace PictureLibrary_API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ImageController : ControllerBase
+    public class ImagesController : ControllerBase
     {
-        private readonly ILogger<ImageController> _logger;
+        private readonly ILogger<ImagesController> _logger;
         private IImageRepository _imageRepository;
         private ILibraryRepository _libraryRepository;
 
-        public ImageController(ILogger<ImageController> logger, IImageRepository imageRepository, ILibraryRepository libraryRepository)
+        public ImagesController(ILogger<ImagesController> logger, IImageRepository imageRepository, ILibraryRepository libraryRepository)
         {
             _logger = logger;
             _imageRepository = imageRepository;
