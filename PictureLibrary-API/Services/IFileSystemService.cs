@@ -20,15 +20,15 @@ namespace PictureLibraryModel.Services
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        FileStream CreateFile(string fileName, string directory);
+        FileStream CreateFile(string filePath);
 
         /// <summary>
         /// Creates a file and writes all bytes to it. Returns path to the file.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="filePath"></param>
         /// <param name="file"></param>
         /// <returns>Path of the file</returns>
-        string AddFile(string fileName, byte[] file);
+        string AddFile(string filePath, byte[] file);
 
         /// <summary>
         /// Deletes specified file 

@@ -32,13 +32,13 @@ namespace PictureLibraryModel.Services
         }
 
 
-        public FileStream CreateFile(string fileName, string directory)
+        public FileStream CreateFile(string filePath)
         {
-            if (fileName.IsNullOrEmpty() || directory.IsNullOrEmpty()) throw new ArgumentException();
+            if (filePath.IsNullOrEmpty()) throw new ArgumentException();
 
             try
             {
-                var fileStream = File.Create(TargetDirectory + directory + '/' + fileName);
+                var fileStream = File.Create(TargetDirectory + filePath);
                 return fileStream;
             }
             catch (Exception e)
@@ -49,15 +49,15 @@ namespace PictureLibraryModel.Services
             throw new Exception("Operation failed");
         }
 
-        public string AddFile(string fileName, byte[] file)
+        public string AddFile(string filePath, byte[] file)
         {
-            if (fileName.IsNullOrEmpty()) throw new ArgumentException();
+            if (filePath.IsNullOrEmpty()) throw new ArgumentException();
 
             try
             {
-                File.WriteAllBytes(TargetDirectory + fileName, file);
+                File.WriteAllBytes(TargetDirectory + filePath, file);
 
-                return TargetDirectory + fileName;
+                return TargetDirectory + filePath;
             }
             catch (Exception e)
             {
