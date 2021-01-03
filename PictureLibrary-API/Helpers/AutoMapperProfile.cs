@@ -13,6 +13,7 @@ namespace PictureLibrary_API.Helpers
         {
             CreateMap<RegisterModel, User>();
             CreateMap<UpdateModel, User>();
+            CreateMap<UserPresentationModel, User>();
         }
     }
 }
