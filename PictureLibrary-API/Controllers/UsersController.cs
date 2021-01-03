@@ -93,5 +93,16 @@ namespace PictureLibrary_API.Controllers
 
             return Ok(presentation);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            var userId = User?.Identity.Name;
+
+            if (userId != id.ToString()) return Unauthorized();
+
+            var user = _userService.GetById(id);
+            return Ok(user);
+        }
     }
 }
