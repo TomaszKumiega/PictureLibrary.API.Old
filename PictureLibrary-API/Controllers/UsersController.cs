@@ -104,5 +104,25 @@ namespace PictureLibrary_API.Controllers
             var user = _userService.GetById(id);
             return Ok(user);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, [FromBody]UpdateModel model)
+        {
+            var userId = User?.Identity.Name;
+            if (userId != id.ToString()) return Unauthorized();
+
+            var user = _mapper.Map<User>(model);
+            user.Id = id;
+
+            try
+            {
+                _userService.Update(user, model.Password);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }
