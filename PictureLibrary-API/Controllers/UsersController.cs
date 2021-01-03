@@ -84,5 +84,14 @@ namespace PictureLibrary_API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetAll();
+            var presentation = _mapper.Map<IList<UserPresentationModel>>(users);
+
+            return Ok(presentation);
+        }
     }
 }
