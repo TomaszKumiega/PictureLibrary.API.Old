@@ -8,15 +8,15 @@ WORKDIR /app
 
 COPY *.sln .
 COPY ./PictureLibrary-API/ ./PictureLibrary-API
-RUN dotnet restore
+RUN dotnet restore -r linux-arm
 
 COPY PictureLibrary-API/. ./PictureLibrary-API
-WORKDIR /app/PictureLibrary-API
-RUN dotnet build
+WORKDIR /app/PictureLibrary-API 
+RUN dotnet build -r linux-arm
 
 FROM build AS publish
 WORKDIR /app/PictureLibrary-API
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out -r linux-arm
 
 FROM base AS final
 WORKDIR /app
