@@ -21,6 +21,4 @@ RUN dotnet publish -c Release -o out -r linux-arm
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/PictureLibrary-API/out ./
-CMD dotnet dev-certs https --clean
-CMD dotnet dev-certs https -t
 ENTRYPOINT ["dotnet", "PictureLibrary-API.dll"]
