@@ -22,8 +22,8 @@ jobs:
         with:
           accessToken: ${{github.token}}
           buildArg: |
-            imageName: PictureLibraryAPI-arm32
             VERSION=${{github.ref}}
             COMMIT=${{github.sha}}
-            contextName: dockerfileArm32
+          contextName: dockerfileArm32
+          imageName: PictureLibraryAPI-arm32
 
