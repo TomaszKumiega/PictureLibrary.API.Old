@@ -9,10 +9,6 @@ namespace PictureLibrary_API.Model
     public class RegisterModel
     {
         [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
@@ -24,13 +20,11 @@ namespace PictureLibrary_API.Model
 
         }
 
-        public RegisterModel(string username, string password, string email, string firstName, string lastName)
+        public RegisterModel(string username, string password, string email)
         {
             Username = username;
             Password = password;
             Email = email;
-            LastName = lastName;
-            FirstName = firstName;
         }
     }
 }
