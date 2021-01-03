@@ -5,7 +5,7 @@ EXPOSE 5000
 
 COPY *.sln .
 COPY ./PictureLibrary-API/ ./PictureLibrary-API
-RUN dotnet restore
+RUN dotnet restore -r linux-arm
 
 COPY PictureLibrary-API/. ./PictureLibrary-API
 WORKDIR /app/PictureLibrary-API
