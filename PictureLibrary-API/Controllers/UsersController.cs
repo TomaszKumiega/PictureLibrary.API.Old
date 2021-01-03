@@ -124,5 +124,16 @@ namespace PictureLibrary_API.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var userId = User?.Identity.Name;
+            if (userId != id.ToString()) return Unauthorized();
+
+            _userService.Delete(id);
+            return Ok();
+        }
+
     }
 }
