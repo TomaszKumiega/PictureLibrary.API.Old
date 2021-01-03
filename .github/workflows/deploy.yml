@@ -13,7 +13,7 @@ jobs:
         uses: matootie/github-docker@v2.2.2
         with:
           accessToken: ${{github.token}}
-          buildArg: |
+          buildArgs: |
             VERSION=${{github.ref}}
             COMMIT=${{github.sha}}
       - name: Publish image for Arm32 architecture
@@ -21,9 +21,9 @@ jobs:
         uses: matootie/github-docker@v2.2.2
         with:
           accessToken: ${{github.token}}
-          buildArg: |
+          imageName: PictureLibraryAPI-arm32
+          buildArgs: |
             VERSION=${{github.ref}}
             COMMIT=${{github.sha}}
           contextName: dockerfileArm32
-          imageName: PictureLibraryAPI-arm32
 
