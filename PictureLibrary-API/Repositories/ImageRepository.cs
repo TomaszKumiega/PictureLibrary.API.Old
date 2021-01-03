@@ -54,9 +54,11 @@ namespace PictureLibrary_API.Repositories
             return imageFiles;
         }
 
-        public async Task<IEnumerable<byte[]>> GetAllAsync(string libraryName)
+        public async Task<IEnumerable<byte[]>> GetAllAsync(string librarySource)
         {
-            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", libraryName + "/Images"));
+            var fileInfo = _fileSystemService.GetFileInfo(librarySource);
+            var directory = fileInfo.Directory.FullName; 
+            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", directory + "/Images"));
             var images = new List<byte[]>();
 
             foreach(var i in imagePaths)
@@ -67,9 +69,11 @@ namespace PictureLibrary_API.Repositories
             return images;
         }
 
-        public async Task<IEnumerable<Icon>> GetAllIconsAsync(string libraryName)
+        public async Task<IEnumerable<Icon>> GetAllIconsAsync(string librarySource)
         {
-            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", libraryName + "/Images"));
+            var fileInfo = _fileSystemService.GetFileInfo(librarySource);
+            var directory = fileInfo.Directory.FullName;
+            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", directory + "/Images"));
             var icons = new List<Icon>();
 
             foreach(var i in imagePaths)

@@ -65,7 +65,7 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var images = await _imageRepository.GetAllAsync(library.Name);
+            var images = await _imageRepository.GetAllAsync(librarySource);
 
             if (images == null)
             {
@@ -168,7 +168,7 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var icons = await _imageRepository.GetAllIconsAsync(library.Name);
+            var icons = await _imageRepository.GetAllIconsAsync(librarySource);
 
             return Ok(icons);
         }

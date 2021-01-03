@@ -26,7 +26,7 @@ namespace PictureLibrary_API.Repositories
         public async Task<Library> AddAsync(Library entity)
         {
             
-            var fileStream = await Task.Run(()=>_fileSystemService.CreateFile(entity.Name + '/' + entity.Name + ".plib"));
+            var fileStream = await Task.Run(()=>_fileSystemService.CreateFile(entity.Name + '-' + Guid.NewGuid().ToString() + '/' + entity.Name + ".plib"));
 
             await WriteLibraryToFileStreamAsync(fileStream, entity);
 
