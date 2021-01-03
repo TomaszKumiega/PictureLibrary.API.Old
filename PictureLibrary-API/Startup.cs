@@ -45,7 +45,7 @@ namespace PictureLibrary_API
 
             services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseSqlServer(Microsoft
+                options.UseSqlite(Microsoft
                     .Extensions
                     .Configuration
                     .ConfigurationExtensions.GetConnectionString(this.Configuration, "UsersDatabase"));
