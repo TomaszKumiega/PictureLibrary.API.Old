@@ -42,6 +42,7 @@ namespace PictureLibrary_API
             services.AddTransient<IFileSystemService, FileSystemService>();
             services.AddTransient<ILibraryRepository, LibraryRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddDbContext<DatabaseContext>(options =>
             {
