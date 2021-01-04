@@ -17,5 +17,4 @@ jobs:
           buildArgs: |
             VERSION=${{github.ref}}
             COMMIT=${{github.sha}}
-          context: ./
           contextName: arm32.Dockerfile
