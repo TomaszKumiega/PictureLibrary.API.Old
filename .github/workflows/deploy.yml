@@ -12,7 +12,7 @@ jobs:
         id: docker_arm32_publish
         uses: elgohr/Publish-Docker-Github-Action@3.02
         with:
-          name: picturelibraryapi-arm32
+          name: TomaszKumiega/PictureLibrary-API/picturelibraryapi-arm32
           username: ${{ github.actor }}
           password: ${{ secrets.TOKEN }}
           registry: docker.pkg.github.com
@@ -21,7 +21,7 @@ jobs:
         id: docker_publish
         uses: elgohr/Publish-Docker-Github-Action@3.02
         with:
-          name: picturelibraryapi
+          name: TomaszKumiega/PictureLibrary-API/picturelibraryapi
           username: ${{ github.actor }}
           password: ${{ secrets.TOKEN }}
           registry: docker.pkg.github.com
