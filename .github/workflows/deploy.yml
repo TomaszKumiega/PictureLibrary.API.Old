@@ -18,4 +18,4 @@ jobs:
             VERSION=${{github.ref}}
             COMMIT=${{github.sha}}
           context: ./
-          contextName: dockerArm32
+          contextName: arm32.Dockerfile
