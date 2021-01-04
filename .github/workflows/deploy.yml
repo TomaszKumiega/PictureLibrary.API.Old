@@ -8,14 +8,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Publish image
-        id: docker
+      - name: Publish image for Arm32
+        id: docker_arm32_publish
         uses: docker/build-push-action@v2.2.1
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.TOKEN }}
           registry: docker.pkg.github.com
           repository: TomaszKumiega/PictureLibrary-API/picturelibraryapi-arm32
-          tag_with_ref: true
           file: ./arm32.Dockerfile
+      - name: Publish default image
+        id: docker_publish
+        uses: docker/build-push-action@v2.2.1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN }}
+          registry: docker.pkg.github.com
+          repository: TomaszKumiega/PictureLibrary-API/picturelibraryapi
 
