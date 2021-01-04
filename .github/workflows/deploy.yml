@@ -25,4 +25,5 @@ jobs:
           password: ${{ secrets.TOKEN }}
           registry: docker.pkg.github.com
           repository: TomaszKumiega/PictureLibrary-API/picturelibraryapi
+          file: ./dockerfile
 
