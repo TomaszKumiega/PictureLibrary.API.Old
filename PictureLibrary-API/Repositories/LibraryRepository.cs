@@ -206,7 +206,13 @@ namespace PictureLibrary_API.Repositories
 
             // write all owners in one string
             string owners = "";
-            foreach (var o in entity.Owners) owners += o.ToString() + ',';
+
+            for(int i=0;i<entity.Owners.Count-1;i++)
+            {
+                owners += entity.Owners[i].ToString() + ',';
+            }
+
+            owners += entity.Owners[entity.Owners.Count - 1].ToString();
 
             // create library element
             var libraryElement = new XElement("library", new XAttribute("name", entity.Name),
@@ -229,12 +235,16 @@ namespace PictureLibrary_API.Repositories
 
             foreach (var i in entity.Images)
             {
+                // write all tags to one string
                 string tags = "";
 
-                foreach(var t in i.Tags)
+                for(int it=0;it<i.Tags.Count-1;it++)
                 {
-                    tags += t.Name + ',';
+                    tags += i.Tags[it].Name + ',';
                 }
+
+                tags += i.Tags[i.Tags.Count - 1].Name;
+
 
                 var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", i.Extension),
                     new XAttribute("source", i.Source), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
