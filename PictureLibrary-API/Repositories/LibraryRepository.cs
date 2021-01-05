@@ -180,6 +180,11 @@ namespace PictureLibrary_API.Repositories
                                     imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
                                     imageFile.LastWriteTime = DateTime.Parse(imageElement.Attribute("lastWriteTime").Value);
                                     imageFile.Size = long.Parse(imageElement.Attribute("size").Value);
+                                    
+                                    foreach(var t in imageElement.Attribute("tags").Value.Split(','))
+                                    {
+                                        imageFile.Tags.Add(tags.Find(x=>x.Name == t));
+                                    }
 
                                     images.Add(imageFile);
                                 }
@@ -224,9 +229,16 @@ namespace PictureLibrary_API.Repositories
 
             foreach (var i in entity.Images)
             {
+                string tags = "";
+
+                foreach(var t in i.Tags)
+                {
+                    tags += t.Name + ',';
+                }
+
                 var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", i.Extension),
                     new XAttribute("source", i.Source), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
-                    new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()));
+                    new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()), new XAttribute("tags", tags));
 
                 imagesElement.Add(imageFileElement);
             }
