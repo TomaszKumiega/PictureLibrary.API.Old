@@ -8,22 +8,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Publish image
-        id: docker
-        uses: matootie/github-docker@v2.2.2
+      - name: Publish image for Arm32
+        id: docker_arm32_publish
+        uses: elgohr/Publish-Docker-Github-Action@3.02
         with:
-          accessToken: ${{github.token}}
-          buildArgs: |
-            VERSION=${{github.ref}}
-            COMMIT=${{github.sha}}
-      - name: Publish image for Arm32 architecture
-        id: docker_Arm32
-        uses: matootie/github-docker@v2.2.2
+          name: TomaszKumiega/PictureLibrary-API/picturelibraryapi-arm32
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN }}
+          registry: docker.pkg.github.com
+          dockerFile: arm32.Dockerfile
+      - name: Publish default image
+        id: docker_publish
+        uses: elgohr/Publish-Docker-Github-Action@3.02
         with:
-          accessToken: ${{github.token}}
-          imageName: PictureLibraryAPI-arm32
-          buildArgs: |
-            VERSION=${{github.ref}}
-            COMMIT=${{github.sha}}
-          contextName: dockerfileArm32
+          name: TomaszKumiega/PictureLibrary-API/picturelibraryapi
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN }}
+          registry: docker.pkg.github.com
+          dockerFile: dockerfile
 
