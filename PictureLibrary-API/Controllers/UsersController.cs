@@ -45,14 +45,17 @@ namespace PictureLibrary_API.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            var tokenString = GenerateToken(user);
+            var tokenString = GenerateToken(user.Id.ToString());
+            var refreshToken = _refreshTokenService.GenerateToken();
+            _refreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
 
             return Ok(new
             {
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
-                Token = tokenString
+                Token = tokenString,
+                RefreshToken = refreshToken
             });
         }
 
@@ -71,6 +74,28 @@ namespace PictureLibrary_API.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("refresh")]
+        public IActionResult Refresh(string token, string refreshToken)
+        {
+            var principal = GetPrincipalFromExpiredToken(token);
+            var userId = principal.Identity.Name;
+            var savedRefreshToken = _refreshTokenService.GetRefreshToken(userId); 
+            if (savedRefreshToken != refreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
+
+            var newJwtToken = GenerateToken(userId);
+            var newRefreshToken = _refreshTokenService.GenerateToken();
+            _refreshTokenService.DeleteRefreshToken(userId, refreshToken);
+            _refreshTokenService.SaveRefreshToken(userId, newRefreshToken);
+
+            return new ObjectResult(new
+            {
+                token = newJwtToken,
+                refreshToken = newRefreshToken
+            });
         }
 
         [HttpGet]
@@ -123,7 +148,7 @@ namespace PictureLibrary_API.Controllers
             return Ok();
         }
 
-        private string GenerateToken(User user)
+        private string GenerateToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -131,7 +156,7 @@ namespace PictureLibrary_API.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, userId)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -141,7 +166,7 @@ namespace PictureLibrary_API.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-        private string GetUserFromExpiredToken(string token)
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -159,7 +184,7 @@ namespace PictureLibrary_API.Controllers
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
 
-            return principal.Identity.Name;
+            return principal;
         }
 
     }
