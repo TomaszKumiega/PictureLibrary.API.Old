@@ -18,7 +18,9 @@ namespace PictureLibrary_API.Services
 
         public void DeleteRefreshToken(string userId, string refreshToken)
         {
-            throw new NotImplementedException();
+            var token = _context.RefreshTokens.Where(x => x.UserId == userId && x.Token == refreshToken);
+            _context.RefreshTokens.RemoveRange(token);
+            _context.SaveChanges();
         }
 
         public string GenerateToken()
