@@ -24,14 +24,16 @@ namespace PictureLibrary_API.Controllers
         private readonly ILogger<UsersController> _logger;
         private IUserService _userService;
         private IMapper _mapper;
+        private IRefreshTokenService _refreshTokenService;
         private readonly AppSettings _appSettings;
 
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService)
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService, IRefreshTokenService refreshTokenService)
         {
             _logger = logger;
             _mapper = mapper;
             _appSettings = appSettings.Value;
             _userService = userService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [AllowAnonymous]
@@ -137,16 +139,6 @@ namespace PictureLibrary_API.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             
             return tokenHandler.WriteToken(token);
-        }
-
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
         }
 
         private string GetUserFromExpiredToken(string token)

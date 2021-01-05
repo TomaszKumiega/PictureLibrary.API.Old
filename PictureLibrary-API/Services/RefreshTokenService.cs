@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Services
@@ -20,9 +21,14 @@ namespace PictureLibrary_API.Services
             throw new NotImplementedException();
         }
 
-        public string GenerateToken(User user)
+        public string GenerateToken()
         {
-            throw new NotImplementedException();
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
         }
 
         public string GetRefreshToken(string userId)
