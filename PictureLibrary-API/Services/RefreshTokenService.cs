@@ -18,8 +18,10 @@ namespace PictureLibrary_API.Services
 
         public void DeleteRefreshToken(string userId, string refreshToken)
         {
-            var token = _context.RefreshTokens.Where(x => x.UserId == userId && x.Token == refreshToken);
-            _context.RefreshTokens.RemoveRange(token);
+            var token = _context.RefreshTokens
+                .Where(x => x.UserId == userId && x.Token == refreshToken)
+                .FirstOrDefault();
+            _context.RefreshTokens.Remove(token);
             _context.SaveChanges();
         }
 
@@ -35,7 +37,11 @@ namespace PictureLibrary_API.Services
 
         public string GetRefreshToken(string userId)
         {
-            throw new NotImplementedException();
+            var token = _context.RefreshTokens
+                .Where(x => x.UserId == userId)
+                .FirstOrDefault();
+            
+            return token.Token;
         }
 
         public void SaveRefreshToken(string userId, string refreshToken)
