@@ -46,7 +46,14 @@ namespace PictureLibrary_API.Services
 
         public void SaveRefreshToken(string userId, string refreshToken)
         {
-            throw new NotImplementedException();
+            var refToken = new RefreshToken();
+
+            refToken.Id = Guid.NewGuid();
+            refToken.UserId = userId;
+            refToken.Token = refreshToken;
+
+            _context.RefreshTokens.Add(refToken);
+            _context.SaveChanges();
         }
     }
 }
