@@ -124,7 +124,7 @@ namespace PictureLibrary_API.Repositories
             var newFileInfo = await Task.Run(() => _fileSystemService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + entity.Extension));
 
             var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibrarySource, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
-                , newFileInfo.LastWriteTimeUtc, newFileInfo.Length);
+                , newFileInfo.LastWriteTimeUtc, newFileInfo.Length, entity.Tags);
 
             return imageFile;
         }
