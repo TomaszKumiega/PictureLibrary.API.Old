@@ -19,5 +19,6 @@ namespace PictureLibrary_API.Model
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }
