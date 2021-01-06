@@ -159,7 +159,7 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpGet("icons/{librarySource}")]
-        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string librarySource)
+        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string librarySource, [FromBody] IEnumerable<string> imageSources)
         {
             var library = await _libraryRepository.GetBySourceAsync(librarySource);
 
@@ -168,9 +168,24 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var icons = await _imageRepository.GetAllIconsAsync(librarySource);
+            var icons = await _imageRepository.GetIcons(imageSources);
 
             return Ok(icons);
+        }
+
+        [HttpGet("icons/{librarySource}/{imageSource}")]
+        public async Task<IActionResult> GetIcon(string librarySource, string imageSource)
+        {
+            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+
+            if (library == null) return BadRequest("Library doesn't exist");
+
+            var userId = User?.Identity.Name;
+            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+
+            var icon = await _imageRepository.GetIcon(imageSource);
+
+            return Ok(icon);
         }
     }
 }
