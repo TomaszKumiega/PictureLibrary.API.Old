@@ -10,7 +10,6 @@ namespace PictureLibrary_API.Repositories
 {
    public interface IImageRepository 
     {
-        Task<IEnumerable<Icon>> GetAllIconsAsync(string librarySource);
         Task<IEnumerable<byte[]>> GetAllAsync(string librarySource);
         Task<byte[]> GetBySourceAsync(string source);
 
@@ -24,5 +23,7 @@ namespace PictureLibrary_API.Repositories
 
         Task<ImageFile> UpdateAsync(ImageFile entity);
         Task<ImageFile> UpdateAsync(Image entity);
+        Task<IEnumerable<Icon>> GetIcons(IEnumerable<string> imageSource);
+        Task<Icon> GetIcon(string imageSource);
     }
 }
