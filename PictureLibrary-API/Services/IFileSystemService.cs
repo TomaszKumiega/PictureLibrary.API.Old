@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace PictureLibraryModel.Services
@@ -63,5 +64,12 @@ namespace PictureLibraryModel.Services
        /// <param name="path"></param>
        /// <returns></returns>
         FileInfo GetFileInfo(string path);
+
+        /// <summary>
+        /// Extracts icon from a specified file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        Icon ExtractAssociatedIcon(string path);
     }
 }

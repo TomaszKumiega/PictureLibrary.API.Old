@@ -4,6 +4,7 @@ using Microsoft.VisualBasic.FileIO;
 using PictureLibrary_API.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -105,6 +106,11 @@ namespace PictureLibraryModel.Services
         public FileInfo GetFileInfo(string path)
         {
             return new FileInfo(path);
+        }
+
+        public Icon ExtractAssociatedIcon(string path)
+        {
+            return Icon.ExtractAssociatedIcon(path);
         }
     }
 }
