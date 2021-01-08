@@ -61,7 +61,7 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public IActionResult Register([FromBody] UserModel model)
         {
             var user = _mapper.Map<User>(model);
 
@@ -119,7 +119,7 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody]UpdateModel model)
+        public IActionResult Update(Guid id, [FromBody]UserModel model)
         {
             var userId = User?.Identity.Name;
             if (userId != id.ToString()) return Unauthorized();

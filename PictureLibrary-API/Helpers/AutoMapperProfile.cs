@@ -11,8 +11,7 @@ namespace PictureLibrary_API.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<RegisterModel, User>();
-            CreateMap<UpdateModel, User>();
+            CreateMap<UserModel, User>();
             CreateMap<UserPresentationModel, User>();
         }
     }
