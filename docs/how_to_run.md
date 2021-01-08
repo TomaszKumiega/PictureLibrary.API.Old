@@ -1,50 +1,69 @@
 # Running Picture Library API
 
-## 1. [Install Docker](https://www.docker.com/get-started)
+## Manually 
 
-## 2. Run the container using terminal on linux or powershell on windows
+### 1. [Install Docker](https://www.docker.com/get-started)
 
-### Mounting storage
-When running the container, you need to specify which directories will be used to store data by using --mount syntax.
+### 2. Mount storage
 
-To specify a directory on host device, where data will be stored, change the source parameter value:
-
-```sh
---mount type=bind,source=MY_DIRECTORY/,target=Directory1
-```
-
-### Using multiple directories and drives for storage
-
-When you need to use multiple directories, for example when you want to use multiple drives, use --mount syntax multiple times.
-With every new directory, change the number of the target directory as follows:
-
-- Directory1
-- Directory2
-- Directory3
-- ...
+Mount drives that will be used for storing data using this command:
 
 ```sh
---mount type=bind,source=MY_DIRECTORY/,target=Directory1 --mount type=bind,source=MY_OTHER_DIRECTORY/,target=Directory2
+sudo mergerfs DRIVE_1:DRIVE_2:DRIVE_3 MOUNTDIRECTORY
 ```
 
-**WARNING** 
-It's important to name target directories by following this convention, because application uses this naming scheme to recognize where it's supposed to store data.
+Change DRIVE_1, DRIVE_2, etc... with paths to the drives you would like to mount, and MOUNTDIRECTORY, with a directory they will be mounted to. 
 
-### Recovery drives
-
-To setup recovery drives, use --mount syntax the same way as for other drives and change target directory name to RecoveryDirectory:
+If you want to specify RAID configuration, use this command:
 
 ```sh
---mount type=bind,source=MY_RECOVERY_DRIVE/,target=RecoveryDirectory1
+sudo mdadm --create --verbose /dev/md0 --level=1 /dev/sda1 /dev/sdb2
 ```
 
-Recovery drives will mirror the data stored on storage directories.
+Change /dev/sda1, /dev/sdb2, with drives you would like to mount and level, with RAID level you would like to use.
 
-### Run the container
-
-Run the container by using this command and modifying CONTAINER_NAME and --mount syntax as shown above:
+After creating RAID array mount it to the directory:
 
 ```sh
-docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=bind,source=DIRECTORY,target=Directory1/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibrary-api:master
+sudo mount /dev/md0 MOUNTDIRECTORY
 ```
+
+Change MOUNTDIRECTORY, with a directory array will be mounted to.
+
+### 3. Download and setup SQLite
+
+Download SQLite:
+
+```sh
+sudo apt-get update
+sudo apt-get install sqlite3
+```
+
+Create database instance in mounted directory:
+
+```sh
+sudo mkdir MOUNTEDDIRECTORY/Database
+sudo sqlite3 MOUNTEDDIRECTORY/Database/PictureLibraryAPI.db
+```
+
+### 4. Create a self-signed certificate
+
+
+### 5. Run the container
+
+Run the container by using this command and modifying CONTAINER_NAME with a suitable name and DIRECTORY with a path to a directory, drives are mounted to:
+
+```sh
+docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=bind,source=DIRECTORY,target=PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
+```
+
+Command for ARM32 architecture machine (RaspberryPi):
+
+```sh
+docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=bind,source=DIRECTORY,target=PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
+```
+
+## Using configuration app
+
+**SOON**
 
