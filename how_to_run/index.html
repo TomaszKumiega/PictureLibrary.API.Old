@@ -243,50 +243,57 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#manually" class="md-nav__link">
+    Manually
+  </a>
+  
+    <nav class="md-nav" aria-label="Manually">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#1-install-docker" class="md-nav__link">
     1. Install Docker
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#2-run-the-container-using-terminal-on-linux-or-powershell-on-windows" class="md-nav__link">
-    2. Run the container using terminal on linux or powershell on windows
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Run the container using terminal on linux or powershell on windows">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mounting-storage" class="md-nav__link">
-    Mounting storage
+  <a href="#2-mount-storage" class="md-nav__link">
+    2. Mount storage
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#using-multiple-directories-and-drives-for-storage" class="md-nav__link">
-    Using multiple directories and drives for storage
+  <a href="#3-download-and-setup-sqlite" class="md-nav__link">
+    3. Download and setup SQLite
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#recovery-drives" class="md-nav__link">
-    Recovery drives
+  <a href="#4-create-a-self-signed-certificate" class="md-nav__link">
+    4. Create a self-signed certificate
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-the-container" class="md-nav__link">
-    Run the container
+  <a href="#5-run-the-container" class="md-nav__link">
+    5. Run the container
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-configuration-app" class="md-nav__link">
+    Using configuration app
+  </a>
   
 </li>
       
@@ -361,50 +368,57 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#manually" class="md-nav__link">
+    Manually
+  </a>
+  
+    <nav class="md-nav" aria-label="Manually">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#1-install-docker" class="md-nav__link">
     1. Install Docker
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#2-run-the-container-using-terminal-on-linux-or-powershell-on-windows" class="md-nav__link">
-    2. Run the container using terminal on linux or powershell on windows
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Run the container using terminal on linux or powershell on windows">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mounting-storage" class="md-nav__link">
-    Mounting storage
+  <a href="#2-mount-storage" class="md-nav__link">
+    2. Mount storage
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#using-multiple-directories-and-drives-for-storage" class="md-nav__link">
-    Using multiple directories and drives for storage
+  <a href="#3-download-and-setup-sqlite" class="md-nav__link">
+    3. Download and setup SQLite
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#recovery-drives" class="md-nav__link">
-    Recovery drives
+  <a href="#4-create-a-self-signed-certificate" class="md-nav__link">
+    4. Create a self-signed certificate
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-the-container" class="md-nav__link">
-    Run the container
+  <a href="#5-run-the-container" class="md-nav__link">
+    5. Run the container
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-configuration-app" class="md-nav__link">
+    Using configuration app
+  </a>
   
 </li>
       
@@ -426,38 +440,47 @@
                 
                 
                 <h1 id="running-picture-library-api">Running Picture Library API</h1>
-<h2 id="1-install-docker">1. <a href="https://www.docker.com/get-started">Install Docker</a></h2>
-<h2 id="2-run-the-container-using-terminal-on-linux-or-powershell-on-windows">2. Run the container using terminal on linux or powershell on windows</h2>
-<h3 id="mounting-storage">Mounting storage</h3>
-<p>When running the container, you need to specify which directories will be used to store data by using --mount syntax.</p>
-<p>To specify a directory on host device, where data will be stored, change the source parameter value:</p>
-<div class="codehilite"><pre><span></span><code>--mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_DIRECTORY/,target<span class="o">=</span>Directory1
+<h2 id="manually">Manually</h2>
+<h3 id="1-install-docker">1. <a href="https://www.docker.com/get-started">Install Docker</a></h3>
+<h3 id="2-mount-storage">2. Mount storage</h3>
+<p>Mount drives that will be used for storing data using this command:</p>
+<div class="codehilite"><pre><span></span><code>sudo mergerfs DRIVE_1:DRIVE_2:DRIVE_3 MOUNTDIRECTORY
 </code></pre></div>
 
-<h3 id="using-multiple-directories-and-drives-for-storage">Using multiple directories and drives for storage</h3>
-<p>When you need to use multiple directories, for example when you want to use multiple drives, use --mount syntax multiple times.
-With every new directory, change the number of the target directory as follows:</p>
-<ul>
-<li>Directory1</li>
-<li>Directory2</li>
-<li>Directory3</li>
-<li>...</li>
-</ul>
-<div class="codehilite"><pre><span></span><code>--mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_DIRECTORY/,target<span class="o">=</span>Directory1 --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_OTHER_DIRECTORY/,target<span class="o">=</span>Directory2
+<p>Change DRIVE_1, DRIVE_2, etc... with paths to the drives you would like to mount, and MOUNTDIRECTORY, with a directory they will be mounted to. </p>
+<p>If you want to specify RAID configuration, use this command:</p>
+<div class="codehilite"><pre><span></span><code>sudo mdadm --create --verbose /dev/md0 --level<span class="o">=</span><span class="m">1</span> /dev/sda1 /dev/sdb2
 </code></pre></div>
 
-<p><strong>WARNING</strong> 
-It's important to name target directories by following this convention, because application uses this naming scheme to recognize where it's supposed to store data.</p>
-<h3 id="recovery-drives">Recovery drives</h3>
-<p>To setup recovery drives, use --mount syntax the same way as for other drives and change target directory name to RecoveryDirectory:</p>
-<div class="codehilite"><pre><span></span><code>--mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>MY_RECOVERY_DRIVE/,target<span class="o">=</span>RecoveryDirectory1
+<p>Change /dev/sda1, /dev/sdb2, with drives you would like to mount and level, with RAID level you would like to use.</p>
+<p>After creating RAID array mount it to the directory:</p>
+<div class="codehilite"><pre><span></span><code>sudo mount /dev/md0 MOUNTDIRECTORY
 </code></pre></div>
 
-<p>Recovery drives will mirror the data stored on storage directories.</p>
-<h3 id="run-the-container">Run the container</h3>
-<p>Run the container by using this command and modifying CONTAINER_NAME and --mount syntax as shown above:</p>
-<div class="codehilite"><pre><span></span><code>docker run -d -it -p <span class="m">5000</span>:5000 -p <span class="m">5001</span>:5001 --name CONTAINER_NAME --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>DIRECTORY,target<span class="o">=</span>Directory1/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibrary-api:master
+<p>Change MOUNTDIRECTORY, with a directory array will be mounted to.</p>
+<h3 id="3-download-and-setup-sqlite">3. Download and setup SQLite</h3>
+<p>Download SQLite:</p>
+<div class="codehilite"><pre><span></span><code>sudo apt-get update
+sudo apt-get install sqlite3
 </code></pre></div>
+
+<p>Create database instance in mounted directory:</p>
+<div class="codehilite"><pre><span></span><code>sudo mkdir MOUNTEDDIRECTORY/Database
+sudo sqlite3 MOUNTEDDIRECTORY/Database/PictureLibraryAPI.db
+</code></pre></div>
+
+<h3 id="4-create-a-self-signed-certificate">4. Create a self-signed certificate</h3>
+<h3 id="5-run-the-container">5. Run the container</h3>
+<p>Run the container by using this command and modifying CONTAINER_NAME with a suitable name and DIRECTORY with a path to a directory, drives are mounted to:</p>
+<div class="codehilite"><pre><span></span><code>docker run -d -it -p <span class="m">5000</span>:5000 -p <span class="m">5001</span>:5001 --name CONTAINER_NAME --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>DIRECTORY,target<span class="o">=</span>PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
+</code></pre></div>
+
+<p>Command for ARM32 architecture machine (RaspberryPi):</p>
+<div class="codehilite"><pre><span></span><code>docker run -d -it -p <span class="m">5000</span>:5000 -p <span class="m">5001</span>:5001 --name CONTAINER_NAME --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>DIRECTORY,target<span class="o">=</span>PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
+</code></pre></div>
+
+<h2 id="using-configuration-app">Using configuration app</h2>
+<p><strong>SOON</strong></p>
                 
               
               
