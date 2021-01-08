@@ -9,12 +9,12 @@ namespace PictureLibrary_API.Repositories
     public interface ILibraryRepository 
     {
         Task<IEnumerable<Library>> GetAllAsync();
-        Task<Library> GetBySourceAsync(string source);
+        Task<Library> GetBySourceAsync(string fullPath);
 
         Task<Library> AddAsync(Library entity);
         Task<IEnumerable<Library>> AddRangeAsync(IEnumerable<Library> entities);
 
-        Task RemoveAsync(string source);
+        Task RemoveAsync(string fullPath);
 
         Task RemoveAsync(Library entity);
         Task RemoveRangeAsync(IEnumerable<Library> entities);

@@ -67,21 +67,21 @@ namespace PictureLibrary_API.Repositories
             return libraries;
         }
 
-        public async Task<Library> GetBySourceAsync(string source)
+        public async Task<Library> GetBySourceAsync(string fullPath)
         {
-            if (source.IsNullOrEmpty()) throw new ArgumentException();
+            if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            var fileStream = await Task.Run(() => _fileSystemService.OpenFile(source, FileMode.Open));
+            var fileStream = await Task.Run(() => _fileSystemService.OpenFile(fullPath, FileMode.Open));
             var library = await ReadLibraryFromFileStreamAsync(fileStream);
 
             return library;
         }
 
-        public async Task RemoveAsync(string source)
+        public async Task RemoveAsync(string fullPath)
         {
-            if (source.IsNullOrEmpty()) throw new ArgumentException();
+            if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            await Task.Run(() => _fileSystemService.DeleteFile(source));
+            await Task.Run(() => _fileSystemService.DeleteFile(fullPath));
         }
 
         public async Task RemoveAsync(Library entity)
@@ -175,7 +175,7 @@ namespace PictureLibrary_API.Repositories
                                     var imageFile = new ImageFile();
                                     imageFile.Name = imageElement.Attribute("name").Value;
                                     imageFile.Extension = imageElement.Attribute("extension").Value;
-                                    imageFile.Source = imageElement.Attribute("source").Value;
+                                    imageFile.FullPath = imageElement.Attribute("source").Value;
                                     imageFile.CreationTime = DateTime.Parse(imageElement.Attribute("creationTime").Value);
                                     imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
                                     imageFile.LastWriteTime = DateTime.Parse(imageElement.Attribute("lastWriteTime").Value);
@@ -247,7 +247,7 @@ namespace PictureLibrary_API.Repositories
 
 
                 var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", i.Extension),
-                    new XAttribute("source", i.Source), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
+                    new XAttribute("source", i.FullPath), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
                     new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()), new XAttribute("tags", tags));
 
                 imagesElement.Add(imageFileElement);

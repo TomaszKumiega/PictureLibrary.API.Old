@@ -7,8 +7,8 @@ namespace PictureLibrary_API.Model
     {
         public string Name { get; set; }
         public string Extension { get; set; }
-        public string Source { get; set; }
-        public string LibrarySource { get; set; }
+        public string FullPath { get; set; }
+        public string LibraryFullPath { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastAccessTime { get; set; }
         public DateTime LastWriteTime { get; set; }
@@ -24,8 +24,8 @@ namespace PictureLibrary_API.Model
         {
             Name = name;
             Extension = extension;
-            Source = source;
-            LibrarySource = librarysource;
+            FullPath = source;
+            LibraryFullPath = librarysource;
             CreationTime = creationTime;
             LastAccessTime = lastAccessTime;
             LastWriteTime = lastWriteTime;

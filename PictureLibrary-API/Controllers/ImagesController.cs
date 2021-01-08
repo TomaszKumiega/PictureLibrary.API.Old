@@ -33,11 +33,11 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
-            if (library.Images.Find(x => x.Source == imageFile.Source) == null)
+            if (library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
             {
                 return BadRequest();
             }
@@ -45,7 +45,7 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var image = await _imageRepository.GetBySourceAsync(imageFile.Source);
+            var image = await _imageRepository.GetBySourceAsync(imageFile.FullPath);
 
             if (image == null)
             {
@@ -78,7 +78,7 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageFile")]
         public async Task<IActionResult> PutImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
@@ -87,7 +87,7 @@ namespace PictureLibrary_API.Controllers
 
             var updatedImage = await _imageRepository.UpdateAsync(imageFile);
 
-            library.Images.Remove(library.Images.Find(x => x.Source == imageFile.Source));
+            library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
             library.Images.Add(updatedImage);
 
             await _libraryRepository.UpdateAsync(library);
@@ -98,7 +98,7 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageContent")]
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
-            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibrarySource);
+            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
@@ -107,7 +107,7 @@ namespace PictureLibrary_API.Controllers
 
             var updatedImage = await _imageRepository.UpdateAsync(image);
 
-            library.Images.Remove(library.Images.Find(x => x.Source == image.ImageFile.Source));
+            library.Images.Remove(library.Images.Find(x => x.FullPath == image.ImageFile.FullPath));
             library.Images.Add(updatedImage);
 
             await _libraryRepository.UpdateAsync(library);
@@ -118,7 +118,7 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImageFile>> PostImage([FromBody] Image image)
         {
-            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibrarySource);
+            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
@@ -136,7 +136,7 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibrarySource);
+            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
@@ -145,14 +145,14 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                await _imageRepository.RemoveAsync(imageFile.Source);
+                await _imageRepository.RemoveAsync(imageFile.FullPath);
             }
             catch
             {
                 return NotFound();
             }
 
-            library.Images.Remove(library.Images.Find(x => x.Source == imageFile.Source));
+            library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
             await _libraryRepository.UpdateAsync(library);
 
             return Ok();
