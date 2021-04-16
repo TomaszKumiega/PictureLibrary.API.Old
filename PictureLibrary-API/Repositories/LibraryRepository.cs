@@ -18,18 +18,22 @@ namespace PictureLibrary_API.Repositories
         private readonly ILogger<LibraryRepository> _logger;
         private IFileSystemService _fileSystemService;
         private IDirectoryService _directoryService;
+        private IFileService _fileService;
 
-        public LibraryRepository(ILogger<LibraryRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService)
+        public LibraryRepository(ILogger<LibraryRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService, IFileService fileService)
         {
             _logger = logger;
             _fileSystemService = fileSystemService;
             _directoryService = directoryService;
+            _fileService = fileService;
         }
 
         public async Task<Library> AddAsync(Library entity)
         {
-            
-            var fileStream = await Task.Run(()=>_fileSystemService.CreateFile(entity.Name + '-' + Guid.NewGuid().ToString() + '/' + entity.Name + ".plib"));
+            var path = entity.Name + '-' + Guid.NewGuid().ToString() + '/' + entity.Name + ".plib";
+
+            await Task.Run(() => _fileService.CreateFile(path));
+            var fileStream = await Task.Run(() => _fileService.OpenFile(path, FileMode.Open));
 
             await WriteLibraryToFileStreamAsync(fileStream, entity);
 
@@ -63,7 +67,7 @@ namespace PictureLibrary_API.Repositories
 
             foreach(var f in filePaths)
             {
-                var fileStream = await Task.Run(() => _fileSystemService.OpenFile(f, FileMode.Open));
+                var fileStream = await Task.Run(() => _fileService.OpenFile(f, FileMode.Open));
                 libraries.Add(await ReadLibraryFromFileStreamAsync(fileStream));
             }
 
@@ -74,7 +78,7 @@ namespace PictureLibrary_API.Repositories
         {
             if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            var fileStream = await Task.Run(() => _fileSystemService.OpenFile(fullPath, FileMode.Open));
+            var fileStream = await Task.Run(() => _fileService.OpenFile(fullPath, FileMode.Open));
             var library = await ReadLibraryFromFileStreamAsync(fileStream);
 
             return library;
@@ -84,14 +88,14 @@ namespace PictureLibrary_API.Repositories
         {
             if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            await Task.Run(() => _fileSystemService.DeleteFile(fullPath));
+            await Task.Run(() => _fileService.DeleteFile(fullPath));
         }
 
         public async Task RemoveAsync(Library entity)
         {
             if (entity == null) throw new ArgumentException();
 
-            await Task.Run(()=>_fileSystemService.DeleteFile(entity.FullPath));
+            await Task.Run(()=>_fileService.DeleteFile(entity.FullPath));
         }
 
         public async Task RemoveRangeAsync(IEnumerable<Library> entities)
@@ -117,7 +121,7 @@ namespace PictureLibrary_API.Repositories
             try
             {
                 // Write library to the file
-                var fileStream = _fileSystemService.OpenFile(entity.FullPath, FileMode.Open);
+                var fileStream = _fileService.OpenFile(entity.FullPath, FileMode.Open);
                 await WriteLibraryToFileStreamAsync(fileStream, entity);
             }
             catch (Exception e)

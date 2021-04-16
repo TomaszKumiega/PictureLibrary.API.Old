@@ -45,6 +45,7 @@ namespace PictureLibrary_API
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRefreshTokenService, RefreshTokenService>();
             services.AddTransient<IDirectoryService, DirectoryService>();
+            services.AddTransient<IFileService, FileService>();
 
             services.AddDbContext<DatabaseContext>(options =>
             {

@@ -17,18 +17,24 @@ namespace PictureLibrary_API.Repositories
         private readonly ILogger<ImageRepository> _logger;
         private IFileSystemService _fileSystemService;
         private IDirectoryService _directoryService;
+        private IFileService _fileService;
 
-        public ImageRepository(ILogger<ImageRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService)
+        public ImageRepository(ILogger<ImageRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService, IFileService fileService)
         {
             _logger = logger;
             _fileSystemService = fileSystemService;
             _directoryService = directoryService;
+            _fileService = fileService;
         }
 
         public async Task<ImageFile> AddAsync(Image image)
         {
-            var filePath = Path.GetFileNameWithoutExtension(image.ImageFile.LibraryFullPath) + "/Images/" + Guid.NewGuid().ToString() + image.ImageFile.Extension;
-            var path = await Task.Run(() => _fileSystemService.AddFile(filePath, image.ImageContent));
+            var libraryDirectory = _fileService.GetFileInfo(image.ImageFile.LibraryFullPath).Directory.FullName;
+            if (!libraryDirectory.EndsWith("/")) libraryDirectory += "/";
+
+            var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + image.ImageFile.Extension;
+            var path = await Task.Run(() => _fileService.AddFile(filePath, image.ImageContent));
+
             var imageFile = new ImageFile();
 
             var fileInfo = new FileInfo(path);
@@ -59,14 +65,14 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<IEnumerable<byte[]>> GetAllAsync(string libraryFullPath)
         {
-            var fileInfo = _fileSystemService.GetFileInfo(libraryFullPath);
+            var fileInfo = _fileService.GetFileInfo(libraryFullPath);
             var directory = fileInfo.Directory.FullName;
             var imagePaths = await Task.Run(() => _directoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory + directory + FileSystemInfo.FileSystemInfo.ImagesDirectory, "*.*"));
             var images = new List<byte[]>();
 
             foreach(var i in imagePaths)
             {
-                images.Add(await Task.Run(() => _fileSystemService.GetFile(i)));
+                images.Add(await Task.Run(() => _fileService.ReadAllBytes(i)));
             }
 
             return images;
@@ -74,14 +80,14 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<byte[]> GetBySourceAsync(string fullPath)
         {
-            var image = await Task.Run(() => _fileSystemService.GetFile(fullPath));
+            var image = await Task.Run(() => _fileService.ReadAllBytes(fullPath));
 
             return image;
         }
 
         public async Task<Icon> GetIcon(string imageFullPath)
         {
-            return await Task.Run(()=>_fileSystemService.ExtractAssociatedIcon(imageFullPath));
+            return await Task.Run(() => _fileService.ExtractAssociatedIcon(imageFullPath));
         }
 
         public async Task<IEnumerable<Icon>> GetIcons(IEnumerable<string> imageFullPaths)
@@ -98,7 +104,7 @@ namespace PictureLibrary_API.Repositories
 
         public async Task RemoveAsync(string fullPath)
         {
-            await Task.Run(() => _fileSystemService.DeleteFile(fullPath));
+            await Task.Run(() => _fileService.DeleteFile(fullPath));
         }
 
         public async Task RemoveAsync(ImageFile entity)
@@ -123,10 +129,10 @@ namespace PictureLibrary_API.Repositories
         {
             if (entity == null) throw new ArgumentException();
 
-            await Task.Run(() => _fileSystemService.RenameFile(entity.FullPath, entity.Name + entity.Extension));
+            await Task.Run(() => _fileService.RenameFile(entity.FullPath, entity.Name + entity.Extension));
 
-            var oldFileInfo = await Task.Run(() => _fileSystemService.GetFileInfo(entity.FullPath));
-            var newFileInfo = await Task.Run(() => _fileSystemService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + entity.Extension));
+            var oldFileInfo = await Task.Run(() => _fileService.GetFileInfo(entity.FullPath));
+            var newFileInfo = await Task.Run(() => _fileService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + entity.Extension));
 
             var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibraryFullPath, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
                 , newFileInfo.LastWriteTimeUtc, newFileInfo.Length, entity.Tags);
@@ -136,9 +142,8 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> UpdateAsync(Image entity)
         {
-            var path = await Task.Run(() => _fileSystemService.AddFile(entity.ImageFile.FullPath, entity.ImageContent));
-
-            var fileInfo = new FileInfo(path);
+            // overwrites the file
+            var path = await Task.Run(() => _fileService.AddFile(entity.ImageFile.FullPath, entity.ImageContent));
 
             return entity.ImageFile;
         }
