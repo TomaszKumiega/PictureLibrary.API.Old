@@ -33,17 +33,19 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
+            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-
-            if (library == null) return BadRequest();
-
-            if (library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
+            if (library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
             {
                 return BadRequest();
             }
 
+            // check if user owns the library
             var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            {
+                return Unauthorized();
+            }
 
             var image = await ImageRepository.GetBySourceAsync(imageFile.FullPath);
 
