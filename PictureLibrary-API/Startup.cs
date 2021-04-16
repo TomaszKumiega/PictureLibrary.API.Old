@@ -19,7 +19,6 @@ using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Repositories;
 using PictureLibrary_API.Services;
-using PictureLibraryModel.Services;
 
 namespace PictureLibrary_API
 {
@@ -39,7 +38,6 @@ namespace PictureLibrary_API
             services.Configure<AppSettings>(appSettingsSection);
 
             services.AddControllers();
-            services.AddTransient<IFileSystemService, FileSystemService>();
             services.AddTransient<ILibraryRepository, LibraryRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<IUserService, UserService>();

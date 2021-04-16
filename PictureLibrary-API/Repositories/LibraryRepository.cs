@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Services;
-using PictureLibraryModel.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,14 +15,12 @@ namespace PictureLibrary_API.Repositories
     public class LibraryRepository : ILibraryRepository
     {
         private readonly ILogger<LibraryRepository> _logger;
-        private IFileSystemService _fileSystemService;
         private IDirectoryService _directoryService;
         private IFileService _fileService;
 
-        public LibraryRepository(ILogger<LibraryRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService, IFileService fileService)
+        public LibraryRepository(ILogger<LibraryRepository> logger, IDirectoryService directoryService, IFileService fileService)
         {
             _logger = logger;
-            _fileSystemService = fileSystemService;
             _directoryService = directoryService;
             _fileService = fileService;
         }
