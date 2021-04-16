@@ -14,23 +14,23 @@ namespace PictureLibrary_API.Repositories
 {
     public class LibraryRepository : ILibraryRepository
     {
-        private readonly ILogger<LibraryRepository> _logger;
-        private IDirectoryService _directoryService;
-        private IFileService _fileService;
+        private ILogger<LibraryRepository> Logger { get; }
+        private IDirectoryService DirectoryService { get; }
+        private IFileService FileService { get; }
 
         public LibraryRepository(ILogger<LibraryRepository> logger, IDirectoryService directoryService, IFileService fileService)
         {
-            _logger = logger;
-            _directoryService = directoryService;
-            _fileService = fileService;
+            Logger = logger;
+            DirectoryService = directoryService;
+            FileService = fileService;
         }
 
         public async Task<Library> AddAsync(Library entity)
         {
             var path = entity.Name + '-' + Guid.NewGuid().ToString() + '\\' + entity.Name + ".plib";
 
-            await Task.Run(() => _fileService.CreateFile(path));
-            var fileStream = await Task.Run(() => _fileService.OpenFile(path, FileMode.Open));
+            await Task.Run(() => FileService.CreateFile(path));
+            var fileStream = await Task.Run(() => FileService.OpenFile(path, FileMode.Open));
 
             await WriteLibraryToFileStreamAsync(fileStream, entity);
 
@@ -59,12 +59,12 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<IEnumerable<Library>> GetAllAsync()
         {
-            var filePaths = await Task.Run(() => _directoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory, "*.plib"));
+            var filePaths = await Task.Run(() => DirectoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory, "*.plib"));
             var libraries = new List<Library>();
 
             foreach(var f in filePaths)
             {
-                var fileStream = await Task.Run(() => _fileService.OpenFile(f, FileMode.Open));
+                var fileStream = await Task.Run(() => FileService.OpenFile(f, FileMode.Open));
                 libraries.Add(await ReadLibraryFromFileStreamAsync(fileStream));
             }
 
@@ -75,7 +75,7 @@ namespace PictureLibrary_API.Repositories
         {
             if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            var fileStream = await Task.Run(() => _fileService.OpenFile(fullPath, FileMode.Open));
+            var fileStream = await Task.Run(() => FileService.OpenFile(fullPath, FileMode.Open));
             var library = await ReadLibraryFromFileStreamAsync(fileStream);
 
             return library;
@@ -85,14 +85,14 @@ namespace PictureLibrary_API.Repositories
         {
             if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
 
-            await Task.Run(() => _fileService.DeleteFile(fullPath));
+            await Task.Run(() => FileService.DeleteFile(fullPath));
         }
 
         public async Task RemoveAsync(Library entity)
         {
             if (entity == null) throw new ArgumentException();
 
-            await Task.Run(()=>_fileService.DeleteFile(entity.FullPath));
+            await Task.Run(()=>FileService.DeleteFile(entity.FullPath));
         }
 
         public async Task RemoveRangeAsync(IEnumerable<Library> entities)
@@ -118,12 +118,12 @@ namespace PictureLibrary_API.Repositories
             try
             {
                 // Write library to the file
-                var fileStream = _fileService.OpenFile(entity.FullPath, FileMode.Open);
+                var fileStream = FileService.OpenFile(entity.FullPath, FileMode.Open);
                 await WriteLibraryToFileStreamAsync(fileStream, entity);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                Logger.LogError(e, e.Message);
                 await Task.Run(()=>document.Save(entity.FullPath));
             }
         }
@@ -274,7 +274,7 @@ namespace PictureLibrary_API.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                Logger.LogError(e, e.Message);
             }
         }
     }

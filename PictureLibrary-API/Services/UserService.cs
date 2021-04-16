@@ -9,13 +9,13 @@ namespace PictureLibrary_API.Services
 {
     public class UserService : IUserService
     {
-        private DatabaseContext _databaseContext;
-        private readonly ILogger<UserService> _logger;
+        private ILogger<UserService> Logger { get; }
+        private DatabaseContext DatabaseContext { get; }
 
         public UserService(ILogger<UserService> logger, DatabaseContext databaseContext)
         {
-            _logger = logger;
-            _databaseContext = databaseContext;
+            Logger = logger;
+            DatabaseContext = databaseContext;
         }
 
         public User Authenticate(string username, string password)
@@ -23,7 +23,7 @@ namespace PictureLibrary_API.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _databaseContext.Users.SingleOrDefault(x => x.Username == username);
+            var user = DatabaseContext.Users.SingleOrDefault(x => x.Username == username);
 
             // check if username exists
             if (user == null)
@@ -43,7 +43,7 @@ namespace PictureLibrary_API.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            if (_databaseContext.Users.Any(x => x.Username == user.Username))
+            if (DatabaseContext.Users.Any(x => x.Username == user.Username))
                 throw new Exception("Username \"" + user.Username + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
@@ -52,35 +52,35 @@ namespace PictureLibrary_API.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            _databaseContext.Users.Add(user);
-            _databaseContext.SaveChanges();
+            DatabaseContext.Users.Add(user);
+            DatabaseContext.SaveChanges();
 
             return user;
         }
 
         public void Delete(Guid id)
         {
-            var user = _databaseContext.Users.Find(id);
+            var user = DatabaseContext.Users.Find(id);
             if (user != null)
             {
-                _databaseContext.Users.Remove(user);
-                _databaseContext.SaveChanges();
+                DatabaseContext.Users.Remove(user);
+                DatabaseContext.SaveChanges();
             }
         }
 
         public IEnumerable<User> GetAll()
         {
-            return _databaseContext.Users;
+            return DatabaseContext.Users;
         }
 
         public User GetById(Guid id)
         {
-            return _databaseContext.Users.Find(id);
+            return DatabaseContext.Users.Find(id);
         }
 
         public void Update(User userParam, string password = null)
         {
-            var user = _databaseContext.Users.Find(userParam.Id);
+            var user = DatabaseContext.Users.Find(userParam.Id);
 
             if (user == null)
                 throw new Exception("User not found");
@@ -89,7 +89,7 @@ namespace PictureLibrary_API.Services
             if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
             {
                 // throw error if the new username is already taken
-                if (_databaseContext.Users.Any(x => x.Username == userParam.Username))
+                if (DatabaseContext.Users.Any(x => x.Username == userParam.Username))
                     throw new Exception("Username " + userParam.Username + " is already taken");
 
                 user.Username = userParam.Username;
@@ -105,8 +105,8 @@ namespace PictureLibrary_API.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            _databaseContext.Users.Update(user);
-            _databaseContext.SaveChanges();
+            DatabaseContext.Users.Update(user);
+            DatabaseContext.SaveChanges();
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

@@ -19,21 +19,21 @@ namespace PictureLibrary_API.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly ILogger<ImagesController> _logger;
-        private IImageRepository _imageRepository;
-        private ILibraryRepository _libraryRepository;
+        private ILogger<ImagesController> Logger { get; }
+        private IImageRepository ImageRepository { get; }
+        private ILibraryRepository LibraryRepository { get; }
 
         public ImagesController(ILogger<ImagesController> logger, IImageRepository imageRepository, ILibraryRepository libraryRepository)
         {
-            _logger = logger;
-            _imageRepository = imageRepository;
-            _libraryRepository = libraryRepository;
+            Logger = logger;
+            ImageRepository = imageRepository;
+            LibraryRepository = libraryRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
@@ -45,7 +45,7 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var image = await _imageRepository.GetBySourceAsync(imageFile.FullPath);
+            var image = await ImageRepository.GetBySourceAsync(imageFile.FullPath);
 
             if (image == null)
             {
@@ -58,14 +58,14 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{librarySource}")]
         public async Task<ActionResult<IEnumerable<byte[]>>> GetImages(string librarySource)
         {
-            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+            var library = await LibraryRepository.GetBySourceAsync(librarySource);
 
             if (library == null) return BadRequest();
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var images = await _imageRepository.GetAllAsync(librarySource);
+            var images = await ImageRepository.GetAllAsync(librarySource);
 
             if (images == null)
             {
@@ -78,19 +78,19 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageFile")]
         public async Task<IActionResult> PutImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var updatedImage = await _imageRepository.UpdateAsync(imageFile);
+            var updatedImage = await ImageRepository.UpdateAsync(imageFile);
 
             library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
             library.Images.Add(updatedImage);
 
-            await _libraryRepository.UpdateAsync(library);
+            await LibraryRepository.UpdateAsync(library);
 
             return NoContent();
         }
@@ -98,19 +98,19 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageContent")]
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
-            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+            var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
 
             if (library == null) return BadRequest();
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var updatedImage = await _imageRepository.UpdateAsync(image);
+            var updatedImage = await ImageRepository.UpdateAsync(image);
 
             library.Images.Remove(library.Images.Find(x => x.FullPath == image.ImageFile.FullPath));
             library.Images.Add(updatedImage);
 
-            await _libraryRepository.UpdateAsync(library);
+            await LibraryRepository.UpdateAsync(library);
 
             return NoContent();
         }
@@ -118,17 +118,17 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImageFile>> PostImage([FromBody] Image image)
         {
-            var library = await _libraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+            var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var imageFile = await _imageRepository.AddAsync(image);
+            var imageFile = await ImageRepository.AddAsync(image);
 
             library.Images.Add(imageFile);
-            await _libraryRepository.UpdateAsync(library);
+            await LibraryRepository.UpdateAsync(library);
 
             return CreatedAtAction("GetImage", new { name = imageFile.Name }, imageFile);
         }
@@ -136,7 +136,7 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteImage([FromBody] ImageFile imageFile)
         {
-            var library = await _libraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
@@ -145,7 +145,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                await _imageRepository.RemoveAsync(imageFile.FullPath);
+                await ImageRepository.RemoveAsync(imageFile.FullPath);
             }
             catch
             {
@@ -153,7 +153,7 @@ namespace PictureLibrary_API.Controllers
             }
 
             library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
-            await _libraryRepository.UpdateAsync(library);
+            await LibraryRepository.UpdateAsync(library);
 
             return Ok();
         }
@@ -161,14 +161,14 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("icons/{librarySource}")]
         public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string librarySource, [FromBody] IEnumerable<string> imageSources)
         {
-            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+            var library = await LibraryRepository.GetBySourceAsync(librarySource);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var icons = await _imageRepository.GetIcons(imageSources);
+            var icons = await ImageRepository.GetIcons(imageSources);
 
             return Ok(icons);
         }
@@ -176,14 +176,14 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("icons/{librarySource}/{imageSource}")]
         public async Task<IActionResult> GetIcon(string librarySource, string imageSource)
         {
-            var library = await _libraryRepository.GetBySourceAsync(librarySource);
+            var library = await LibraryRepository.GetBySourceAsync(librarySource);
 
             if (library == null) return BadRequest("Library doesn't exist");
 
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
 
-            var icon = await _imageRepository.GetIcon(imageSource);
+            var icon = await ImageRepository.GetIcon(imageSource);
 
             return Ok(icon);
         }

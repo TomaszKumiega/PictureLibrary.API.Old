@@ -9,20 +9,20 @@ namespace PictureLibrary_API.Services
 {
     public class RefreshTokenService : IRefreshTokenService
     {
-        private DatabaseContext _context;
+        private DatabaseContext Context { get; }
 
         public RefreshTokenService(DatabaseContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public void DeleteRefreshToken(string userId, string refreshToken)
         {
-            var token = _context.RefreshTokens
+            var token = Context.RefreshTokens
                 .Where(x => x.UserId == userId && x.Token == refreshToken)
                 .FirstOrDefault();
-            _context.RefreshTokens.Remove(token);
-            _context.SaveChanges();
+            Context.RefreshTokens.Remove(token);
+            Context.SaveChanges();
         }
 
         public string GenerateToken()
@@ -37,7 +37,7 @@ namespace PictureLibrary_API.Services
 
         public string GetRefreshToken(string userId)
         {
-            var token = _context.RefreshTokens
+            var token = Context.RefreshTokens
                 .Where(x => x.UserId == userId)
                 .FirstOrDefault();
             
@@ -52,8 +52,8 @@ namespace PictureLibrary_API.Services
             refToken.UserId = userId;
             refToken.Token = refreshToken;
 
-            _context.RefreshTokens.Add(refToken);
-            _context.SaveChanges();
+            Context.RefreshTokens.Add(refToken);
+            Context.SaveChanges();
         }
     }
 }

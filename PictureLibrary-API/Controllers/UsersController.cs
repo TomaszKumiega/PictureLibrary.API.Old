@@ -21,33 +21,33 @@ namespace PictureLibrary_API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
-        private IUserService _userService;
-        private IMapper _mapper;
-        private IRefreshTokenService _refreshTokenService;
-        private readonly AppSettings _appSettings;
+        private ILogger<UsersController> Logger { get; }
+        private IUserService UserService { get; }
+        private IMapper Mapper { get; }
+        private IRefreshTokenService RefreshTokenService { get; }
+        private AppSettings AppSettings { get; }
 
         public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService, IRefreshTokenService refreshTokenService)
         {
-            _logger = logger;
-            _mapper = mapper;
-            _appSettings = appSettings.Value;
-            _userService = userService;
-            _refreshTokenService = refreshTokenService;
+            Logger = logger;
+            Mapper = mapper;
+            AppSettings = appSettings.Value;
+            UserService = userService;
+            RefreshTokenService = refreshTokenService;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]AuthenticateModel model)
         {
-            var user = _userService.Authenticate(model.Username, model.Password);
+            var user = UserService.Authenticate(model.Username, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             var tokenString = GenerateToken(user.Id.ToString());
-            var refreshToken = _refreshTokenService.GenerateToken();
-            _refreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
+            var refreshToken = RefreshTokenService.GenerateToken();
+            RefreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
 
             return Ok(new
             {
@@ -63,11 +63,11 @@ namespace PictureLibrary_API.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserModel model)
         {
-            var user = _mapper.Map<User>(model);
+            var user = Mapper.Map<User>(model);
 
             try
             {
-                _userService.Create(user, model.Password);
+                UserService.Create(user, model.Password);
                 return Ok();
             }
             catch (Exception ex)
@@ -82,14 +82,14 @@ namespace PictureLibrary_API.Controllers
         {
             var principal = GetPrincipalFromExpiredToken(token);
             var userId = principal.Identity.Name;
-            var savedRefreshToken = _refreshTokenService.GetRefreshToken(userId); 
+            var savedRefreshToken = RefreshTokenService.GetRefreshToken(userId); 
             if (savedRefreshToken != refreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
             var newJwtToken = GenerateToken(userId);
-            var newRefreshToken = _refreshTokenService.GenerateToken();
-            _refreshTokenService.DeleteRefreshToken(userId, refreshToken);
-            _refreshTokenService.SaveRefreshToken(userId, newRefreshToken);
+            var newRefreshToken = RefreshTokenService.GenerateToken();
+            RefreshTokenService.DeleteRefreshToken(userId, refreshToken);
+            RefreshTokenService.SaveRefreshToken(userId, newRefreshToken);
 
             return new ObjectResult(new
             {
@@ -101,8 +101,8 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _userService.GetAll();
-            var presentation = _mapper.Map<IList<UserPresentationModel>>(users);
+            var users = UserService.GetAll();
+            var presentation = Mapper.Map<IList<UserPresentationModel>>(users);
 
             return Ok(presentation);
         }
@@ -114,7 +114,7 @@ namespace PictureLibrary_API.Controllers
 
             if (userId != id.ToString()) return Unauthorized();
 
-            var user = _userService.GetById(id);
+            var user = UserService.GetById(id);
             return Ok(user);
         }
 
@@ -124,12 +124,12 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (userId != id.ToString()) return Unauthorized();
 
-            var user = _mapper.Map<User>(model);
+            var user = Mapper.Map<User>(model);
             user.Id = id;
 
             try
             {
-                _userService.Update(user, model.Password);
+                UserService.Update(user, model.Password);
                 return Ok();
             }
             catch(Exception e)
@@ -144,14 +144,14 @@ namespace PictureLibrary_API.Controllers
             var userId = User?.Identity.Name;
             if (userId != id.ToString()) return Unauthorized();
 
-            _userService.Delete(id);
+            UserService.Delete(id);
             return Ok();
         }
 
         private string GenerateToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(AppSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
