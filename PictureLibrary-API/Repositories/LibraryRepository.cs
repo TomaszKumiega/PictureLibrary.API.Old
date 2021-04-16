@@ -27,7 +27,7 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<Library> AddAsync(Library entity)
         {
-            var path = entity.Name + '-' + Guid.NewGuid().ToString() + '/' + entity.Name + ".plib";
+            var path = entity.Name + '-' + Guid.NewGuid().ToString() + '\\' + entity.Name + ".plib";
 
             await Task.Run(() => _fileService.CreateFile(path));
             var fileStream = await Task.Run(() => _fileService.OpenFile(path, FileMode.Open));

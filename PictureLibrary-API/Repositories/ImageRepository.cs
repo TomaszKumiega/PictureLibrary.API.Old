@@ -27,7 +27,7 @@ namespace PictureLibrary_API.Repositories
         public async Task<ImageFile> AddAsync(Image image)
         {
             var libraryDirectory = _fileService.GetFileInfo(image.ImageFile.LibraryFullPath).Directory.FullName;
-            if (!libraryDirectory.EndsWith("/")) libraryDirectory += "/";
+            if (!libraryDirectory.EndsWith("\\")) libraryDirectory += "\\";
 
             var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + image.ImageFile.Extension;
             var path = await Task.Run(() => _fileService.AddFile(filePath, image.ImageContent));
