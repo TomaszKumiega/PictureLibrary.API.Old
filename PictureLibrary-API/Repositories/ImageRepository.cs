@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Services;
 using PictureLibraryModel.Services;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace PictureLibrary_API.Repositories
     {
         private readonly ILogger<ImageRepository> _logger;
         private IFileSystemService _fileSystemService;
+        private IDirectoryService _directoryService;
 
-        public ImageRepository(ILogger<ImageRepository> logger, IFileSystemService fileSystemService)
+        public ImageRepository(ILogger<ImageRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService)
         {
             _logger = logger;
             _fileSystemService = fileSystemService;
+            _directoryService = directoryService;
         }
 
         public async Task<ImageFile> AddAsync(Image image)
@@ -57,8 +60,8 @@ namespace PictureLibrary_API.Repositories
         public async Task<IEnumerable<byte[]>> GetAllAsync(string libraryFullPath)
         {
             var fileInfo = _fileSystemService.GetFileInfo(libraryFullPath);
-            var directory = fileInfo.Directory.FullName; 
-            var imagePaths = await Task.Run(() => _fileSystemService.FindFiles("*.*", directory + "/Images"));
+            var directory = fileInfo.Directory.FullName;
+            var imagePaths = await Task.Run(() => _directoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory + directory + FileSystemInfo.FileSystemInfo.ImagesDirectory, "*.*"));
             var images = new List<byte[]>();
 
             foreach(var i in imagePaths)

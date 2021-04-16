@@ -35,6 +35,21 @@
     <Folder Include="Migrations\" />
     <Folder Include="Tests\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="FileSystemInfo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FileSystemInfo.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="FileSystemInfo.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FileSystemInfo.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>FileSystemInfo</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
 
 
 </Project>

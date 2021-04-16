@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Services;
 using PictureLibraryModel.Services;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace PictureLibrary_API.Repositories
     {
         private readonly ILogger<LibraryRepository> _logger;
         private IFileSystemService _fileSystemService;
+        private IDirectoryService _directoryService;
 
-        public LibraryRepository(ILogger<LibraryRepository> logger, IFileSystemService fileSystemService)
+        public LibraryRepository(ILogger<LibraryRepository> logger, IFileSystemService fileSystemService, IDirectoryService directoryService)
         {
             _logger = logger;
             _fileSystemService = fileSystemService;
+            _directoryService = directoryService;
         }
 
         public async Task<Library> AddAsync(Library entity)
@@ -55,7 +58,7 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<IEnumerable<Library>> GetAllAsync()
         {
-            var filePaths = await Task.Run(()=>_fileSystemService.FindFiles("*.plib", ""));
+            var filePaths = await Task.Run(() => _directoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory, "*.plib"));
             var libraries = new List<Library>();
 
             foreach(var f in filePaths)
