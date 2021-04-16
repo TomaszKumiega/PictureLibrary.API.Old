@@ -61,7 +61,7 @@ namespace FileSystemInfo {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images/.
+        ///   Looks up a localized string similar to Images\.
         /// </summary>
         internal static string ImagesDirectory {
             get {
@@ -70,7 +70,7 @@ namespace FileSystemInfo {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PictureLibraryFileSystem/.
+        ///   Looks up a localized string similar to \PictureLibraryFileSystem\.
         /// </summary>
         internal static string RootDirectory {
             get {
