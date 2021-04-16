@@ -111,15 +111,22 @@ namespace PictureLibrary_API.Controllers
             return NoContent();
         }
 
-        [HttpPut("imageContent")]
+        [HttpPut("image")]
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
+            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+            if (library == null)
+            {
+                return BadRequest();
+            }
 
-            if (library == null) return BadRequest();
-
+            // check if user owns the library
             var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            {
+                return Unauthorized();
+            }
 
             var updatedImage = await ImageRepository.UpdateAsync(image);
 
