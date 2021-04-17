@@ -25,13 +25,11 @@ namespace PictureLibrary_API.Controllers
         private IUserService UserService { get; }
         private IMapper Mapper { get; }
         private IAccessTokenService AccessTokenService { get; }
-        private AppSettings AppSettings { get; }
 
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService, IAccessTokenService refreshTokenService)
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUserService userService, IAccessTokenService refreshTokenService)
         {
             Logger = logger;
             Mapper = mapper;
-            AppSettings = appSettings.Value;
             UserService = userService;
             AccessTokenService = refreshTokenService;
         }
@@ -97,7 +95,7 @@ namespace PictureLibrary_API.Controllers
         [HttpPost("refresh")]
         public IActionResult Refresh(string token, string refreshToken)
         {
-            var principal = GetPrincipalFromExpiredToken(token);
+            var principal = AccessTokenService.GetPrincipalFromExpiredToken(token);
             var userId = principal.Identity.Name;
             var savedRefreshToken = AccessTokenService.GetRefreshToken(userId); 
             if (savedRefreshToken != refreshToken)
@@ -199,27 +197,5 @@ namespace PictureLibrary_API.Controllers
 
             return Ok();
         }
-
-        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false, 
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Secret)),
-                ValidateLifetime = false 
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
-        }
-
     }
 }

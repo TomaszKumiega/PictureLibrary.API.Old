@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
 using System;
@@ -17,10 +18,10 @@ namespace PictureLibrary_API.Services
         private DatabaseContext Context { get; }
         private AppSettings AppSettings { get; }
 
-        public AccessTokenService(DatabaseContext context, AppSettings appSettings)
+        public AccessTokenService(DatabaseContext context, IOptions<AppSettings> appSettings)
         {
             Context = context;
-            AppSettings = appSettings;
+            AppSettings = appSettings.Value;
         }
 
         public void DeleteRefreshToken(string userId, string refreshToken)
@@ -79,6 +80,27 @@ namespace PictureLibrary_API.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Secret)),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
     }
 }
