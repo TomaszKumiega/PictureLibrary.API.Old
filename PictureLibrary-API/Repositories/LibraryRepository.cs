@@ -30,14 +30,20 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<Library> AddAsync(Library entity)
         {
-            var path = entity.Name + '-' + Guid.NewGuid().ToString() + '\\' + entity.Name + ".plib";
+            // create library folder with images subfolder
+            var libraryFolderPath = FileSystemInfo.FileSystemInfo.RootDirectory + entity.Name + '-' + Guid.NewGuid().ToString();
+            DirectoryService.CreateDirectory(libraryFolderPath + '\\' + FileSystemInfo.FileSystemInfo.ImagesDirectory);
 
+            // create library file
+            var path = libraryFolderPath + '\\' + entity.Name + ".plib";
             await Task.Run(() => FileService.CreateFile(path));
-            var fileStream = await Task.Run(() => FileService.OpenFile(path, FileMode.Open));
 
+            // write library to file
+            var fileStream = await Task.Run(() => FileService.OpenFile(path, FileMode.Open));
             await WriteLibraryToFileStreamAsync(fileStream, entity);
 
-            entity.FullName = fileStream.Name;
+            entity.FullName = path;
+
             return entity;
         }
 
