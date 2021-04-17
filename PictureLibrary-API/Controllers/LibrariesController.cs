@@ -28,15 +28,15 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
+            // check if library exists
             var library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
-
-            var userId = User?.Identity.Name;
-
             if (library == null)
             {
                 return NotFound();
             }
 
+            // check if user owns the library
+            var userId = User?.Identity.Name;
             if (!library.Owners.Where(x=>x.ToString() == userId).Any())
             {
                 return Unauthorized();
@@ -51,8 +51,8 @@ namespace PictureLibrary_API.Controllers
             var allLibraries = await Task.Run(() => LibraryRepository.GetAllAsync());
             var libraries = new List<Library>();
 
+            // select libraries owned by the user
             var userId = User?.Identity.Name;
-
             if(allLibraries != null)
             {
                 foreach(var l in allLibraries)
