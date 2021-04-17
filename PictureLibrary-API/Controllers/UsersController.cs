@@ -138,7 +138,17 @@ namespace PictureLibrary_API.Controllers
                 return Unauthorized();
             }
 
-            var user = UserService.GetById(id);
+            User user = null;
+            
+            try
+            {
+                user = UserService.GetById(id);
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return Ok(user);
         }
