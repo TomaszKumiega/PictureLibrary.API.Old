@@ -77,7 +77,20 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<byte[]> GetBySourceAsync(string fullPath)
         {
-            var image = await Task.Run(() => FileService.ReadAllBytes(fullPath));
+            byte[] image = null;
+
+            try
+            {
+                image = await Task.Run(() => FileService.ReadAllBytes(fullPath));
+            }
+            catch(FileNotFoundException)
+            {
+                return null;
+            }
+            catch(DirectoryNotFoundException)
+            {
+                return null;
+            }
 
             return image;
         }
