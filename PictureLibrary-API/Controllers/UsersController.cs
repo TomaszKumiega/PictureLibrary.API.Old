@@ -104,12 +104,23 @@ namespace PictureLibrary_API.Controllers
             {
                 throw new SecurityTokenException("Invalid refresh token");
             }
-                
-            var newJwtToken = GenerateToken(userId);
-            var newRefreshToken = RefreshTokenService.GenerateToken();
 
-            RefreshTokenService.DeleteRefreshToken(userId, refreshToken);
-            RefreshTokenService.SaveRefreshToken(userId, newRefreshToken);
+            string newJwtToken = null;
+            string newRefreshToken = null;
+
+            try
+            {
+                newJwtToken = GenerateToken(userId);
+                newRefreshToken = RefreshTokenService.GenerateToken();
+
+                RefreshTokenService.DeleteRefreshToken(userId, refreshToken);
+                RefreshTokenService.SaveRefreshToken(userId, newRefreshToken);
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return new ObjectResult(new
             {
