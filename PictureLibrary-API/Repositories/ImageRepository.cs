@@ -147,8 +147,6 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
-            if (entity == null) throw new ArgumentException();
-
             await Task.Run(() => FileService.RenameFile(entity.FullPath, entity.Name + entity.Extension));
 
             var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullPath));
