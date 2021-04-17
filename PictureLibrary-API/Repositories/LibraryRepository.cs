@@ -253,7 +253,7 @@ namespace PictureLibrary_API.Repositories
 
             foreach (var t in entity.Tags)
             {
-                var tagElement = new XElement("tag", new XAttribute("name", t.Name), new XAttribute("description", t.Description));
+                var tagElement = new XElement("tag", new XAttribute("name", t.Name), new XAttribute("description", t.Description), new XAttribute("color", t.Color));
 
                 tagsElement.Add(tagElement);
             }
@@ -277,8 +277,7 @@ namespace PictureLibrary_API.Repositories
 
 
                 var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", ImageExtensionHelper.ExtensionToString(i.Extension)),
-                    new XAttribute("source", i.FullName), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
-                    new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()), new XAttribute("tags", tags));
+                    new XAttribute("source", i.FullName), new XAttribute("tags", tags));
 
                 imagesElement.Add(imageFileElement);
             }
