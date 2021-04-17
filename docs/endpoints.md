@@ -1,6 +1,8 @@
 # Endpoints
 
-## Authenticate
+## Users
+
+### Authenticate
 
 **Endpoint**
 
@@ -17,7 +19,7 @@ POST /users/authenticate
 }
 ```
 
-**Result**
+**Response**
 
 ```http
 HTTP/1.1 200 OK
@@ -32,11 +34,12 @@ HTTP/1.1 200 OK
   cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
   ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr
   ZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQ
-  cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.KF1oNcLQ2rcovBWOapa2mh-oIGtmskT5NirenRckLjc"  
+  cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.KF1oNcLQ2rcovBWOapa2mh-oIGtmskT5NirenRckLjc",
+    "refreshToken": "cPDQ46CnG8TCZAsfgCt3LkmTscxhOJlc0nlcCyyvYrM="
 }
 ```
 
-## Register
+### Register
 
 **Endpoint**
 
@@ -49,10 +52,8 @@ POST /users/register
 ```json
 {
     "username": "user",
-    "firstName": "name",
-    "lastName": "surname",
-    "email": "email@example.com",
     "password": "password123"
+    "email": "email@example.com"
 }
 ```
 **Response**
@@ -65,13 +66,74 @@ HTTP/1.1 201 Created
 {
     "id": "33df9fba-1a02-45c7-afa4-886b6c751e15",
     "username": "user",
-    "firstName": "name",
-    "lastName": "surname",
     "email": "email@example.com"
 }
 ```
 
-## Get all Libraries
+### Refresh
+
+Refresh access token
+
+```http
+POST /users/refresh
+```
+
+**Content**
+
+```json
+{
+    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
+  eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4
+  cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
+  ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr
+  ZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQ
+  cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.KF1oNcLQ2rcovBWOapa2mh-oIGtmskT5NirenRckLjc",
+    "refreshToken": "cPDQ46CnG8TCZAsfgCt3LkmTscxhOJlc0nlcCyyvYrM="
+}
+```
+**Response**
+
+```http
+HTTP/1.1 200 Ok
+```
+
+```json
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
+  eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDcwOTM2NDUsImV4
+  cCI6MTYzODYyOTY0NSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2t
+  ldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2Nr
+  ZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQ
+  cm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.KF1oNcLQ2rcovBWOapa2mh-oIGtmskT5NirenRckLjc",
+    "refreshToken": "EfwSrJSnKDdz0PiFfeBmwFFT1i/56/JnwOAGu7UaLFI="
+
+}
+```
+
+### Update user
+
+```http
+PUT /users/{id}
+```
+
+**Content**
+
+```json
+{
+    "username": "user",
+    "password": "password123",
+    "email": "email@example.com"
+}
+```
+**Response**
+
+```http
+HTTP/1.1 200 Ok
+```
+
+## Libraries
+
+### Get all Libraries
 
 **Endpoint**
 
@@ -91,7 +153,7 @@ HTTP/1.1 200 OK
 ]
 ```
 
-## Get Library
+### Get Library
 
 **Endpoint**
 
@@ -111,7 +173,7 @@ HTTP/1.1 200 OK
 }
 ```
 
-## Add Library
+### Add Library
 
 **Endpoint**
 
@@ -139,7 +201,7 @@ HTTP/1.1 201 Created
 }
 ```
 
-## Update Library
+### Update Library
 
 **Endpoint**
 
@@ -161,7 +223,7 @@ PUT /libraries/{name}
 HTTP/1.1 204 No Content
 ```
 
-## Remove Library
+### Remove Library
 
 **Endpoint**
 
@@ -181,7 +243,9 @@ HTTP/1.1 200 OK
 }
 ```
 
-## Get Images From Library
+## Images
+
+### Get Images From Library
 
 **Endpoint**
 
@@ -201,7 +265,7 @@ HTTP/1.1 200 OK
 }
 ```
 
-## Get Specific Image
+### Get Specific Image
 
 **Endpoint**
 
@@ -221,7 +285,7 @@ HTTP/1.1 200 OK
 }
 ```
 
-## Add Image
+### Add Image
 
 **Endpoint**
 
@@ -249,7 +313,7 @@ HTTP/1.1 201 Created
 }
 ```
 
-## Update image
+### Update image
 
 **Endpoint**
 
@@ -271,7 +335,7 @@ PUT /images/{imageSource}
 HTTP/1.1 204 No Content
 ```
 
-## Remove image
+### Remove image
 
 **Endpoint**
 
