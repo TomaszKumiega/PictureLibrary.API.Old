@@ -43,8 +43,10 @@ namespace PictureLibrary_API.Controllers
             var user = UserService.Authenticate(model.Username, model.Password);
 
             if (user == null)
+            {
                 return BadRequest(new { message = "Username or password is incorrect" });
-
+            }
+                
             var tokenString = GenerateToken(user.Id.ToString());
             var refreshToken = RefreshTokenService.GenerateToken();
             RefreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
@@ -84,10 +86,13 @@ namespace PictureLibrary_API.Controllers
             var userId = principal.Identity.Name;
             var savedRefreshToken = RefreshTokenService.GetRefreshToken(userId); 
             if (savedRefreshToken != refreshToken)
+            {
                 throw new SecurityTokenException("Invalid refresh token");
-
+            }
+                
             var newJwtToken = GenerateToken(userId);
             var newRefreshToken = RefreshTokenService.GenerateToken();
+
             RefreshTokenService.DeleteRefreshToken(userId, refreshToken);
             RefreshTokenService.SaveRefreshToken(userId, newRefreshToken);
 
@@ -111,10 +116,13 @@ namespace PictureLibrary_API.Controllers
         public IActionResult GetById(Guid id)
         {
             var userId = User?.Identity.Name;
-
-            if (userId != id.ToString()) return Unauthorized();
+            if (userId != id.ToString())
+            {
+                return Unauthorized();
+            }
 
             var user = UserService.GetById(id);
+
             return Ok(user);
         }
 
@@ -122,7 +130,10 @@ namespace PictureLibrary_API.Controllers
         public IActionResult Update(Guid id, [FromBody]UserModel model)
         {
             var userId = User?.Identity.Name;
-            if (userId != id.ToString()) return Unauthorized();
+            if (userId != id.ToString())
+            {
+                return Unauthorized();
+            }
 
             var user = Mapper.Map<User>(model);
             user.Id = id;
@@ -142,9 +153,13 @@ namespace PictureLibrary_API.Controllers
         public IActionResult Delete(Guid id)
         {
             var userId = User?.Identity.Name;
-            if (userId != id.ToString()) return Unauthorized();
+            if (userId != id.ToString())
+            {
+                return Unauthorized();
+            }
 
             UserService.Delete(id);
+
             return Ok();
         }
 
@@ -170,11 +185,11 @@ namespace PictureLibrary_API.Controllers
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateAudience = false, 
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the server key used to sign the JWT token is here, use more than 16 chars")),
-                ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Secret)),
+                ValidateLifetime = false 
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

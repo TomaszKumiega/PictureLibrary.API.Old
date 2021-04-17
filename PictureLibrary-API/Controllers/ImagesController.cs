@@ -33,14 +33,12 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
             if (library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -60,14 +58,12 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{libraryFullName}")]
         public async Task<ActionResult<IEnumerable<byte[]>>> GetImages(string libraryFullName)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -75,7 +71,6 @@ namespace PictureLibrary_API.Controllers
             }
 
             var images = await ImageRepository.GetAllAsync(libraryFullName);
-
             if (images == null)
             {
                 return NotFound();
@@ -87,14 +82,12 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageFile")]
         public async Task<IActionResult> PutImage([FromBody] ImageFile imageFile)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -114,14 +107,12 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("image")]
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -141,14 +132,12 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImageFile>> PostImage([FromBody] Image image)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -166,14 +155,12 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteImage([FromBody] ImageFile imageFile)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
             
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -197,14 +184,12 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("icons/{libraryFullName}")]
         public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string libraryFullName, [FromBody] IEnumerable<string> imageSources)
         {
-            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
@@ -218,15 +203,13 @@ namespace PictureLibrary_API.Controllers
 
         [HttpGet("icons/{libraryFullName}/{imageFullName}")]
         public async Task<IActionResult> GetIcon(string libraryFullName, string imageFullName)
-        {
-            // check if library exists
+        { 
             var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
             if (library == null)
             {
                 return BadRequest("Library doesn't exist");
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {

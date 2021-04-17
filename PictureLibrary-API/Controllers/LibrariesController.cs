@@ -28,14 +28,12 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
-            // check if library exists
             var library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
             if (library == null)
             {
                 return NotFound();
             }
 
-            // check if user owns the library
             var userId = User?.Identity.Name;
             if (!library.Owners.Where(x=>x.ToString() == userId).Any())
             {
@@ -51,7 +49,6 @@ namespace PictureLibrary_API.Controllers
             var allLibraries = await Task.Run(() => LibraryRepository.GetAllAsync());
             var libraries = new List<Library>();
 
-            // select libraries owned by the user
             var userId = User?.Identity.Name;
             if(allLibraries != null)
             {
@@ -73,18 +70,12 @@ namespace PictureLibrary_API.Controllers
             }
 
             var userId = User?.Identity.Name;
-
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
-
-            try
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
-                await Task.Run(() => LibraryRepository.UpdateAsync(library));
+                return Unauthorized();
             }
-            catch(Exception e)
-            {
-                //TODO: add more exception cases
-                throw;
-            }
+
+            await Task.Run(() => LibraryRepository.UpdateAsync(library));
 
             return NoContent();
         }
@@ -92,20 +83,13 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Library>> PostLibrary([FromBody] Library library)
         {
-
             var userId = User?.Identity.Name;
-
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
-
-            try
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
             {
-                await Task.Run(() => LibraryRepository.AddAsync(library));
+                return Unauthorized();
             }
-            catch (Exception e)
-            {
-                //TODO: add more exception cases
-                throw;
-            }
+
+            await Task.Run(() => LibraryRepository.AddAsync(library));
 
             return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
         }
@@ -116,8 +100,10 @@ namespace PictureLibrary_API.Controllers
             var library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
 
             var userId = User?.Identity.Name;
-
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            {
+                return Unauthorized();
+            }
 
             if (library == null)
             {
@@ -126,7 +112,7 @@ namespace PictureLibrary_API.Controllers
 
             await Task.Run(() => LibraryRepository.RemoveAsync(library));
 
-            return library;
+            return Ok(library);
         }
     }
 }
