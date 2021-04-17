@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Repositories;
 
@@ -108,6 +109,10 @@ namespace PictureLibrary_API.Controllers
             catch (ArgumentException)
             {
                 return BadRequest();
+            }
+            catch (ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
             }
             catch (Exception e)
             {

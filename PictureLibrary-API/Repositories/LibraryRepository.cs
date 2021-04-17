@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Model.Builders;
 using PictureLibrary_API.Services;
@@ -128,8 +129,14 @@ namespace PictureLibrary_API.Repositories
 
         public async Task UpdateAsync(Library entity)
         {
-            if (entity == null) throw new ArgumentException();
-            if (!File.Exists(entity.FullName)) throw new ArgumentException();
+            if (entity == null)
+            {
+                throw new ArgumentException();
+            }
+            if (!File.Exists(entity.FullName))
+            {
+                throw new ContentNotFoundException("Library \"" + entity.FullName + "\" doesn't exist.");
+            }
 
             // Load file for potential recovery
             XmlDocument document = new XmlDocument();

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Repositories;
 using Image = PictureLibrary_API.Model.Image;
@@ -141,7 +142,11 @@ namespace PictureLibrary_API.Controllers
             {
                 return BadRequest();
             }
-            catch(Exception e)
+            catch (ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+            catch (Exception e)
             {
                 Logger.LogError(e, e.Message);
                 return StatusCode(500);
@@ -183,6 +188,10 @@ namespace PictureLibrary_API.Controllers
             {
                 return BadRequest();
             }
+            catch(ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
             catch (Exception e)
             {
                 Logger.LogError(e, e.Message);
@@ -219,6 +228,10 @@ namespace PictureLibrary_API.Controllers
             catch (ArgumentException)
             {
                 return BadRequest();
+            }
+            catch (ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
             }
             catch (Exception e)
             {
@@ -259,6 +272,10 @@ namespace PictureLibrary_API.Controllers
             catch (ArgumentException)
             {
                 return BadRequest();
+            }
+            catch (ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
             }
             catch (Exception e)
             {

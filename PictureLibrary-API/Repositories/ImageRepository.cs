@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Model.Builders;
 using PictureLibrary_API.Services;
@@ -151,6 +152,11 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
+            if (!FileService.FileExists(entity.FullName))
+            {
+                throw new ContentNotFoundException("Couldn't find specified file.");
+            }
+
             await Task.Run(() => FileService.RenameFile(entity.FullName, entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
             var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullName));
@@ -177,6 +183,11 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> UpdateAsync(Image entity)
         {
+            if(!FileService.FileExists(entity.ImageFile.FullName))
+            {
+                throw new ContentNotFoundException("Couldn't find specified file.");
+            }
+
             // overwrites the file
             var path = await Task.Run(() => FileService.AddFile(entity.ImageFile.FullName, entity.ImageContent));
 
