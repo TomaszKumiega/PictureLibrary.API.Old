@@ -64,7 +64,7 @@ namespace PictureLibrary_API.Services
             Context.SaveChanges();
         }
 
-        public string GenerateToken(string userId)
+        public string GenerateAccessToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(AppSettings.Secret);

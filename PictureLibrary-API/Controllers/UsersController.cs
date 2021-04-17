@@ -51,7 +51,7 @@ namespace PictureLibrary_API.Controllers
                     return BadRequest(new { message = "Username or password is incorrect" });
                 }
 
-                tokenString = AccessTokenService.GenerateToken(user.Id.ToString());
+                tokenString = AccessTokenService.GenerateAccessToken(user.Id.ToString());
                 refreshToken = AccessTokenService.GenerateRefreshToken();
                 AccessTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
             }
@@ -108,7 +108,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                newJwtToken = AccessTokenService.GenerateToken(userId);
+                newJwtToken = AccessTokenService.GenerateAccessToken(userId);
                 newRefreshToken = AccessTokenService.GenerateRefreshToken();
 
                 AccessTokenService.DeleteRefreshToken(userId, refreshToken);
