@@ -35,7 +35,7 @@ namespace PictureLibrary_API.Repositories
             var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + ImageExtensionHelper.ExtensionToString(image.ImageFile.Extension);
             var path = await Task.Run(() => FileService.AddFile(filePath, image.ImageContent));
 
-            var fileInfo = new FileInfo(path);
+            var fileInfo = FileService.GetFileInfo(path);
 
             var imageFile =
                 ImageFileBuilder
