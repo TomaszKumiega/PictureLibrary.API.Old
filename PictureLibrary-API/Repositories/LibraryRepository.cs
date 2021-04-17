@@ -73,8 +73,6 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<Library> GetBySourceAsync(string fullPath)
         {
-            if (fullPath.IsNullOrEmpty()) throw new ArgumentException();
-
             var fileStream = await Task.Run(() => FileService.OpenFile(fullPath, FileMode.Open));
             var library = await ReadLibraryFromFileStreamAsync(fileStream);
 
