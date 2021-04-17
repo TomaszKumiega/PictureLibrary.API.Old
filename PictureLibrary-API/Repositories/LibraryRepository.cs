@@ -44,6 +44,8 @@ namespace PictureLibrary_API.Repositories
 
             entity.FullName = path;
 
+            Logger.LogInformation("New added library: " + path);
+
             return entity;
         }
 
@@ -113,6 +115,8 @@ namespace PictureLibrary_API.Repositories
             if (entity == null) throw new ArgumentException();
 
             await Task.Run(()=>FileService.DeleteFile(entity.FullName));
+
+            Logger.LogInformation("Removed library: " + entity.FullName);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<Library> entities)
@@ -143,6 +147,7 @@ namespace PictureLibrary_API.Repositories
             {
                 // Write library to the file
                 await WriteLibraryToFileStreamAsync(fileStream, entity);
+                Logger.LogInformation("Updated library: " + entity.FullName);
             }
             catch (Exception e)
             {
