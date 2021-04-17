@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Internal;
 using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Model.Builders;
 using PictureLibrary_API.Services;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,14 @@ namespace PictureLibrary_API.Repositories
         private ILogger<LibraryRepository> Logger { get; }
         private IDirectoryService DirectoryService { get; }
         private IFileService FileService { get; }
+        private IImageFileBuilder ImageFileBuilder { get; }
 
-        public LibraryRepository(ILogger<LibraryRepository> logger, IDirectoryService directoryService, IFileService fileService)
+        public LibraryRepository(ILogger<LibraryRepository> logger, IDirectoryService directoryService, IFileService fileService, IImageFileBuilder imageFileBuilder)
         {
             Logger = logger;
             DirectoryService = directoryService;
             FileService = fileService;
+            ImageFileBuilder = imageFileBuilder;
         }
 
         public async Task<Library> AddAsync(Library entity)
@@ -192,21 +195,27 @@ namespace PictureLibrary_API.Repositories
                             case "imageFile":
                                 {
                                     var imageElement = await Task.Run(()=>XNode.ReadFrom(reader)) as XElement;
+                                    var imageTags = new List<Tag>();
 
-                                    var imageFile = new ImageFile();
-                                    imageFile.Name = imageElement.Attribute("name").Value;
-                                    imageFile.Extension = ImageExtensionHelper.GetExtension(imageElement.Attribute("extension").Value);
-                                    imageFile.FullName = imageElement.Attribute("source").Value;
-                                    imageFile.CreationTime = DateTime.Parse(imageElement.Attribute("creationTime").Value);
-                                    imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
-                                    imageFile.LastWriteTime = DateTime.Parse(imageElement.Attribute("lastWriteTime").Value);
-                                    imageFile.Size = long.Parse(imageElement.Attribute("size").Value);
-                                    
-                                    foreach(var t in imageElement.Attribute("tags").Value.Split(','))
+                                    foreach (var t in imageElement.Attribute("tags").Value.Split(','))
                                     {
-                                        imageFile.Tags.Add(tags.Find(x=>x.Name == t));
+                                        imageTags.Add(tags.Find(x => x.Name == t));
                                     }
 
+                                    var imageFile =
+                                        ImageFileBuilder
+                                            .StartBuilding()
+                                            .WithName(imageElement.Attribute("name").Value)
+                                            .WithExtension(ImageExtensionHelper.GetExtension(imageElement.Attribute("extension").Value))
+                                            .WithFullName(imageElement.Attribute("source").Value)
+                                            .WithLibraryFullName(library.FullName)
+                                            .WithCreationTime(DateTime.Parse(imageElement.Attribute("creationTime").Value))
+                                            .WithLastAccessTime(DateTime.Parse(imageElement.Attribute("lastAccessTime").Value))
+                                            .WithLastWriteTime(DateTime.Parse(imageElement.Attribute("lastWriteTime").Value))
+                                            .WithSize(long.Parse(imageElement.Attribute("size").Value))
+                                            .WithTags(imageTags)
+                                            .Build();
+                                           
                                     images.Add(imageFile);
                                 }
                                 break;

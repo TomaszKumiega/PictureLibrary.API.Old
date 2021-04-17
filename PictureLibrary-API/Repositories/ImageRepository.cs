@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Model.Builders;
 using PictureLibrary_API.Services;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,14 @@ namespace PictureLibrary_API.Repositories
         private ILogger<ImageRepository> Logger { get; }
         private IDirectoryService DirectoryService { get; }
         private IFileService FileService { get; }
+        private IImageFileBuilder ImageFileBuilder { get; }
 
-        public ImageRepository(ILogger<ImageRepository> logger, IDirectoryService directoryService, IFileService fileService)
+        public ImageRepository(ILogger<ImageRepository> logger, IDirectoryService directoryService, IFileService fileService, IImageFileBuilder imageFileBuilder)
         {
             Logger = logger;
             DirectoryService = directoryService;
             FileService = fileService;
+            ImageFileBuilder = imageFileBuilder;
         }
 
         public async Task<ImageFile> AddAsync(Image image)
@@ -32,18 +35,21 @@ namespace PictureLibrary_API.Repositories
             var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + ImageExtensionHelper.ExtensionToString(image.ImageFile.Extension);
             var path = await Task.Run(() => FileService.AddFile(filePath, image.ImageContent));
 
-            var imageFile = new ImageFile();
-
             var fileInfo = new FileInfo(path);
 
-            imageFile.Name = image.ImageFile.Name;
-            imageFile.Extension = image.ImageFile.Extension;
-            imageFile.FullName = path;
-            imageFile.LibraryFullName = image.ImageFile.LibraryFullName;
-            imageFile.CreationTime = fileInfo.CreationTime;
-            imageFile.LastAccessTime = fileInfo.LastAccessTimeUtc;
-            imageFile.LastWriteTime = fileInfo.LastWriteTimeUtc;
-            imageFile.Size = fileInfo.Length;
+            var imageFile =
+                ImageFileBuilder
+                    .StartBuilding()
+                    .WithName(image.ImageFile.Name)
+                    .WithExtension(image.ImageFile.Extension)
+                    .WithFullName(path)
+                    .WithLibraryFullName(image.ImageFile.LibraryFullName)
+                    .WithCreationTime(fileInfo.CreationTimeUtc)
+                    .WithLastAccessTime(fileInfo.LastAccessTimeUtc)
+                    .WithLastWriteTime(fileInfo.LastWriteTimeUtc)
+                    .WithSize(fileInfo.Length)
+                    .WithTags(new List<Tag>())
+                    .Build();
 
             return imageFile;
         }
@@ -152,8 +158,19 @@ namespace PictureLibrary_API.Repositories
             var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullName));
             var newFileInfo = await Task.Run(() => FileService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
-            var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibraryFullName, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
-                , newFileInfo.LastWriteTimeUtc, newFileInfo.Length, entity.Tags);
+            var imageFile =
+                ImageFileBuilder
+                    .StartBuilding()
+                    .WithName(newFileInfo.Name)
+                    .WithExtension(newFileInfo.Extension)
+                    .WithFullName(newFileInfo.FullName)
+                    .WithLibraryFullName(entity.LibraryFullName)
+                    .WithCreationTime(newFileInfo.CreationTimeUtc)
+                    .WithLastAccessTime(newFileInfo.LastAccessTimeUtc)
+                    .WithLastWriteTime(newFileInfo.LastWriteTimeUtc)
+                    .WithSize(newFileInfo.Length)
+                    .WithTags(entity.Tags)
+                    .Build();
 
             return imageFile;
         }
