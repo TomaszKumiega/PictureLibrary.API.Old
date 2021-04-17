@@ -187,7 +187,15 @@ namespace PictureLibrary_API.Controllers
                 return Unauthorized();
             }
 
-            UserService.Delete(id);
+            try
+            {
+                UserService.Delete(id);
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return Ok();
         }
