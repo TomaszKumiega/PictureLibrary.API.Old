@@ -33,6 +33,11 @@ namespace PictureLibrary_API.Services
             return Icon.ExtractAssociatedIcon(path);
         }
 
+        public bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
+
         public FileInfo GetFileInfo(string path)
         {
             return new FileInfo(path);

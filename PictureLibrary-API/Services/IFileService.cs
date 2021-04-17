@@ -71,5 +71,12 @@ namespace PictureLibrary_API.Services
         /// <param name="fullPath"></param>
         /// <param name="contents"></param>
         void WriteAllLines(string fullPath, string[] contents);
+
+        /// <summary>
+        /// Returns true if file exists or false when file doesn't exist.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        bool FileExists(string path);
     }
 }
