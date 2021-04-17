@@ -167,13 +167,15 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
+                // fix exceptions
                 UserService.Update(user, model.Password);
-                return Ok();
             }
             catch(Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
