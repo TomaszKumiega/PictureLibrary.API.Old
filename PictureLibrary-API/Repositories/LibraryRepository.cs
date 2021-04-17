@@ -118,24 +118,30 @@ namespace PictureLibrary_API.Repositories
             if (entity == null) throw new ArgumentException();
             if (!File.Exists(entity.FullPath)) throw new ArgumentException();
 
-            // Load file for eventual recovery
+            // Load file for potential recovery
             XmlDocument document = new XmlDocument();
-            await Task.Run(()=>document.Load(entity.FullPath));
+            var stream = await Task.Run(() => FileService.OpenFile(entity.FullPath, FileMode.Open));
+            await Task.Run(()=>document.Load(stream));
+            stream.Close();
 
             // Remove contents of the file
             string[] text = { "" };
-            await Task.Run(()=>File.WriteAllLines(entity.FullPath, text));
+            await Task.Run(() => FileService.WriteAllLines(entity.FullPath, text));
+
+            var fileStream = FileService.OpenFile(entity.FullPath, FileMode.Open);
 
             try
             {
                 // Write library to the file
-                var fileStream = FileService.OpenFile(entity.FullPath, FileMode.Open);
                 await WriteLibraryToFileStreamAsync(fileStream, entity);
             }
             catch (Exception e)
             {
+                // log the error and recover old file
                 Logger.LogError(e, e.Message);
-                await Task.Run(()=>document.Save(entity.FullPath));
+                var recoveredFileStream = FileService.OpenFile(entity.FullPath, FileMode.OpenOrCreate);
+                await Task.Run(()=>document.Save(recoveredFileStream));
+                throw new Exception("Couldn't save updated library", e);
             }
         }
 
