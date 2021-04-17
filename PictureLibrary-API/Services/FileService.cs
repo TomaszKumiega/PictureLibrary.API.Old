@@ -11,13 +11,6 @@ namespace PictureLibrary_API.Services
 {
     public class FileService : IFileService
     {
-        private ILogger<FileService> Logger { get; }
-
-        public FileService(ILogger<FileService> logger)
-        {
-            Logger = logger;
-        }
-
         public string AddFile(string filePath, byte[] file)
         {
             File.WriteAllBytes(FileSystemInfo.FileSystemInfo.RootDirectory + filePath, file);
