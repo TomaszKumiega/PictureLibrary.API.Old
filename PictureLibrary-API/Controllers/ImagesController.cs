@@ -33,13 +33,11 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            Library library = null;
             byte[] image = null;
 
             try
             {
-                library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
                 if(library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
                 {
                     return NotFound();
