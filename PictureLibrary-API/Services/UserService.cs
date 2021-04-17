@@ -21,19 +21,17 @@ namespace PictureLibrary_API.Services
         public User Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
                 return null;
+            }
 
             var user = DatabaseContext.Users.SingleOrDefault(x => x.Username == username);
 
-            // check if username exists
-            if (user == null)
-                return null;
-
-            // check if password is correct
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
                 return null;
+            } 
 
-            // authentication successful
             return user;
         }
 
