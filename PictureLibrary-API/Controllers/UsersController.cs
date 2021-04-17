@@ -88,7 +88,7 @@ namespace PictureLibrary_API.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(new { message = e.Message})
+                return BadRequest(new { message = e.Message });
             }
             catch (UserAlreadyExistsException e)
             {
