@@ -40,7 +40,7 @@ namespace PictureLibrary_API.Model.Builders
 
         public IImageFileBuilder WithFullName(string fullName)
         {
-            ImageFile.FullPath = fullName;
+            ImageFile.FullName = fullName;
             return this;
         }
 
@@ -58,7 +58,7 @@ namespace PictureLibrary_API.Model.Builders
 
         public IImageFileBuilder WithLibraryFullName(string libraryFullName)
         {
-            ImageFile.LibraryFullPath = libraryFullName;
+            ImageFile.LibraryFullName = libraryFullName;
             return this;
         }
 

@@ -37,8 +37,8 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-                if(library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullName);
+                if(library == null || library.Images.Find(x => x.FullName == imageFile.FullName) == null)
                 {
                     return NotFound();
                 }
@@ -49,7 +49,7 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                image = await ImageRepository.GetBySourceAsync(imageFile.FullPath);
+                image = await ImageRepository.GetBySourceAsync(imageFile.FullName);
             }
             catch(ArgumentException)
             {
@@ -113,7 +113,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullName);
                 if (library == null)
                 {
                     return BadRequest("Library doesn't exist");
@@ -125,7 +125,7 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullName == imageFile.FullName));
 
                 if(!imageExistsInLibrary)
                 {
@@ -155,7 +155,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+                var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullName);
                 if (library == null)
                 {
                     return BadRequest("Library doesn't exist");
@@ -167,7 +167,7 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == image.ImageFile.FullPath));
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullName == image.ImageFile.FullName));
 
                 if (!imageExistsInLibrary)
                 {
@@ -199,7 +199,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+                var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullName);
                 if (library == null)
                 {
                     return BadRequest("Library doesn't exist");
@@ -234,7 +234,7 @@ namespace PictureLibrary_API.Controllers
         {
             try
             {
-                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullName);
                 if (library == null)
                 {
                     return BadRequest("Library doesn't exist");
@@ -246,14 +246,14 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullName == imageFile.FullName));
 
                 if(!imageExistsInLibrary)
                 {
                     return BadRequest();
                 }
 
-                await ImageRepository.RemoveAsync(imageFile.FullPath);
+                await ImageRepository.RemoveAsync(imageFile.FullName);
                 await LibraryRepository.UpdateAsync(library);
             }
             catch (ArgumentException)

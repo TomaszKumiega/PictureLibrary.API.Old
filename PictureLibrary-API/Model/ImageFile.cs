@@ -53,8 +53,8 @@ namespace PictureLibrary_API.Model
     {
         public string Name { get; set; }
         public ImageExtension Extension { get; set; }
-        public string FullPath { get; set; }
-        public string LibraryFullPath { get; set; }
+        public string FullName { get; set; }
+        public string LibraryFullName { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastAccessTime { get; set; }
         public DateTime LastWriteTime { get; set; }
@@ -70,8 +70,8 @@ namespace PictureLibrary_API.Model
         {
             Name = name;
             Extension = ImageExtensionHelper.GetExtension(extension); 
-            FullPath = source;
-            LibraryFullPath = librarysource;
+            FullName = source;
+            LibraryFullName = librarysource;
             CreationTime = creationTime;
             LastAccessTime = lastAccessTime;
             LastWriteTime = lastWriteTime;

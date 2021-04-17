@@ -5,7 +5,7 @@ namespace PictureLibrary_API.Model
 {
     public class Library : ILibraryEntity
     {
-        public string FullPath { get; set; }
+        public string FullName { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public List<Tag> Tags { get; set; }
@@ -20,7 +20,7 @@ namespace PictureLibrary_API.Model
 
         public Library(string fullPath, string name, string decription, List<Guid> owners)
         {
-            FullPath = fullPath;
+            FullName = fullPath;
             Name = name;
             Description = decription;
             Owners = owners;
@@ -30,7 +30,7 @@ namespace PictureLibrary_API.Model
 
         public Library(string fullPath, string name, string description, List<Guid> owners, List<Tag> tags, List<ImageFile> images)
         {
-            FullPath = fullPath;
+            FullName = fullPath;
             Name = name;
             Description = description;
             Owners = owners;

@@ -26,7 +26,7 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> AddAsync(Image image)
         {
-            var libraryDirectory = FileService.GetFileInfo(image.ImageFile.LibraryFullPath).Directory.FullName;
+            var libraryDirectory = FileService.GetFileInfo(image.ImageFile.LibraryFullName).Directory.FullName;
             if (!libraryDirectory.EndsWith("\\")) libraryDirectory += "\\";
 
             var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + ImageExtensionHelper.ExtensionToString(image.ImageFile.Extension);
@@ -38,8 +38,8 @@ namespace PictureLibrary_API.Repositories
 
             imageFile.Name = image.ImageFile.Name;
             imageFile.Extension = image.ImageFile.Extension;
-            imageFile.FullPath = path;
-            imageFile.LibraryFullPath = image.ImageFile.LibraryFullPath;
+            imageFile.FullName = path;
+            imageFile.LibraryFullName = image.ImageFile.LibraryFullName;
             imageFile.CreationTime = fileInfo.CreationTime;
             imageFile.LastAccessTime = fileInfo.LastAccessTimeUtc;
             imageFile.LastWriteTime = fileInfo.LastWriteTimeUtc;
@@ -131,7 +131,7 @@ namespace PictureLibrary_API.Repositories
         {
             if (entity == null) throw new ArgumentException();
 
-            await RemoveAsync(entity.FullPath);
+            await RemoveAsync(entity.FullName);
         }
 
         public async Task RemoveRangeAsync(IEnumerable<ImageFile> entities)
@@ -141,18 +141,18 @@ namespace PictureLibrary_API.Repositories
 
             foreach(var i in entities)
             {
-                await RemoveAsync(i.FullPath);
+                await RemoveAsync(i.FullName);
             }
         }
 
         public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
-            await Task.Run(() => FileService.RenameFile(entity.FullPath, entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
+            await Task.Run(() => FileService.RenameFile(entity.FullName, entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
-            var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullPath));
+            var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullName));
             var newFileInfo = await Task.Run(() => FileService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
-            var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibraryFullPath, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
+            var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibraryFullName, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
                 , newFileInfo.LastWriteTimeUtc, newFileInfo.Length, entity.Tags);
 
             return imageFile;
@@ -161,7 +161,7 @@ namespace PictureLibrary_API.Repositories
         public async Task<ImageFile> UpdateAsync(Image entity)
         {
             // overwrites the file
-            var path = await Task.Run(() => FileService.AddFile(entity.ImageFile.FullPath, entity.ImageContent));
+            var path = await Task.Run(() => FileService.AddFile(entity.ImageFile.FullName, entity.ImageContent));
 
             return entity.ImageFile;
         }

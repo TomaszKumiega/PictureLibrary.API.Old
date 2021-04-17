@@ -34,7 +34,7 @@ namespace PictureLibrary_API.Repositories
 
             await WriteLibraryToFileStreamAsync(fileStream, entity);
 
-            entity.FullPath = fileStream.Name;
+            entity.FullName = fileStream.Name;
             return entity;
         }
 
@@ -103,7 +103,7 @@ namespace PictureLibrary_API.Repositories
         {
             if (entity == null) throw new ArgumentException();
 
-            await Task.Run(()=>FileService.DeleteFile(entity.FullPath));
+            await Task.Run(()=>FileService.DeleteFile(entity.FullName));
         }
 
         public async Task RemoveRangeAsync(IEnumerable<Library> entities)
@@ -116,19 +116,19 @@ namespace PictureLibrary_API.Repositories
         public async Task UpdateAsync(Library entity)
         {
             if (entity == null) throw new ArgumentException();
-            if (!File.Exists(entity.FullPath)) throw new ArgumentException();
+            if (!File.Exists(entity.FullName)) throw new ArgumentException();
 
             // Load file for potential recovery
             XmlDocument document = new XmlDocument();
-            var stream = await Task.Run(() => FileService.OpenFile(entity.FullPath, FileMode.Open));
+            var stream = await Task.Run(() => FileService.OpenFile(entity.FullName, FileMode.Open));
             await Task.Run(()=>document.Load(stream));
             stream.Close();
 
             // Remove contents of the file
             string[] text = { "" };
-            await Task.Run(() => FileService.WriteAllLines(entity.FullPath, text));
+            await Task.Run(() => FileService.WriteAllLines(entity.FullName, text));
 
-            var fileStream = FileService.OpenFile(entity.FullPath, FileMode.Open);
+            var fileStream = FileService.OpenFile(entity.FullName, FileMode.Open);
 
             try
             {
@@ -139,7 +139,7 @@ namespace PictureLibrary_API.Repositories
             {
                 // log the error and recover old file
                 Logger.LogError(e, e.Message);
-                var recoveredFileStream = FileService.OpenFile(entity.FullPath, FileMode.OpenOrCreate);
+                var recoveredFileStream = FileService.OpenFile(entity.FullName, FileMode.OpenOrCreate);
                 await Task.Run(()=>document.Save(recoveredFileStream));
                 throw new Exception("Couldn't save updated library", e);
             }
@@ -169,7 +169,7 @@ namespace PictureLibrary_API.Repositories
                                     var libraryElement = await Task.Run(() => XNode.ReadFrom(reader)) as XElement;
 
                                     library.Name = libraryElement.Attribute("name").Value;
-                                    library.FullPath = fileStream.Name;
+                                    library.FullName = fileStream.Name;
                                     library.Description = libraryElement.Attribute("description").Value;
 
                                     foreach (var t in libraryElement.Attribute("owners").Value.Split(','))
@@ -196,7 +196,7 @@ namespace PictureLibrary_API.Repositories
                                     var imageFile = new ImageFile();
                                     imageFile.Name = imageElement.Attribute("name").Value;
                                     imageFile.Extension = ImageExtensionHelper.GetExtension(imageElement.Attribute("extension").Value);
-                                    imageFile.FullPath = imageElement.Attribute("source").Value;
+                                    imageFile.FullName = imageElement.Attribute("source").Value;
                                     imageFile.CreationTime = DateTime.Parse(imageElement.Attribute("creationTime").Value);
                                     imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
                                     imageFile.LastWriteTime = DateTime.Parse(imageElement.Attribute("lastWriteTime").Value);
@@ -268,7 +268,7 @@ namespace PictureLibrary_API.Repositories
 
 
                 var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", ImageExtensionHelper.ExtensionToString(i.Extension)),
-                    new XAttribute("source", i.FullPath), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
+                    new XAttribute("source", i.FullName), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
                     new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()), new XAttribute("tags", tags));
 
                 imagesElement.Add(imageFileElement);
