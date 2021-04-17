@@ -62,14 +62,24 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<IEnumerable<byte[]>> GetAllAsync(string libraryFullPath)
         {
+            var images = new List<byte[]>();
+
             var fileInfo = FileService.GetFileInfo(libraryFullPath);
             var directory = fileInfo.Directory.FullName;
             var imagePaths = await Task.Run(() => DirectoryService.FindFiles(FileSystemInfo.FileSystemInfo.RootDirectory + directory + FileSystemInfo.FileSystemInfo.ImagesDirectory, "*.*"));
-            var images = new List<byte[]>();
-
+            
             foreach(var i in imagePaths)
             {
-                images.Add(await Task.Run(() => FileService.ReadAllBytes(i)));
+                byte[] image;
+
+                try
+                {
+                    image = await Task.Run(() => FileService.ReadAllBytes(i));
+                }
+                catch (FileNotFoundException) { continue; }
+                catch (DirectoryNotFoundException) { continue; }
+
+                images.Add(image);
             }
 
             return images;
