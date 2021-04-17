@@ -304,21 +304,35 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpGet("icons/{libraryFullName}/{imageFullName}")]
-        public async Task<IActionResult> GetIcon(string libraryFullName, string imageFullName)
-        { 
-            var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
-            if (library == null)
-            {
-                return BadRequest("Library doesn't exist");
-            }
+        public async Task<ActionResult<Icon>> GetIcon(string libraryFullName, string imageFullName)
+        {
+            Icon icon = null;
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
-            }
+                var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
+                if (library == null)
+                {
+                    return BadRequest("Library doesn't exist");
+                }
 
-            var icon = await ImageRepository.GetIcon(imageFullName);
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                icon = await ImageRepository.GetIcon(imageFullName);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return Ok(icon);
         }
