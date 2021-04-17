@@ -111,25 +111,42 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("imageFile")]
         public async Task<IActionResult> PutImage([FromBody] ImageFile imageFile)
         {
-            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-            if (library == null)
+            try
             {
-                return BadRequest("Library doesn't exist");
-            }
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+                if (library == null)
+                {
+                    return BadRequest("Library doesn't exist");
+                }
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
+
+                if(!imageExistsInLibrary)
+                {
+                    BadRequest();
+                }
+
+                var updatedImage = await ImageRepository.UpdateAsync(imageFile);
+                library.Images.Add(updatedImage);
+
+                await LibraryRepository.UpdateAsync(library);
+            }
+            catch(ArgumentException)
             {
-                return Unauthorized();
+                return BadRequest();
             }
-
-            var updatedImage = await ImageRepository.UpdateAsync(imageFile);
-
-            library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
-            library.Images.Add(updatedImage);
-
-            await LibraryRepository.UpdateAsync(library);
-
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
+           
             return NoContent();
         }
 
