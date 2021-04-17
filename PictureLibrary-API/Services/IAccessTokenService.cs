@@ -12,5 +12,6 @@ namespace PictureLibrary_API.Services
         string GetRefreshToken(string userId);
         void SaveRefreshToken(string userId, string refreshToken);
         void DeleteRefreshToken(string userId, string refreshToken);
+        string GenerateToken(string userId);
     }
 }

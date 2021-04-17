@@ -53,7 +53,7 @@ namespace PictureLibrary_API.Controllers
                     return BadRequest(new { message = "Username or password is incorrect" });
                 }
 
-                tokenString = GenerateToken(user.Id.ToString());
+                tokenString = AccessTokenService.GenerateToken(user.Id.ToString());
                 refreshToken = AccessTokenService.GenerateToken();
                 AccessTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
             }
@@ -110,7 +110,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                newJwtToken = GenerateToken(userId);
+                newJwtToken = AccessTokenService.GenerateToken(userId);
                 newRefreshToken = AccessTokenService.GenerateToken();
 
                 AccessTokenService.DeleteRefreshToken(userId, refreshToken);
@@ -198,24 +198,6 @@ namespace PictureLibrary_API.Controllers
             }
 
             return Ok();
-        }
-
-        private string GenerateToken(string userId)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(AppSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, userId)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            
-            return tokenHandler.WriteToken(token);
         }
 
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
