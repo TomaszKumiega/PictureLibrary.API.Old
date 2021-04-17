@@ -99,7 +99,7 @@ namespace PictureLibrary_API.Controllers
                 return StatusCode(500);
             }
 
-            return Ok( new
+            return Created("", new
             {
                 id = result.Id,
                 username = result.Username,
@@ -136,7 +136,7 @@ namespace PictureLibrary_API.Controllers
                 return StatusCode(500);
             }
 
-            return new ObjectResult(new
+            return Ok( new
             {
                 token = newJwtToken,
                 refreshToken = newRefreshToken
