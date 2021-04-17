@@ -99,14 +99,8 @@ namespace PictureLibrary_API.Repositories
             {
                 image = await Task.Run(() => FileService.ReadAllBytes(fullPath));
             }
-            catch(FileNotFoundException)
-            {
-                return null;
-            }
-            catch(DirectoryNotFoundException)
-            {
-                return null;
-            }
+            catch (FileNotFoundException) { }
+            catch (DirectoryNotFoundException) { }
 
             return image;
         }
