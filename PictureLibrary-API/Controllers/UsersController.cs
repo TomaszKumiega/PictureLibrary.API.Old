@@ -129,15 +129,6 @@ namespace PictureLibrary_API.Controllers
             });
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = UserService.GetAll();
-            var presentation = Mapper.Map<IList<UserPresentationModel>>(users);
-
-            return Ok(presentation);
-        }
-
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
