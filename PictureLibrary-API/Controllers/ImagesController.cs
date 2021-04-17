@@ -37,7 +37,7 @@ namespace PictureLibrary_API.Controllers
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
             if (library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
             {
-                return BadRequest();
+                return BadRequest("Library doesn't exist");
             }
 
             // check if user owns the library
@@ -64,7 +64,7 @@ namespace PictureLibrary_API.Controllers
             var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
             if (library == null)
             {
-                return BadRequest();
+                return BadRequest("Library doesn't exist");
             }
 
             // check if user owns the library
@@ -91,7 +91,7 @@ namespace PictureLibrary_API.Controllers
             var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
             if (library == null)
             {
-                return BadRequest();
+                return BadRequest("Library doesn't exist");
             }
 
             // check if user owns the library
@@ -118,7 +118,7 @@ namespace PictureLibrary_API.Controllers
             var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
             if (library == null)
             {
-                return BadRequest();
+                return BadRequest("Library doesn't exist");
             }
 
             // check if user owns the library
