@@ -232,27 +232,38 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteImage([FromBody] ImageFile imageFile)
         {
-            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-            if (library == null)
-            {
-                return BadRequest("Library doesn't exist");
-            }
-            
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
-            {
-                return Unauthorized();
-            }
-
             try
             {
+                var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
+                if (library == null)
+                {
+                    return BadRequest("Library doesn't exist");
+                }
+
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
+
+                if(!imageExistsInLibrary)
+                {
+                    return BadRequest();
+                }
+
                 await ImageRepository.RemoveAsync(imageFile.FullPath);
-                library.Images.Remove(library.Images.Find(x => x.FullPath == imageFile.FullPath));
                 await LibraryRepository.UpdateAsync(library);
             }
-            catch
+            catch (ArgumentException)
             {
-                return NotFound();
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
             }
 
             return Ok();
