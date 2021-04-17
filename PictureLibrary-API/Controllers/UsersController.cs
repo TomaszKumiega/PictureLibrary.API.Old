@@ -143,30 +143,6 @@ namespace PictureLibrary_API.Controllers
             });
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
-        {
-            var userId = User?.Identity.Name;
-            if (userId != id.ToString())
-            {
-                return Unauthorized();
-            }
-
-            User user = null;
-            
-            try
-            {
-                user = UserService.GetById(id);
-            }
-            catch(Exception e)
-            {
-                Logger.LogError(e, e.Message);
-                return StatusCode(500);
-            }
-
-            return Ok(user);
-        }
-
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody]UserModel model)
         {
@@ -190,28 +166,6 @@ namespace PictureLibrary_API.Controllers
             catch(UserAlreadyExistsException e)
             {
                 return Conflict(new { message = e.Message });
-            }
-            catch(Exception e)
-            {
-                Logger.LogError(e, e.Message);
-                return StatusCode(500);
-            }
-
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
-            var userId = User?.Identity.Name;
-            if (userId != id.ToString())
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                UserService.Delete(id);
             }
             catch(Exception e)
             {
