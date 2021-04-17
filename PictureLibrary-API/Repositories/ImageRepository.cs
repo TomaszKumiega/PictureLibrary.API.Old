@@ -51,6 +51,8 @@ namespace PictureLibrary_API.Repositories
                     .WithTags(new List<Tag>())
                     .Build();
 
+            Logger.LogInformation("New added image: " + imageFile.FullName);
+
             return imageFile;
         }
 
@@ -125,6 +127,8 @@ namespace PictureLibrary_API.Repositories
         public async Task RemoveAsync(string fullPath)
         {
             await Task.Run(() => FileService.DeleteFile(fullPath));
+
+            Logger.LogInformation("Removed image: " + fullPath);
         }
 
         public async Task RemoveAsync(ImageFile entity)
@@ -166,6 +170,8 @@ namespace PictureLibrary_API.Repositories
                     .WithTags(entity.Tags)
                     .Build();
 
+            Logger.LogInformation("Updated imagefile info: " + imageFile.FullName);
+
             return imageFile;
         }
 
@@ -173,6 +179,8 @@ namespace PictureLibrary_API.Repositories
         {
             // overwrites the file
             var path = await Task.Run(() => FileService.AddFile(entity.ImageFile.FullName, entity.ImageContent));
+
+            Logger.LogInformation("Updated content of an image: " + path);
 
             return entity.ImageFile;
         }
