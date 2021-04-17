@@ -174,13 +174,21 @@ namespace PictureLibrary_API.Controllers
             user.Id = id;
 
             try
-            {
-                // fix exceptions
+            { 
                 UserService.Update(user, model.Password);
+            }
+            catch(ContentNotFoundException e)
+            {
+                return NotFound(new { message = e.Message });
+            }
+            catch(UserAlreadyExistsException e)
+            {
+                return Conflict(new { message = e.Message });
             }
             catch(Exception e)
             {
-                return BadRequest(new { message = e.Message });
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
             }
 
             return Ok();

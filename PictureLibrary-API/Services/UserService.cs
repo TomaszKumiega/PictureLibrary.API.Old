@@ -85,19 +85,21 @@ namespace PictureLibrary_API.Services
             var user = DatabaseContext.Users.Find(userParam.Id);
 
             if (user == null)
-                throw new Exception("User not found");
+            {
+                throw new ContentNotFoundException("User not found");
+            }
 
-            // update username if it has changed
             if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
             {
                 // throw error if the new username is already taken
                 if (DatabaseContext.Users.Any(x => x.Username == userParam.Username))
-                    throw new Exception("Username " + userParam.Username + " is already taken");
-
+                {
+                    throw new UserAlreadyExistsException("Username \"" + userParam.Username + "\" is already taken");
+                }
+                    
                 user.Username = userParam.Username;
             }
 
-            // update password if provided
             if (!string.IsNullOrWhiteSpace(password))
             {
                 byte[] passwordHash, passwordSalt;
