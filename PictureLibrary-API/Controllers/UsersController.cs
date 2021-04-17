@@ -67,11 +67,10 @@ namespace PictureLibrary_API.Controllers
             
             return Ok(new
             {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Token = tokenString,
-                RefreshToken = refreshToken
+                id = user.Id,
+                username = user.Username,
+                token = tokenString,
+                refreshToken = refreshToken
             });
         }
 
@@ -80,11 +79,11 @@ namespace PictureLibrary_API.Controllers
         public IActionResult Register([FromBody] UserModel model)
         {
             var user = Mapper.Map<User>(model);
+            User result = null;
 
             try
             {
-                UserService.Create(user, model.Password);
-                return Ok();
+                result = UserService.Create(user, model.Password);
             }
             catch (ArgumentException e)
             {
@@ -99,6 +98,13 @@ namespace PictureLibrary_API.Controllers
                 Logger.LogError(ex, ex.Message);
                 return StatusCode(500);
             }
+
+            return Ok( new
+            {
+                id = result.Id,
+                username = result.Username,
+                email = result.Email
+            });
         }
 
         [AllowAnonymous]
