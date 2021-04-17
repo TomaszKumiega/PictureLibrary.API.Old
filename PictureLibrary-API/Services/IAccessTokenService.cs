@@ -9,7 +9,7 @@ namespace PictureLibrary_API.Services
 {
     public interface IAccessTokenService
     {
-        string GenerateToken();
+        string GenerateRefreshToken();
         string GetRefreshToken(string userId);
         void SaveRefreshToken(string userId, string refreshToken);
         void DeleteRefreshToken(string userId, string refreshToken);

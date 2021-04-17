@@ -33,7 +33,7 @@ namespace PictureLibrary_API.Services
             Context.SaveChanges();
         }
 
-        public string GenerateToken()
+        public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
             using (var rng = RandomNumberGenerator.Create())

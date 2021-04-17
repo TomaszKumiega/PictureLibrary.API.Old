@@ -52,7 +52,7 @@ namespace PictureLibrary_API.Controllers
                 }
 
                 tokenString = AccessTokenService.GenerateToken(user.Id.ToString());
-                refreshToken = AccessTokenService.GenerateToken();
+                refreshToken = AccessTokenService.GenerateRefreshToken();
                 AccessTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
             }
             catch(ArgumentException)
@@ -109,7 +109,7 @@ namespace PictureLibrary_API.Controllers
             try
             {
                 newJwtToken = AccessTokenService.GenerateToken(userId);
-                newRefreshToken = AccessTokenService.GenerateToken();
+                newRefreshToken = AccessTokenService.GenerateRefreshToken();
 
                 AccessTokenService.DeleteRefreshToken(userId, refreshToken);
                 AccessTokenService.SaveRefreshToken(userId, newRefreshToken);
