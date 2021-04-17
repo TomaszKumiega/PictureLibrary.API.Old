@@ -147,20 +147,34 @@ namespace PictureLibrary_API.Controllers
         [HttpDelete("{name}")]
         public async Task<ActionResult<Library>> DeleteLibrary(string name)
         {
-            var library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
+            Library library = null;
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
-            }
+                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
 
-            if (library == null)
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                if (library == null)
+                {
+                    return NotFound();
+                }
+
+                await Task.Run(() => LibraryRepository.RemoveAsync(library));
+            }
+            catch (ArgumentException)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            await Task.Run(() => LibraryRepository.RemoveAsync(library));
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return Ok(library);
         }
