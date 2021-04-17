@@ -95,13 +95,25 @@ namespace PictureLibrary_API.Controllers
                 return BadRequest();
             }
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
-            }
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
 
-            await Task.Run(() => LibraryRepository.UpdateAsync(library));
+                await Task.Run(() => LibraryRepository.UpdateAsync(library));
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return NoContent();
         }
