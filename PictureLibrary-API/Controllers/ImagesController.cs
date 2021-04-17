@@ -272,19 +272,33 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("icons/{libraryFullName}")]
         public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string libraryFullName, [FromBody] IEnumerable<string> imageSources)
         {
-            var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
-            if (library == null)
-            {
-                return BadRequest("Library doesn't exist");
-            }
+            IEnumerable<Icon> icons = null;
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
-            }
+                var library = await LibraryRepository.GetBySourceAsync(libraryFullName);
+                if (library == null)
+                {
+                    return BadRequest("Library doesn't exist");
+                }
 
-            var icons = await ImageRepository.GetIcons(imageSources);
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                icons = await ImageRepository.GetIcons(imageSources);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return Ok(icons);
         }
