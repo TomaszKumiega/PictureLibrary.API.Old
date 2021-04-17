@@ -1,6 +1,6 @@
 # Running Picture Library API
 
-## Manually 
+## On linux 
 
 ### 1. [Install Docker](https://www.docker.com/get-started)
 
@@ -60,10 +60,5 @@ docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=b
 Command for ARM32 architecture machine (RaspberryPi):
 
 ```sh
-docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=bind,source=DIRECTORY,target=PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
+docker run -d -it -p 5000:5000 -p 5001:5001 --name CONTAINER_NAME --mount type=bind,source=DIRECTORY,target=PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi-arm32:latest
 ```
-
-## Using configuration app
-
-**SOON**
-
