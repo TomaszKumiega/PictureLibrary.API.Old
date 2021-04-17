@@ -59,5 +59,10 @@ namespace PictureLibrary_API.Services
         {
             FileSystem.RenameFile(file, newName);
         }
+
+        public void WriteAllLines(string fullPath, string[] contents)
+        {
+            File.WriteAllLines(fullPath, contents);
+        }
     }
 }

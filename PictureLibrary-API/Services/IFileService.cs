@@ -64,5 +64,12 @@ namespace PictureLibrary_API.Services
         /// <param name="path"></param>
         /// <returns></returns>
         Icon ExtractAssociatedIcon(string path);
+
+        /// <summary>
+        /// Creates of opens the file, write the specified string array to the file, and then closes the file.
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <param name="contents"></param>
+        void WriteAllLines(string fullPath, string[] contents);
     }
 }
