@@ -33,20 +33,36 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<byte[]>> GetImage([FromBody] ImageFile imageFile)
         {
-            var library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
-            if (library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
+            Library library = null;
+            byte[] image = null;
+
+            try
             {
-                return BadRequest("Library doesn't exist");
-            }
+                library = await LibraryRepository.GetBySourceAsync(imageFile.LibraryFullPath);
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                if(library == null || library.Images.Find(x => x.FullPath == imageFile.FullPath) == null)
+                {
+                    return NotFound();
+                }
+
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                image = await ImageRepository.GetBySourceAsync(imageFile.FullPath);
+            }
+            catch(ArgumentException)
             {
-                return Unauthorized();
+                return BadRequest();
             }
-
-            var image = await ImageRepository.GetBySourceAsync(imageFile.FullPath);
-
+            catch(Exception e)
+            {
+                Logger.LogDebug(e, e.Message);
+                return StatusCode(500);
+            }
+            
             if (image == null)
             {
                 return NotFound();
