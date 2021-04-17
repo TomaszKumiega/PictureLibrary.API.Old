@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Services
 {
-    public class RefreshTokenService : IRefreshTokenService
+    public class AccessTokenService : IAccessTokenService
     {
         private DatabaseContext Context { get; }
 
-        public RefreshTokenService(DatabaseContext context)
+        public AccessTokenService(DatabaseContext context)
         {
             Context = context;
         }

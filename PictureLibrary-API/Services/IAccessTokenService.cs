@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Services
 {
-    public interface IRefreshTokenService
+    public interface IAccessTokenService
     {
         string GenerateToken();
         string GetRefreshToken(string userId);

@@ -24,16 +24,16 @@ namespace PictureLibrary_API.Controllers
         private ILogger<UsersController> Logger { get; }
         private IUserService UserService { get; }
         private IMapper Mapper { get; }
-        private IRefreshTokenService RefreshTokenService { get; }
+        private IAccessTokenService AccessTokenService { get; }
         private AppSettings AppSettings { get; }
 
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService, IRefreshTokenService refreshTokenService)
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IOptions<AppSettings> appSettings, IUserService userService, IAccessTokenService refreshTokenService)
         {
             Logger = logger;
             Mapper = mapper;
             AppSettings = appSettings.Value;
             UserService = userService;
-            RefreshTokenService = refreshTokenService;
+            AccessTokenService = refreshTokenService;
         }
 
         [AllowAnonymous]
@@ -54,8 +54,8 @@ namespace PictureLibrary_API.Controllers
                 }
 
                 tokenString = GenerateToken(user.Id.ToString());
-                refreshToken = RefreshTokenService.GenerateToken();
-                RefreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
+                refreshToken = AccessTokenService.GenerateToken();
+                AccessTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
             }
             catch(ArgumentException)
             {
@@ -99,7 +99,7 @@ namespace PictureLibrary_API.Controllers
         {
             var principal = GetPrincipalFromExpiredToken(token);
             var userId = principal.Identity.Name;
-            var savedRefreshToken = RefreshTokenService.GetRefreshToken(userId); 
+            var savedRefreshToken = AccessTokenService.GetRefreshToken(userId); 
             if (savedRefreshToken != refreshToken)
             {
                 throw new SecurityTokenException("Invalid refresh token");
@@ -111,10 +111,10 @@ namespace PictureLibrary_API.Controllers
             try
             {
                 newJwtToken = GenerateToken(userId);
-                newRefreshToken = RefreshTokenService.GenerateToken();
+                newRefreshToken = AccessTokenService.GenerateToken();
 
-                RefreshTokenService.DeleteRefreshToken(userId, refreshToken);
-                RefreshTokenService.SaveRefreshToken(userId, newRefreshToken);
+                AccessTokenService.DeleteRefreshToken(userId, refreshToken);
+                AccessTokenService.SaveRefreshToken(userId, newRefreshToken);
             }
             catch(Exception e)
             {
