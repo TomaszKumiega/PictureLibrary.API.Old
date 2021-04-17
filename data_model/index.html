@@ -406,6 +406,11 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <td>-</td>
 </tr>
 <tr>
+<td>Password</td>
+<td>string</td>
+<td>-</td>
+</tr>
+<tr>
 <td>Email</td>
 <td>string</td>
 <td>-</td>
@@ -419,19 +424,16 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <span class="nt">&lt;library</span> <span class="na">name =</span> <span class="s">&quot;libraryName&quot;</span> <span class="na">description =</span> <span class="s">&quot;Family picture library&quot;</span> <span class="na">owners =</span> <span class="s">&quot;userGuid,userGuid&quot;</span><span class="nt">&gt;</span>
 
     <span class="nt">&lt;tags&gt;</span>
-        <span class="nt">&lt;tag</span> <span class="na">name =</span> <span class="s">&quot;Portraits&quot;</span> <span class="na">description =</span> <span class="s">&quot;&quot;</span> <span class="nt">/&gt;</span>
-        <span class="nt">&lt;tag</span> <span class="na">name =</span> <span class="s">&quot;Vacation&quot;</span> <span class="na">description =</span> <span class="s">&quot;All pictures from vacation time&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;tag</span> <span class="na">name =</span> <span class="s">&quot;Portraits&quot;</span> <span class="na">description =</span> <span class="s">&quot;&quot;</span> <span class="na">color =</span> <span class="s">&quot;#34ebe5&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;tag</span> <span class="na">name =</span> <span class="s">&quot;Vacation&quot;</span> <span class="na">description =</span> <span class="s">&quot;All pictures from vacation time&quot;</span> <span class="na">color =</span> <span class="s">&quot;#eb34b4&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/tags&gt;</span>        
 
     <span class="nt">&lt;images&gt;</span>
-        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1642252321&quot;</span> <span class="na">extension =</span> <span class="s">&quot;jpg&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1642252321.jpg&quot;</span> <span class="na">creationTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> 
-                   <span class="na">lastAccessTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">lastWriteTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">size =</span> <span class="s">&quot;5130500&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1642252321&quot;</span> <span class="na">extension =</span> <span class="s">&quot;.jpg&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1642252321.jpg&quot;</span> <span class="na">tags =</span> <span class="s">&quot;Portraits,Vacation&quot;</span><span class="nt">/&gt;</span>
 
-        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1246531451&quot;</span> <span class="na">extension =</span> <span class="s">&quot;png&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1246531451.png&quot;</span> <span class="na">creationTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> 
-                   <span class="na">lastAccessTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">lastWriteTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">size =</span> <span class="s">&quot;3003000&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1246531451&quot;</span> <span class="na">extension =</span> <span class="s">&quot;.png&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1246531451.png&quot;</span> <span class="na">tags =</span> <span class="s">&quot;&quot;</span><span class="nt">/&gt;</span>
 
-        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1513515311&quot;</span> <span class="na">extension =</span> <span class="s">&quot;jpg&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1513515311.jpg&quot;</span> <span class="na">creationTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> 
-                   <span class="na">lastAccessTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">lastWriteTime =</span> <span class="s">&quot;2008-10-01T17:04:32.0000000&quot;</span> <span class="na">size =</span> <span class="s">&quot;2050000&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;imageFile</span> <span class="na">name =</span> <span class="s">&quot;1513515311&quot;</span> <span class="na">extension =</span> <span class="s">&quot;.jpg&quot;</span> <span class="na">source =</span> <span class="s">&quot;C:/Pictures/Library1/images/1513515311.jpg&quot;</span> <span class="na">tags =</span> <span class="s">&quot;Portraits&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/images&gt;</span>    
 
 <span class="nt">&lt;/library&gt;</span>
@@ -453,9 +455,9 @@ API uses <a href="https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#
 <td>Name of the library</td>
 </tr>
 <tr>
-<td>FullPath</td>
+<td>FullName</td>
 <td>string</td>
-<td>Full path to the library</td>
+<td>Path to the library</td>
 </tr>
 <tr>
 <td>Description</td>
@@ -503,6 +505,11 @@ Every image is assigned at least one tag.</p>
 <td>string</td>
 <td>-</td>
 </tr>
+<tr>
+<td>Color</td>
+<td>string</td>
+<td>Color associated with the tag in HEX</td>
+</tr>
 </tbody>
 </table>
 <h2 id="imagefile">ImageFile</h2>
@@ -529,7 +536,7 @@ One image can be stored in multiple albums without multiplication of its file bu
 <td>File extension (jpg, png etc.)</td>
 </tr>
 <tr>
-<td>Source</td>
+<td>FullName</td>
 <td>string</td>
 <td>Path of the file</td>
 </tr>
@@ -552,6 +559,11 @@ One image can be stored in multiple albums without multiplication of its file bu
 <td>Size</td>
 <td>long</td>
 <td>Size of the file in bytes</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>List of Tags</td>
+<td>-</td>
 </tr>
 </tbody>
 </table>
