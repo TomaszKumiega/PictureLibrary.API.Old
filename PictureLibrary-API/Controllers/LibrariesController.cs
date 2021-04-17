@@ -60,16 +60,28 @@ namespace PictureLibrary_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
-            var allLibraries = await Task.Run(() => LibraryRepository.GetAllAsync());
             var libraries = new List<Library>();
 
-            var userId = User?.Identity.Name;
-            if(allLibraries != null)
+            try
             {
-                foreach(var l in allLibraries)
+                var allLibraries = await Task.Run(() => LibraryRepository.GetAllAsync());
+
+                var userId = User?.Identity.Name;
+                if (allLibraries != null)
                 {
-                    if (l.Owners.Where(x => x.ToString() == userId).Any()) libraries.Add(l);
+                    foreach (var l in allLibraries)
+                    {
+                        if (l.Owners.Where(x => x.ToString() == userId).Any())
+                        {
+                            libraries.Add(l);
+                        }
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
             }
 
             return Ok(libraries);
