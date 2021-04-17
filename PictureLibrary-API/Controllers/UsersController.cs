@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Services;
@@ -85,9 +86,18 @@ namespace PictureLibrary_API.Controllers
                 UserService.Create(user, model.Password);
                 return Ok();
             }
+            catch (ArgumentException e)
+            {
+                return BadRequest(new { message = e.Message})
+            }
+            catch (UserAlreadyExistsException e)
+            {
+                return Conflict(new { message = e.Message });
+            }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                Logger.LogError(ex, ex.Message);
+                return StatusCode(500);
             }
         }
 

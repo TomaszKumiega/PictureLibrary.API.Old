@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Model;
 using System;
 using System.Collections.Generic;
@@ -37,12 +38,15 @@ namespace PictureLibrary_API.Services
 
         public User Create(User user, string password)
         {
-            // validation
             if (string.IsNullOrWhiteSpace(password))
-                throw new Exception("Password is required");
+            {
+                throw new ArgumentException("Password is required");
+            }
 
             if (DatabaseContext.Users.Any(x => x.Username == user.Username))
-                throw new Exception("Username \"" + user.Username + "\" is already taken");
+            {
+                throw new UserAlreadyExistsException("Username: \"" + user.Username + "\" is already taken");
+            }
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
