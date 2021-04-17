@@ -28,16 +28,30 @@ namespace PictureLibrary_API.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<Library>> GetLibrary(string name)
         {
-            var library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
-            if (library == null)
-            {
-                return NotFound();
-            }
+            Library library = null;
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x=>x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
+                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
+                if (library == null)
+                {
+                    return NotFound();
+                }
+
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
             }
 
             return Ok(library);
