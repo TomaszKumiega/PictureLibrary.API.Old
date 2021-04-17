@@ -40,17 +40,32 @@ namespace PictureLibrary_API.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]AuthenticateModel model)
         {
-            var user = UserService.Authenticate(model.Username, model.Password);
+            User user = null;
+            string tokenString;
+            string refreshToken;
 
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
-            }
-                
-            var tokenString = GenerateToken(user.Id.ToString());
-            var refreshToken = RefreshTokenService.GenerateToken();
-            RefreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
+                user = UserService.Authenticate(model.Username, model.Password);
 
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Username or password is incorrect" });
+                }
+
+                tokenString = GenerateToken(user.Id.ToString());
+                refreshToken = RefreshTokenService.GenerateToken();
+                RefreshTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
+            }
+            catch(ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+            
             return Ok(new
             {
                 Id = user.Id,
