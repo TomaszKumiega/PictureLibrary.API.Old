@@ -7,6 +7,11 @@ namespace PictureLibrary_API.Exceptions
 {
     public class UserAlreadyExistsException : Exception
     {
+        public UserAlreadyExistsException() : base()
+        {
+
+        }
+
         public UserAlreadyExistsException(string message) : base(message)
         {
         }
