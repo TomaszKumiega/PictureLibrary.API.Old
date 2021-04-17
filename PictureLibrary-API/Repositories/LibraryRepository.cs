@@ -195,7 +195,7 @@ namespace PictureLibrary_API.Repositories
 
                                     var imageFile = new ImageFile();
                                     imageFile.Name = imageElement.Attribute("name").Value;
-                                    imageFile.Extension = imageElement.Attribute("extension").Value;
+                                    imageFile.Extension = ImageExtensionHelper.GetExtension(imageElement.Attribute("extension").Value);
                                     imageFile.FullPath = imageElement.Attribute("source").Value;
                                     imageFile.CreationTime = DateTime.Parse(imageElement.Attribute("creationTime").Value);
                                     imageFile.LastAccessTime = DateTime.Parse(imageElement.Attribute("lastAccessTime").Value);
@@ -267,7 +267,7 @@ namespace PictureLibrary_API.Repositories
                 tags += i.Tags[i.Tags.Count - 1].Name;
 
 
-                var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", i.Extension),
+                var imageFileElement = new XElement("imageFile", new XAttribute("name", i.Name), new XAttribute("extension", ImageExtensionHelper.ExtensionToString(i.Extension)),
                     new XAttribute("source", i.FullPath), new XAttribute("creationTime", i.CreationTime.ToString()), new XAttribute("lastAccessTime", i.LastAccessTime.ToString()),
                     new XAttribute("lastWriteTime", i.LastWriteTime.ToString()), new XAttribute("size", i.Size.ToString()), new XAttribute("tags", tags));
 

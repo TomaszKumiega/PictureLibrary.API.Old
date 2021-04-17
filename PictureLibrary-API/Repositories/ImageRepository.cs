@@ -29,7 +29,7 @@ namespace PictureLibrary_API.Repositories
             var libraryDirectory = FileService.GetFileInfo(image.ImageFile.LibraryFullPath).Directory.FullName;
             if (!libraryDirectory.EndsWith("\\")) libraryDirectory += "\\";
 
-            var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + image.ImageFile.Extension;
+            var filePath = FileSystemInfo.FileSystemInfo.RootDirectory + libraryDirectory + FileSystemInfo.FileSystemInfo.ImagesDirectory + Guid.NewGuid().ToString() + ImageExtensionHelper.ExtensionToString(image.ImageFile.Extension);
             var path = await Task.Run(() => FileService.AddFile(filePath, image.ImageContent));
 
             var imageFile = new ImageFile();
@@ -147,10 +147,10 @@ namespace PictureLibrary_API.Repositories
 
         public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
-            await Task.Run(() => FileService.RenameFile(entity.FullPath, entity.Name + entity.Extension));
+            await Task.Run(() => FileService.RenameFile(entity.FullPath, entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
             var oldFileInfo = await Task.Run(() => FileService.GetFileInfo(entity.FullPath));
-            var newFileInfo = await Task.Run(() => FileService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + entity.Extension));
+            var newFileInfo = await Task.Run(() => FileService.GetFileInfo(oldFileInfo.Directory.FullName + "\\" + entity.Name + ImageExtensionHelper.ExtensionToString(entity.Extension)));
 
             var imageFile = new ImageFile(newFileInfo.Name, newFileInfo.Extension, newFileInfo.FullName, entity.LibraryFullPath, newFileInfo.CreationTime, newFileInfo.LastAccessTimeUtc
                 , newFileInfo.LastWriteTimeUtc, newFileInfo.Length, entity.Tags);
