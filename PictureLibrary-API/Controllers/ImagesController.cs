@@ -141,12 +141,19 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImageFile>> PostImage([FromBody] Image image)
         {
+            // check if library exists
             var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+            if (library == null)
+            {
+                return BadRequest("Library doesn't exist");
+            }
 
-            if (library == null) return BadRequest("Library doesn't exist");
-
+            // check if user owns the library
             var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any()) return Unauthorized();
+            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            {
+                return Unauthorized();
+            }
 
             var imageFile = await ImageRepository.AddAsync(image);
 
