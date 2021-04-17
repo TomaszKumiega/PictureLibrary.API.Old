@@ -129,7 +129,7 @@ namespace PictureLibrary_API.Controllers
 
                 if(!imageExistsInLibrary)
                 {
-                    BadRequest();
+                    return BadRequest();
                 }
 
                 var updatedImage = await ImageRepository.UpdateAsync(imageFile);
@@ -153,24 +153,41 @@ namespace PictureLibrary_API.Controllers
         [HttpPut("image")]
         public async Task<IActionResult> PutImage([FromBody] Image image)
         {
-            var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
-            if (library == null)
+            try
             {
-                return BadRequest("Library doesn't exist");
-            }
+                var library = await LibraryRepository.GetBySourceAsync(image.ImageFile.LibraryFullPath);
+                if (library == null)
+                {
+                    return BadRequest("Library doesn't exist");
+                }
 
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
+
+                bool imageExistsInLibrary = library.Images.Remove(library.Images.Find(x => x.FullPath == image.ImageFile.FullPath));
+
+                if (!imageExistsInLibrary)
+                {
+                    return BadRequest();
+                }
+
+                var updatedImage = await ImageRepository.UpdateAsync(image);
+                library.Images.Add(updatedImage);
+
+                await LibraryRepository.UpdateAsync(library);
+            }
+            catch (ArgumentException)
             {
-                return Unauthorized();
+                return BadRequest();
             }
-
-            var updatedImage = await ImageRepository.UpdateAsync(image);
-
-            library.Images.Remove(library.Images.Find(x => x.FullPath == image.ImageFile.FullPath));
-            library.Images.Add(updatedImage);
-
-            await LibraryRepository.UpdateAsync(library);
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return NoContent();
         }
