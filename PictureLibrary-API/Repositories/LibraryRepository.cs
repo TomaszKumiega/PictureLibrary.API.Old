@@ -188,6 +188,7 @@ namespace PictureLibrary_API.Repositories
                                     var tag = new Tag();
                                     tag.Name = tagElement.Attribute("name").Value;
                                     tag.Description = tagElement.Attribute("description").Value;
+                                    tag.Color = tagElement.Attribute("color").Value;
 
                                     tags.Add(tag);
                                 }
@@ -202,17 +203,20 @@ namespace PictureLibrary_API.Repositories
                                         imageTags.Add(tags.Find(x => x.Name == t));
                                     }
 
+                                    var fullName = imageElement.Attribute("source").Value;
+                                    var imageFileInfo = FileService.GetFileInfo(fullName);
+
                                     var imageFile =
                                         ImageFileBuilder
                                             .StartBuilding()
                                             .WithName(imageElement.Attribute("name").Value)
                                             .WithExtension(ImageExtensionHelper.GetExtension(imageElement.Attribute("extension").Value))
-                                            .WithFullName(imageElement.Attribute("source").Value)
+                                            .WithFullName(fullName)
                                             .WithLibraryFullName(library.FullName)
-                                            .WithCreationTime(DateTime.Parse(imageElement.Attribute("creationTime").Value))
-                                            .WithLastAccessTime(DateTime.Parse(imageElement.Attribute("lastAccessTime").Value))
-                                            .WithLastWriteTime(DateTime.Parse(imageElement.Attribute("lastWriteTime").Value))
-                                            .WithSize(long.Parse(imageElement.Attribute("size").Value))
+                                            .WithCreationTime(imageFileInfo.CreationTimeUtc)
+                                            .WithLastAccessTime(imageFileInfo.LastAccessTimeUtc)
+                                            .WithLastWriteTime(imageFileInfo.LastWriteTimeUtc)
+                                            .WithSize(imageFileInfo.Length)
                                             .WithTags(imageTags)
                                             .Build();
                                            
