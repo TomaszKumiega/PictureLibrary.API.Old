@@ -13,6 +13,7 @@ API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/end
 |------|------|-------|
 | Id | Guid | User Id | 
 | Username | string | - |
+| Password | string | - |
 | Email | string | - |
 
 ## Library
@@ -26,19 +27,16 @@ Library represents .xml file that contains tags and images.
 <library name = "libraryName" description = "Family picture library" owners = "userGuid,userGuid">
     
     <tags>
-        <tag name = "Portraits" description = "" />
-        <tag name = "Vacation" description = "All pictures from vacation time" />
+        <tag name = "Portraits" description = "" color = "#34ebe5"/>
+        <tag name = "Vacation" description = "All pictures from vacation time" color = "#eb34b4"/>
     </tags>        
     
     <images>
-        <imageFile name = "1642252321" extension = "jpg" source = "C:/Pictures/Library1/images/1642252321.jpg" creationTime = "2008-10-01T17:04:32.0000000" 
-                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "5130500"/>
+        <imageFile name = "1642252321" extension = ".jpg" source = "C:/Pictures/Library1/images/1642252321.jpg" tags = "Portraits,Vacation"/>
         
-        <imageFile name = "1246531451" extension = "png" source = "C:/Pictures/Library1/images/1246531451.png" creationTime = "2008-10-01T17:04:32.0000000" 
-                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "3003000"/>
+        <imageFile name = "1246531451" extension = ".png" source = "C:/Pictures/Library1/images/1246531451.png" tags = ""/>
         
-        <imageFile name = "1513515311" extension = "jpg" source = "C:/Pictures/Library1/images/1513515311.jpg" creationTime = "2008-10-01T17:04:32.0000000" 
-                   lastAccessTime = "2008-10-01T17:04:32.0000000" lastWriteTime = "2008-10-01T17:04:32.0000000" size = "2050000" />
+        <imageFile name = "1513515311" extension = ".jpg" source = "C:/Pictures/Library1/images/1513515311.jpg" tags = "Portraits"/>
     </images>    
 
 </library>
@@ -49,7 +47,7 @@ Library represents .xml file that contains tags and images.
 | Name | Type | Notes |
 |------|------|-------|
 | Name | string | Name of the library | 
-| FullPath | string | Full path to the library |
+| FullName | string | Path to the library |
 | Description | string | - |
 | Tags | List of Tags | List of all tags used in the library |
 | Images | List of ImageFiles | List of all files in the library |
@@ -67,6 +65,7 @@ Every image is assigned at least one tag.
 |------|------|-------|
 | Name | string | - |
 | Description | string | - |
+| Color | string | Color associated with the tag in HEX |
 
 
 ## ImageFile
@@ -80,8 +79,9 @@ One image can be stored in multiple albums without multiplication of its file bu
 |------|------|-------|
 | Name | string | Name of the image file without extension |
 | Extension | string | File extension (jpg, png etc.) |
-| Source | string | Path of the file |
+| FullName | string | Path of the file |
 | CreationTime | DateTime | The time of file creation |
 | LastAccessTime | DateTime | The time file was last accessed |
 | LastWriteTime | DateTime | The time file was last written to |
 | Size | long | Size of the file in bytes |
+| Tags | List of Tags | - | 
