@@ -121,13 +121,25 @@ namespace PictureLibrary_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Library>> PostLibrary([FromBody] Library library)
         {
-            var userId = User?.Identity.Name;
-            if (!library.Owners.Where(x => x.ToString() == userId).Any())
+            try
             {
-                return Unauthorized();
-            }
+                var userId = User?.Identity.Name;
+                if (!library.Owners.Where(x => x.ToString() == userId).Any())
+                {
+                    return Unauthorized();
+                }
 
-            await Task.Run(() => LibraryRepository.AddAsync(library));
+                await Task.Run(() => LibraryRepository.AddAsync(library));
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
 
             return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
         }
