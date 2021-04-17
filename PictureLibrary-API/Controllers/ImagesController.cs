@@ -57,7 +57,7 @@ namespace PictureLibrary_API.Controllers
             }
             catch(Exception e)
             {
-                Logger.LogDebug(e, e.Message);
+                Logger.LogError(e, e.Message);
                 return StatusCode(500);
             }
             
