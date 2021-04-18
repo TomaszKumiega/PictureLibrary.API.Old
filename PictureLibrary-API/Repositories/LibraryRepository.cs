@@ -192,6 +192,7 @@ namespace PictureLibrary_API.Repositories
                                     library.Name = libraryElement.Attribute("name").Value;
                                     library.FullName = fileStream.Name;
                                     library.Description = libraryElement.Attribute("description").Value;
+                                    library.Owners = new List<Guid>();
 
                                     foreach (var t in libraryElement.Attribute("owners").Value.Split(','))
                                     {
