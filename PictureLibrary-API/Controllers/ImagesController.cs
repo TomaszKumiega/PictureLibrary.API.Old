@@ -70,8 +70,8 @@ namespace PictureLibrary_API.Controllers
             return Ok(image);
         }
 
-        [HttpGet("{libraryFullName}")]
-        public async Task<ActionResult<IEnumerable<byte[]>>> GetImages(string libraryFullName)
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<byte[]>>> GetImages([FromQuery] string libraryFullName)
         {
             IEnumerable<byte[]> images = null;
 
@@ -286,8 +286,8 @@ namespace PictureLibrary_API.Controllers
             return Ok();
         }
 
-        [HttpGet("icons/{libraryFullName}")]
-        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons(string libraryFullName, [FromBody] IEnumerable<string> imageSources)
+        [HttpGet("icons")]
+        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons([FromQuery] string libraryFullName, [FromBody] IEnumerable<string> imageSources)
         {
             IEnumerable<Icon> icons = null;
 
@@ -320,8 +320,8 @@ namespace PictureLibrary_API.Controllers
             return Ok(icons);
         }
 
-        [HttpGet("icons/{libraryFullName}/{imageFullName}")]
-        public async Task<ActionResult<Icon>> GetIcon(string libraryFullName, string imageFullName)
+        [HttpGet("icon")]
+        public async Task<ActionResult<Icon>> GetIcon([FromQuery] string libraryFullName, [FromQuery] string imageFullName)
         {
             Icon icon = null;
 

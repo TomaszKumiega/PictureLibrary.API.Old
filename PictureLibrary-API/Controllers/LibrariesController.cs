@@ -58,7 +58,7 @@ namespace PictureLibrary_API.Controllers
             return Ok(library);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraries()
         {
             var libraries = new List<Library>();
@@ -149,8 +149,8 @@ namespace PictureLibrary_API.Controllers
             return CreatedAtAction("GetLibrary", new { fullName = library.FullName }, library);
         }
 
-        [HttpDelete("{fullName}")]
-        public async Task<ActionResult<Library>> DeleteLibrary(string fullName)
+        [HttpDelete]
+        public async Task<ActionResult<Library>> DeleteLibrary([FromQuery] string fullName)
         {
             Library library = null;
 
