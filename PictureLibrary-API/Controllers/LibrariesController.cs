@@ -26,14 +26,14 @@ namespace PictureLibrary_API.Controllers
         }
 
 
-        [HttpGet("{fullName}", Name = "GetLibrary")]
-        public async Task<ActionResult<Library>> GetLibrary(string fullName)
+        [HttpGet("library", Name = "GetLibrary")]
+        public async Task<ActionResult<Library>> GetLibrary([FromQuery] string fullName)
         {
             Library library = null;
 
             try
             {
-                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.FullName == fullName));
+                library = await Task.Run(() => LibraryRepository.GetBySourceAsync(fullName));
                 if (library == null)
                 {
                     return NotFound();
