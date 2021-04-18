@@ -109,12 +109,12 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh")]
-        public IActionResult Refresh(string token, string refreshToken)
+        public IActionResult Refresh([FromBody] RefreshRequestModel refreshRequest)
         {
-            var principal = AccessTokenService.GetPrincipalFromExpiredToken(token);
+            var principal = AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token);
             var userId = principal.Identity.Name;
             var savedRefreshToken = AccessTokenService.GetRefreshToken(userId); 
-            if (savedRefreshToken != refreshToken)
+            if (savedRefreshToken != refreshRequest.RefreshToken)
             {
                 throw new SecurityTokenException("Invalid refresh token");
             }
@@ -127,7 +127,7 @@ namespace PictureLibrary_API.Controllers
                 newJwtToken = AccessTokenService.GenerateAccessToken(userId);
                 newRefreshToken = AccessTokenService.GenerateRefreshToken();
 
-                AccessTokenService.DeleteRefreshToken(userId, refreshToken);
+                AccessTokenService.DeleteRefreshToken(userId, refreshRequest.RefreshToken);
                 AccessTokenService.SaveRefreshToken(userId, newRefreshToken);
             }
             catch(Exception e)
