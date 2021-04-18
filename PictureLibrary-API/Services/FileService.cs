@@ -13,13 +13,13 @@ namespace PictureLibrary_API.Services
     {
         public string AddFile(string filePath, byte[] file)
         {
-            File.WriteAllBytes(FileSystemInfo.FileSystemInfo.RootDirectory + filePath, file);
-            return FileSystemInfo.FileSystemInfo.RootDirectory + filePath;
+            File.WriteAllBytes(filePath, file);
+            return filePath;
         }
 
         public void CreateFile(string filePath)
         {
-            var fileStream = File.Create(FileSystemInfo.FileSystemInfo.RootDirectory + filePath);
+            var fileStream = File.Create(filePath);
             fileStream.Close();
         }
 
