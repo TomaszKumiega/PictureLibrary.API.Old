@@ -47,13 +47,7 @@ namespace PictureLibrary_API
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IImageFileBuilder, ImageFileBuilder>();
 
-            services.AddDbContext<DatabaseContext>(options =>
-            {
-                options.UseSqlite(Microsoft
-                    .Extensions
-                    .Configuration
-                    .ConfigurationExtensions.GetConnectionString(this.Configuration, "UsersDatabase"));
-            });
+            services.AddDbContext<DatabaseContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -97,14 +91,7 @@ namespace PictureLibrary_API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseContext context)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                context.Database.Migrate();
-            }
+            context.Database.Migrate();
 
             app.UseCors(x => x
                 .AllowAnyOrigin()
