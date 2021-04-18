@@ -45,7 +45,7 @@ namespace PictureLibrary_API.Services
 
         public FileStream OpenFile(string path, FileMode mode)
         {
-            return new FileStream(path, mode);
+            return new FileStream(path, mode, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
 
         public byte[] ReadAllBytes(string path)
