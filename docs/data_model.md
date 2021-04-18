@@ -71,7 +71,6 @@ Every image is assigned at least one tag.
 ## ImageFile
 
 ImageFile describes an image and provides a way to access a file from the remote storage.
-One image can be stored in multiple albums without multiplication of its file but every library has it's own copy of the image.
 
 **Properties**
 
