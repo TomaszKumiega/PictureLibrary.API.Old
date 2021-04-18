@@ -26,14 +26,14 @@ namespace PictureLibrary_API.Controllers
         }
 
 
-        [HttpGet("{name}")]
-        public async Task<ActionResult<Library>> GetLibrary(string name)
+        [HttpGet("{fullName}")]
+        public async Task<ActionResult<Library>> GetLibrary(string fullName)
         {
             Library library = null;
 
             try
             {
-                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
+                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.FullName == fullName));
                 if (library == null)
                 {
                     return NotFound();
@@ -149,14 +149,14 @@ namespace PictureLibrary_API.Controllers
             return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
         }
 
-        [HttpDelete("{name}")]
-        public async Task<ActionResult<Library>> DeleteLibrary(string name)
+        [HttpDelete("{fullName}")]
+        public async Task<ActionResult<Library>> DeleteLibrary(string fullName)
         {
             Library library = null;
 
             try
             {
-                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.Name == name));
+                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.FullName == fullName));
 
                 var userId = User?.Identity.Name;
                 if (!library.Owners.Where(x => x.ToString() == userId).Any())
