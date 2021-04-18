@@ -148,9 +148,11 @@ HTTP/1.1 200 OK
 ```
 
 ```json
-[
-    TODO
-]
+{
+    {"fullName":"\\lib\\lib\\lib.plib","name":"lib","description":"desccc","tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}],"images":[{"name":"Image","extension":0,"fullName":"\\image\\cos\\well\\Image.jpg","libraryFullName":"\\lib\\lib\\lib.plib","creationTime":"2021-04-18T03:42:11.7968969+02:00","lastAccessTime":"2021-04-18T03:42:11.8108591+02:00","lastWriteTime":"2021-04-18T03:42:11.8109685+02:00","size":500,"tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}]}],"owners":["690a722a-7f64-4501-b192-869cef69b2e8"]},
+    {"fullName":"\\lib\\lib\\lib.plib","name":"lib","description":"desccc","tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}],"images":[{"name":"Image","extension":0,"fullName":"\\image\\cos\\well\\Image.jpg","libraryFullName":"\\lib\\lib\\lib.plib","creationTime":"2021-04-18T03:42:11.7968969+02:00","lastAccessTime":"2021-04-18T03:42:11.8108591+02:00","lastWriteTime":"2021-04-18T03:42:11.8109685+02:00","size":500,"tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}]}],"owners":["690a722a-7f64-4501-b192-869cef69b2e8"]},
+    {"fullName":"\\lib\\lib\\lib.plib","name":"lib","description":"desccc","tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}],"images":[{"name":"Image","extension":0,"fullName":"\\image\\cos\\well\\Image.jpg","libraryFullName":"\\lib\\lib\\lib.plib","creationTime":"2021-04-18T03:42:11.7968969+02:00","lastAccessTime":"2021-04-18T03:42:11.8108591+02:00","lastWriteTime":"2021-04-18T03:42:11.8109685+02:00","size":500,"tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}]}],"owners":["690a722a-7f64-4501-b192-869cef69b2e8"]} 
+}
 ```
 
 ### Get Library
@@ -158,7 +160,7 @@ HTTP/1.1 200 OK
 **Endpoint**
 
 ```http
-GET /libraries/{name}
+GET /libraries/{fullName}
 ```
 
 **Response**
@@ -168,9 +170,7 @@ HTTP/1.1 200 OK
 ```
 
 ```json
-{
-    TODO
-}
+{"fullName":"\\lib\\lib\\lib.plib","name":"lib","description":"desccc","tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}],"images":[{"name":"Image","extension":0,"fullName":"\\image\\cos\\well\\Image.jpg","libraryFullName":"\\lib\\lib\\lib.plib","creationTime":"2021-04-18T03:42:11.7968969+02:00","lastAccessTime":"2021-04-18T03:42:11.8108591+02:00","lastWriteTime":"2021-04-18T03:42:11.8109685+02:00","size":500,"tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}]}],"owners":["690a722a-7f64-4501-b192-869cef69b2e8"]}  
 ```
 
 ### Add Library
@@ -184,9 +184,7 @@ POST /libraries
 **Content**
 
 ```json
-{
-    TODO
-}
+{"fullName":"\\lib\\lib\\lib.plib","name":"lib","description":"desccc","tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}],"images":[{"name":"Image","extension":0,"fullName":"\\image\\cos\\well\\Image.jpg","libraryFullName":"\\lib\\lib\\lib.plib","creationTime":"2021-04-18T03:42:11.7968969+02:00","lastAccessTime":"2021-04-18T03:42:11.8108591+02:00","lastWriteTime":"2021-04-18T03:42:11.8109685+02:00","size":500,"tags":[{"name":"tag1","description":"dgadgdag","color":"#eavadv55"}]}],"owners":["690a722a-7f64-4501-b192-869cef69b2e8"]}  
 ```
 
 **Response**
@@ -197,7 +195,38 @@ HTTP/1.1 201 Created
 
 ```json
 {
-    TODO
+    "fullName": "\\PictureLibraryFileSystem\\lib-49241c7d-9718-46ea-b1b3-1a20552857ce\\lib.plib",
+    "name": "lib",
+    "description": "desccc",
+    "tags": [
+        {
+            "name": "tag1",
+            "description": "dgadgdag",
+            "color": "#eavadv55"
+        }
+    ],
+    "images": [
+        {
+            "name": "Image",
+            "extension": 0,
+            "fullName": "\\image\\cos\\well\\Image.jpg",
+            "libraryFullName": "\\lib\\lib\\lib.plib",
+            "creationTime": "2021-04-18T03:42:11.7968969+02:00",
+            "lastAccessTime": "2021-04-18T03:42:11.8108591+02:00",
+            "lastWriteTime": "2021-04-18T03:42:11.8109685+02:00",
+            "size": 500,
+            "tags": [
+                {
+                    "name": "tag1",
+                    "description": "dgadgdag",
+                    "color": "#eavadv55"
+                }
+            ]
+        }
+    ],
+    "owners": [
+        "690a722a-7f64-4501-b192-869cef69b2e8"
+    ]
 }
 ```
 
@@ -206,7 +235,7 @@ HTTP/1.1 201 Created
 **Endpoint**
 
 ```http
-PUT /libraries/{name}
+PUT /libraries/{fullName}
 ```
 
 **Content**
