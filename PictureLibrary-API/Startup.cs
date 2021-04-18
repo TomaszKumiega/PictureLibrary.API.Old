@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Model.Builders;
 using PictureLibrary_API.Repositories;
 using PictureLibrary_API.Services;
 
@@ -44,6 +45,7 @@ namespace PictureLibrary_API
             services.AddTransient<IAccessTokenService, AccessTokenService>();
             services.AddTransient<IDirectoryService, DirectoryService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IImageFileBuilder, ImageFileBuilder>();
 
             services.AddDbContext<DatabaseContext>(options =>
             {
