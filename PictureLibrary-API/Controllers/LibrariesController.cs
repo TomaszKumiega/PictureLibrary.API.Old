@@ -26,7 +26,7 @@ namespace PictureLibrary_API.Controllers
         }
 
 
-        [HttpGet("{fullName}")]
+        [HttpGet("{fullName}", Name = "GetLibrary")]
         public async Task<ActionResult<Library>> GetLibrary(string fullName)
         {
             Library library = null;
@@ -146,7 +146,7 @@ namespace PictureLibrary_API.Controllers
                 return StatusCode(500);
             }
 
-            return CreatedAtAction("GetLibrary", new { name = library.Name }, library);
+            return CreatedAtAction("GetLibrary", new { fullName = library.FullName }, library);
         }
 
         [HttpDelete("{fullName}")]
