@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -287,9 +288,9 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpGet("icons")]
-        public async Task<ActionResult<IEnumerable<Icon>>> GetIcons([FromQuery] string libraryFullName, [FromBody] IEnumerable<string> imageSources)
+        public async Task<ActionResult<IEnumerable<byte[]>>> GetIcons([FromQuery] string libraryFullName, [FromBody] IEnumerable<string> imageSources)
         {
-            IEnumerable<Icon> icons = null;
+            var result = new List<byte[]>();
 
             try
             {
@@ -305,7 +306,17 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                icons = await ImageRepository.GetIcons(imageSources);
+                var icons = await ImageRepository.GetIcons(imageSources);
+
+                foreach(var t in icons)
+                {
+                    using(var ms = new MemoryStream())
+                    {
+                        var bitmap = t.ToBitmap();
+                        bitmap.Save(ms, ImageFormat.Icon);
+                        result.Add(ms.ToArray());
+                    }
+                }
             }
             catch (ArgumentException)
             {
@@ -317,13 +328,13 @@ namespace PictureLibrary_API.Controllers
                 return StatusCode(500);
             }
 
-            return Ok(icons);
+            return Ok(result);
         }
 
         [HttpGet("icon")]
-        public async Task<ActionResult<Icon>> GetIcon([FromQuery] string libraryFullName, [FromQuery] string imageFullName)
+        public async Task<ActionResult<byte[]>> GetIcon([FromQuery] string libraryFullName, [FromQuery] string imageFullName)
         {
-            Icon icon = null;
+            byte[] result;
 
             try
             {
@@ -339,7 +350,14 @@ namespace PictureLibrary_API.Controllers
                     return Unauthorized();
                 }
 
-                icon = await ImageRepository.GetIcon(imageFullName);
+                var icon = await ImageRepository.GetIcon(imageFullName);
+                
+                using(var ms = new MemoryStream())
+                {
+                    var bitmap = icon.ToBitmap();
+                    bitmap.Save(ms, ImageFormat.Icon);
+                    result = ms.ToArray();
+                }
             }
             catch (ArgumentException)
             {
@@ -351,7 +369,7 @@ namespace PictureLibrary_API.Controllers
                 return StatusCode(500);
             }
 
-            return Ok(icon);
+            return Ok(result);
         }
     }
 }
