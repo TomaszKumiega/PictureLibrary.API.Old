@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
+using PictureLibrary_API.Repositories;
 using PictureLibrary_API.Services;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,18 @@ namespace PictureLibrary_API.Controllers
         private IUserService UserService { get; }
         private IMapper Mapper { get; }
         private IAccessTokenService AccessTokenService { get; }
+        private ILibraryRepository LibraryRepository { get; }
+        private IImageRepository ImageRepository { get; }
 
-        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUserService userService, IAccessTokenService refreshTokenService)
+        public UsersController(ILogger<UsersController> logger, IMapper mapper, IUserService userService, 
+            IAccessTokenService refreshTokenService, ILibraryRepository libraryRepository, IImageRepository imageRepository)
         {
             Logger = logger;
             Mapper = mapper;
             UserService = userService;
             AccessTokenService = refreshTokenService;
+            LibraryRepository = libraryRepository;
+            ImageRepository = imageRepository;
         }
 
         [AllowAnonymous]
@@ -169,6 +175,37 @@ namespace PictureLibrary_API.Controllers
                 return Conflict(new { message = e.Message });
             }
             catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var userId = User?.Identity.Name;
+            if (userId != id)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var user = await Task.Run(() => UserService.GetById(Guid.Parse(id)));
+                var libraries = await LibraryRepository.FindAsync(x => x.Owners.Find(x => x.ToString() == id) != null);
+                
+                foreach(var t in libraries)
+                {
+                    await ImageRepository.RemoveAllFromLibraryAsync(t);
+                }
+
+                await LibraryRepository.RemoveRangeAsync(libraries);
+                await Task.Run(() => UserService.Delete(user.Id));
+            }
+            catch (Exception e)
             {
                 Logger.LogError(e, e.Message);
                 return StatusCode(500);
