@@ -76,5 +76,12 @@ namespace PictureLibrary_API.Repositories
         /// <param name="imageFullPath"></param>
         /// <returns></returns>
         Task<Icon> GetIcon(string imageFullPath);
+
+        /// <summary>
+        /// Removes all image files described in library.
+        /// </summary>
+        /// <param name="library"></param>
+        /// <returns></returns>
+        Task RemoveAllFromLibraryAsync(Library library);
     }
 }

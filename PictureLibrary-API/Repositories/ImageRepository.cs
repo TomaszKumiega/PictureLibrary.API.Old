@@ -150,6 +150,14 @@ namespace PictureLibrary_API.Repositories
             }
         }
 
+        public async Task RemoveAllFromLibraryAsync(Library library)
+        {
+            foreach(var t in library.Images)
+            {
+                await RemoveAsync(t);
+            }
+        }
+
         public async Task<ImageFile> UpdateAsync(ImageFile entity)
         {
             if (!FileService.FileExists(entity.FullName))
