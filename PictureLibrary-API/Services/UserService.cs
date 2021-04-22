@@ -80,6 +80,11 @@ namespace PictureLibrary_API.Services
             return DatabaseContext.Users.Find(id);
         }
 
+        public User Find(Func<User, bool> predicate)
+        {
+            return DatabaseContext.Users.FirstOrDefault(predicate);
+        }
+
         public void Update(User userParam, string password = null)
         {
             var user = DatabaseContext.Users.Find(userParam.Id);

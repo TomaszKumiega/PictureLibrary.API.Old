@@ -44,5 +44,12 @@ namespace PictureLibrary_API.Services
         /// </summary>
         /// <param name="id"></param>
         void Delete(Guid id);
+
+        /// <summary>
+        /// Returns first element satisfying the condition.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        User Find(Func<User, bool> predicate);
     }
 }
