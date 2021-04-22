@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Controllers
 {
@@ -37,7 +38,7 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]AuthenticateModel model)
+        public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
             User user = null;
             string tokenString;
@@ -45,7 +46,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                user = UserService.Authenticate(model.Username, model.Password);
+                user = await Task.Run(() => UserService.Authenticate(model.Username, model.Password));
 
                 if (user == null)
                 {
@@ -76,14 +77,14 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserModel model)
+        public async Task<IActionResult> Register([FromBody] UserModel model)
         {
             var user = Mapper.Map<User>(model);
             User result = null;
 
             try
             {
-                result = UserService.Create(user, model.Password);
+                result = await Task.Run(() => UserService.Create(user, model.Password));
             }
             catch (ArgumentException e)
             {
@@ -109,11 +110,11 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh")]
-        public IActionResult Refresh([FromBody] RefreshRequestModel refreshRequest)
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestModel refreshRequest)
         {
-            var principal = AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token);
+            var principal = await Task.Run(() =>  AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token));
             var userId = principal.Identity.Name;
-            var savedRefreshToken = AccessTokenService.GetRefreshToken(userId); 
+            var savedRefreshToken =await Task.Run(() =>  AccessTokenService.GetRefreshToken(userId)); 
             if (savedRefreshToken != refreshRequest.RefreshToken)
             {
                 throw new SecurityTokenException("Invalid refresh token");
@@ -124,11 +125,11 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                newJwtToken = AccessTokenService.GenerateAccessToken(userId);
-                newRefreshToken = AccessTokenService.GenerateRefreshToken();
+                newJwtToken = await Task.Run(() => AccessTokenService.GenerateAccessToken(userId));
+                newRefreshToken = await Task.Run(() => AccessTokenService.GenerateRefreshToken());
 
-                AccessTokenService.DeleteRefreshToken(userId, refreshRequest.RefreshToken);
-                AccessTokenService.SaveRefreshToken(userId, newRefreshToken);
+                await Task.Run(() => AccessTokenService.DeleteRefreshToken(userId, refreshRequest.RefreshToken));
+                await Task.Run(() => AccessTokenService.SaveRefreshToken(userId, newRefreshToken));
             }
             catch(Exception e)
             {
@@ -144,7 +145,7 @@ namespace PictureLibrary_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody]UserModel model)
+        public async Task<IActionResult> Update(Guid id, [FromBody]UserModel model)
         {
             var userId = User?.Identity.Name;
             if (userId != id.ToString())
@@ -157,7 +158,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             { 
-                UserService.Update(user, model.Password);
+                await Task.Run(() => UserService.Update(user, model.Password));
             }
             catch(ContentNotFoundException e)
             {
