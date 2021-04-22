@@ -62,11 +62,11 @@ namespace PictureLibrary_API.Repositories
             return libraries;
         }
 
-        public async Task<Library> FindAsync(Predicate<Library> predicate)
+        public async Task<List<Library>> FindAsync(Func<Library, bool> predicate)
         {
             var libraries = await GetAllAsync();
 
-            return libraries.ToList().Find(predicate);
+            return libraries.ToList().Where(predicate).ToList();
         }
 
         public async Task<IEnumerable<Library>> GetAllAsync()

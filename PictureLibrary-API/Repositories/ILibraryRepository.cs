@@ -54,7 +54,7 @@ namespace PictureLibrary_API.Repositories
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        Task<Library> FindAsync(Predicate<Library> predicate);
+        Task<List<Library>> FindAsync(Func<Library, bool> predicate);
         /// <summary>
         /// Updates specified library file.
         /// </summary>
