@@ -150,6 +150,27 @@ namespace PictureLibrary_API.Controllers
             });
         }
 
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserPresentationModel>> GetUserInfo(string username)
+        {
+            UserPresentationModel result = null;
+
+            try
+            {
+                var user = await Task.Run(() => UserService.Find(x => x.Username == username));
+                result = Mapper.Map<UserPresentationModel>(user);
+                
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(e, e.Message);
+                return StatusCode(500);
+            }
+
+            return result;
+        }
+        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody]UserModel model)
         {
