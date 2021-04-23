@@ -83,6 +83,28 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Throws<ArgumentException>(() => userService.Authenticate(String.Empty, "gdagdag"));
             Assert.Throws<ArgumentException>(() => userService.Authenticate("gadgag", String.Empty));
         }
+
+        [Fact]
+        public void Authenticate_ShouldReturnNull_WhenPasswordIsNotValid()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var username = "testUser";
+            var user = GetUserSample(username, "gadgadgadg");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var result = userService.Authenticate(username, "azxczxcxzc");
+
+            Assert.Null(result);
+        }
         #endregion
     }
 }
