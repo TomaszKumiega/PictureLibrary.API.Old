@@ -105,6 +105,28 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public void Authenticate_ShouldReturnNull_WhenUserWithSpecifiedUsernameDoesntExist()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var password = "gadgadgadg";
+            var user = GetUserSample("username1", password);
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var result = userService.Authenticate("username", password);
+
+            Assert.Null(result);
+        }
         #endregion
     }
 }
