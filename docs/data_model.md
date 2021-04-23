@@ -57,7 +57,6 @@ Library represents .xml file that contains tags and images.
 
 Tags are used for image organization.
 All tags existing in a library are stored in library xml file.
-Every image is assigned at least one tag.
 
 **Properties**
 
