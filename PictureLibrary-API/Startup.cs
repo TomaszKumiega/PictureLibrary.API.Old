@@ -48,6 +48,7 @@ namespace PictureLibrary_API
             services.AddTransient<IImageFileBuilder, ImageFileBuilder>();
 
             services.AddDbContext<DatabaseContext>();
+            services.AddScoped<IDatabaseContext, DatabaseContext>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
