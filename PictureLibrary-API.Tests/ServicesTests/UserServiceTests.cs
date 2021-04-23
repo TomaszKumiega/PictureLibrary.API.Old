@@ -44,6 +44,17 @@ namespace PictureLibrary_API.Tests.ServicesTests
             return user;
         }
 
+        private UserModel GetUserModelSample(string username, string password, string email=null)
+        {
+            return new UserModel()
+            {
+                Username = username,
+                Password = password,
+                Email = email
+            };
+
+        }
+
         #endregion
 
         #region Authenticate 
@@ -142,6 +153,23 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Throws<ArgumentNullException>(() => userService.Create(userModel));
         }
 
+        [Fact]
+        public void Create_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var userModel = GetUserModelSample(null, "password");
+            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+            userModel = GetUserModelSample("username", null);
+            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+            userModel = GetUserModelSample(String.Empty, "password");
+            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+            userModel = GetUserModelSample("username", String.Empty);
+            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+        }
         #endregion
     }
 }
