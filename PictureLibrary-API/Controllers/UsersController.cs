@@ -85,12 +85,11 @@ namespace PictureLibrary_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserModel model)
         {
-            var user = Mapper.Map<User>(model);
             User result = null;
 
             try
             {
-                result = await Task.Run(() => UserService.Create(user, model.Password));
+                result = await Task.Run(() => UserService.Create(model));
             }
             catch (ArgumentException e)
             {

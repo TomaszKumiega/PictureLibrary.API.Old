@@ -35,21 +35,26 @@ namespace PictureLibrary_API.Services
             return user;
         }
 
-        public User Create(User user, string password)
+        public User Create(UserModel userModel)
         {
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(userModel.Password))
             {
                 throw new ArgumentException("Password is required");
             }
 
-            if (DatabaseContext.Users.Any(x => x.Username == user.Username))
+            if (DatabaseContext.Users.Any(x => x.Username == userModel.Username))
             {
-                throw new UserAlreadyExistsException("Username: \"" + user.Username + "\" is already taken");
+                throw new UserAlreadyExistsException("Username: \"" + userModel.Username + "\" is already taken");
             }
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            User user = new User();
 
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(userModel.Password, out passwordHash, out passwordSalt);
+
+            user.Id = Guid.NewGuid();
+            user.Username = userModel.Username;
+            user.Email = userModel.Email;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 

@@ -32,7 +32,7 @@ namespace PictureLibrary_API.Services
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        User Create(User user, string password);
+        User Create(UserModel userModel);
         /// <summary>
         /// Updates specified user.
         /// </summary>
