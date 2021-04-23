@@ -8,9 +8,11 @@ WORKDIR /app
 
 COPY *.sln .
 COPY ./PictureLibrary-API/ ./PictureLibrary-API
+COPY ./PictureLibrary-API.Tests/ ./PictureLibrary-API.Tests/
 RUN dotnet restore -r linux-arm
 
 COPY PictureLibrary-API/. ./PictureLibrary-API
+COPY PictureLibrary-API.Tests/. ./PictureLibrary-API.Tests
 WORKDIR /app/PictureLibrary-API 
 RUN dotnet build -r linux-arm
 
