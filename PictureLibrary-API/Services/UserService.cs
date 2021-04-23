@@ -57,6 +57,8 @@ namespace PictureLibrary_API.Services
             DatabaseContext.Users.Add(user);
             DatabaseContext.SaveChanges();
 
+            Logger.LogInformation("New user added: " + user.Id.ToString());
+
             return user;
         }
 
@@ -67,6 +69,8 @@ namespace PictureLibrary_API.Services
             {
                 DatabaseContext.Users.Remove(user);
                 DatabaseContext.SaveChanges();
+
+                Logger.LogInformation("User removed: " + user.Id.ToString());
             }
         }
 
@@ -116,6 +120,8 @@ namespace PictureLibrary_API.Services
 
             DatabaseContext.Users.Update(user);
             DatabaseContext.SaveChanges();
+
+            Logger.LogInformation("Updated user: " + user.Id);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

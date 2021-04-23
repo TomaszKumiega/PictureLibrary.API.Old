@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
@@ -15,13 +16,15 @@ namespace PictureLibrary_API.Services
 {
     public class AccessTokenService : IAccessTokenService
     {
+        private ILogger<AccessTokenService> Logger { get; }
         private DatabaseContext Context { get; }
         private AppSettings AppSettings { get; }
 
-        public AccessTokenService(DatabaseContext context, IOptions<AppSettings> appSettings)
+        public AccessTokenService(ILogger<AccessTokenService> logger, DatabaseContext context, IOptions<AppSettings> appSettings)
         {
             Context = context;
             AppSettings = appSettings.Value;
+            Logger = logger;
         }
 
         public void DeleteRefreshToken(string userId, string refreshToken)
@@ -31,6 +34,8 @@ namespace PictureLibrary_API.Services
                 .FirstOrDefault();
             Context.RefreshTokens.Remove(token);
             Context.SaveChanges();
+
+            Logger.LogInformation("Removed refresh token from database: " + refreshToken);
         }
 
         public string GenerateRefreshToken()
@@ -62,6 +67,8 @@ namespace PictureLibrary_API.Services
 
             Context.RefreshTokens.Add(refToken);
             Context.SaveChanges();
+
+            Logger.LogInformation("Added refresh token to database: " + refreshToken);
         }
 
         public string GenerateAccessToken(string userId)
