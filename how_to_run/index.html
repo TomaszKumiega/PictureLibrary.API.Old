@@ -453,6 +453,7 @@ sudo sqlite3 MOUNTEDDIRECTORY/Database/PictureLibraryAPI.db
 </code></pre></div>
 
 <h3 id="4-create-a-self-signed-certificate">4. Create a self-signed certificate</h3>
+<p>TODO</p>
 <h3 id="5-run-the-container">5. Run the container</h3>
 <p>Run the container by using this command and modifying CONTAINER_NAME with a suitable name and DIRECTORY with a path to a directory, drives are mounted to:</p>
 <div class="codehilite"><pre><span></span><code>docker run -d -it -p <span class="m">5000</span>:5000 -p <span class="m">5001</span>:5001 --name CONTAINER_NAME --mount <span class="nv">type</span><span class="o">=</span>bind,source<span class="o">=</span>DIRECTORY,target<span class="o">=</span>PictureLibraryFileSystem/ docker.pkg.github.com/tomaszkumiega/picturelibrary-api/picturelibraryapi:master
