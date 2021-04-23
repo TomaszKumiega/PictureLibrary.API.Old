@@ -15,6 +15,8 @@ POST /users/authenticate
 
 **Content**
 
+Data type used for authentication request is described on [AuthenticationRequestModel page](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#authenticationrequestmodel).
+
 ```json
 {
     "username": "user",
@@ -52,6 +54,8 @@ POST /users/register
 
 **Content**
 
+Data type used for registration is described on [UserModel page](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#usermodel)
+
 ```json
 {
     "username": "user",
@@ -82,6 +86,8 @@ POST /users/refresh
 ```
 
 **Content**
+
+Data type used for refresh access token request is described on [RefreshRequestModel page](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#refreshrequestmodel)
 
 ```json
 {
@@ -121,6 +127,8 @@ PUT /users/{id}
 
 **Content**
 
+Data type used for user info update is described on [UserModel page](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#usermodel)
+
 ```json
 {
     "username": "user",
@@ -135,6 +143,8 @@ HTTP/1.1 200 OK
 ```
 
 ## Libraries
+
+Library data type is described on [Library page](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#library)
 
 ### Get all libraries
 
@@ -411,6 +421,8 @@ GET /images
 
 **Content**
 
+Content of this request is described by [ImageFile](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#imagefile) data type.
+
 ```json
 {
     "name":"Name",
@@ -447,6 +459,8 @@ POST /images
 ```
 
 **Content**
+
+Content of add image request is described by [Image](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#image) data type.
 
 ```json
 {
@@ -497,6 +511,8 @@ PUT /images/imageFile
 
 **Content**
 
+Content of this request is described by [ImageFile](https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#imagefile) data type.
+
 ```json
 {
     "name":"Name",
@@ -528,6 +544,8 @@ PUT /images/image
 ```
 
 **Content**
+
+Content of this request is described by [Image]((https://tomaszkumiega.github.io/PictureLibrary-API/data_model/#image) data type.
 
 ```json
 {
