@@ -156,7 +156,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                library = await Task.Run(() => LibraryRepository.FindAsync(x => x.FullName == fullName));
+                library = (await Task.Run(() => LibraryRepository.FindAsync(x => x.FullName == fullName))).FirstOrDefault();
 
                 var userId = User?.Identity.Name;
                 if (!library.Owners.Where(x => x.ToString() == userId).Any())
