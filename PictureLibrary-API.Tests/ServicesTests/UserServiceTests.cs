@@ -128,5 +128,19 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Null(result);
         }
         #endregion
+
+        #region Create
+        [Fact]
+        public void Create_ShouldThrowArgumentException_WhenUserModelIsNull()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+            UserModel userModel = null;
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+        }
+        #endregion
     }
 }
