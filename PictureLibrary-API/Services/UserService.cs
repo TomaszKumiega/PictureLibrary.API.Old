@@ -21,10 +21,8 @@ namespace PictureLibrary_API.Services
 
         public User Authenticate(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(username)) throw new ArgumentException("Value cannot be empty or null", username);
+            if (string.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be empty or null", password);
 
             var user = DatabaseContext.Users.SingleOrDefault(x => x.Username == username);
 
