@@ -62,6 +62,20 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             Assert.True(result.Id == user.Id);            
         }
+
+        [Fact]
+        public void Authenticate_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            Assert.Throws<ArgumentException>(() => userService.Authenticate(null, "gdagadgd"));
+            Assert.Throws<ArgumentException>(() => userService.Authenticate("gadgag", null));
+            Assert.Throws<ArgumentException>(() => userService.Authenticate(String.Empty, "gdagdag"));
+            Assert.Throws<ArgumentException>(() => userService.Authenticate("gadgag", String.Empty));
+        }
         #endregion
     }
 }
