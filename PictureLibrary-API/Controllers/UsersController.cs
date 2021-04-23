@@ -44,7 +44,7 @@ namespace PictureLibrary_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
+        public async Task<IActionResult> Authenticate([FromBody]AuthenticationRequestModel model)
         {
             User user = null;
             string tokenString;

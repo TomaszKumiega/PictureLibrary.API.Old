@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Model
 {
-    public class AuthenticateModel
+    public class AuthenticationRequestModel
     {
         [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
 
-        public AuthenticateModel()
+        public AuthenticationRequestModel()
         {
 
         }
 
-        public AuthenticateModel(string username, string password)
+        public AuthenticationRequestModel(string username, string password)
         {
             Username = username;
             Password = password;
