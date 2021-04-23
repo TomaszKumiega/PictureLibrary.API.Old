@@ -139,8 +139,9 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+            Assert.Throws<ArgumentNullException>(() => userService.Create(userModel));
         }
+
         #endregion
     }
 }
