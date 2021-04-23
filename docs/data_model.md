@@ -26,6 +26,7 @@ UserModel data type is used for registration and updating user data.
 User presentation model is a data type used to describe user, without sharing vulnerable data like password.
 
 **Properties**
+
 | Name | Type | Notes |
 |------|------|-------|
 | Id | Guid | User Id | 
@@ -37,6 +38,7 @@ User presentation model is a data type used to describe user, without sharing vu
 AuthenticationRequestModel is used for authentication.
 
 **Properties**
+
 | Name | Type | Notes |
 |------|------|-------|
 | Username | string | - |
@@ -47,6 +49,7 @@ AuthenticationRequestModel is used for authentication.
 RefreshRequestModel is used for requesting new access token from the API.
 
 **Properties**
+
 | Name | Type | Notes |
 |------|------|-------|
 | Token | string | Old access token |
@@ -103,6 +106,17 @@ All tags existing in a library are stored in library xml file.
 | Name | string | - |
 | Description | string | - |
 | Color | string | Color associated with the tag in HEX |
+
+### Image
+
+Image data type is used for combining ImageFile type that describes image file and byte array that stores content of the file.
+
+**Properties**
+
+| Name | Type | Notes |
+|------|------|-------|
+| ImageFile | ImageFile | - |
+| ImageContent | byte[] | - | 
 
 
 ### ImageFile
