@@ -63,9 +63,9 @@ namespace PictureLibrary_API.Controllers
                 refreshToken = AccessTokenService.GenerateRefreshToken();
                 AccessTokenService.SaveRefreshToken(user.Id.ToString(), refreshToken);
             }
-            catch(ArgumentException)
+            catch(ArgumentException e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
             catch
             {
