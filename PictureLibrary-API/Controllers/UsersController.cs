@@ -120,10 +120,10 @@ namespace PictureLibrary_API.Controllers
         {
             var principal = await Task.Run(() =>  AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token));
             var userId = principal.Identity.Name;
-            var savedRefreshToken =await Task.Run(() =>  AccessTokenService.GetRefreshToken(userId)); 
+            var savedRefreshToken = await Task.Run(() =>  AccessTokenService.GetRefreshToken(userId)); 
             if (savedRefreshToken != refreshRequest.RefreshToken)
             {
-                throw new SecurityTokenException("Invalid refresh token");
+                return BadRequest("Invalid refresh token");
             }
 
             string newJwtToken = null;
