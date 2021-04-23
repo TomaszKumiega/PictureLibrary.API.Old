@@ -513,26 +513,81 @@ One library can have multiple owners.</p>
 </table>
 <h3 id="userpresentationmodel">UserPresentationModel</h3>
 <p>User presentation model is a data type used to describe user, without sharing vulnerable data like password.</p>
-<p><strong>Properties</strong>
-| Name | Type | Notes |
-|------|------|-------|
-| Id | Guid | User Id | 
-| Username | string | - | 
-| Email | string | - |</p>
+<p><strong>Properties</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Id</td>
+<td>Guid</td>
+<td>User Id</td>
+</tr>
+<tr>
+<td>Username</td>
+<td>string</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>string</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h3 id="authenticationrequestmodel">AuthenticationRequestModel</h3>
 <p>AuthenticationRequestModel is used for authentication.</p>
-<p><strong>Properties</strong>
-| Name | Type | Notes |
-|------|------|-------|
-| Username | string | - |
-| Password | string | - | </p>
+<p><strong>Properties</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Username</td>
+<td>string</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>string</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h3 id="refreshrequestmodel">RefreshRequestModel</h3>
 <p>RefreshRequestModel is used for requesting new access token from the API.</p>
-<p><strong>Properties</strong>
-| Name | Type | Notes |
-|------|------|-------|
-| Token | string | Old access token |
-| RefreshToken | string | - | </p>
+<p><strong>Properties</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token</td>
+<td>string</td>
+<td>Old access token</td>
+</tr>
+<tr>
+<td>RefreshToken</td>
+<td>string</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h2 id="library-data-model">Library data model</h2>
 <h3 id="library">Library</h3>
 <p>Library represents .xml file that contains tags and images.</p>
