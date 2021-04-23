@@ -1,0 +1,6 @@
+.git
+.github
+PictureLibrary-API.Tests/
+docs/
+.gitignore
+README.md
