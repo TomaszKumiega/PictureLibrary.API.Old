@@ -11,9 +11,9 @@ namespace PictureLibrary_API.Services
     public class UserService : IUserService
     {
         private ILogger<UserService> Logger { get; }
-        private DatabaseContext DatabaseContext { get; }
+        private IDatabaseContext DatabaseContext { get; }
 
-        public UserService(ILogger<UserService> logger, DatabaseContext databaseContext)
+        public UserService(ILogger<UserService> logger, IDatabaseContext databaseContext)
         {
             Logger = logger;
             DatabaseContext = databaseContext;

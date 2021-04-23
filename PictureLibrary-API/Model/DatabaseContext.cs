@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PictureLibrary_API.Model
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext, IDatabaseContext
     {
         public DatabaseContext() : base()
         {
@@ -17,7 +17,7 @@ namespace PictureLibrary_API.Model
 
         public DatabaseContext(DbContextOptions options) :base(options)
         {
-
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

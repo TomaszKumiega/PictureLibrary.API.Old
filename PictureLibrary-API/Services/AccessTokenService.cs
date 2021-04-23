@@ -17,10 +17,10 @@ namespace PictureLibrary_API.Services
     public class AccessTokenService : IAccessTokenService
     {
         private ILogger<AccessTokenService> Logger { get; }
-        private DatabaseContext Context { get; }
+        private IDatabaseContext Context { get; }
         private AppSettings AppSettings { get; }
 
-        public AccessTokenService(ILogger<AccessTokenService> logger, DatabaseContext context, IOptions<AppSettings> appSettings)
+        public AccessTokenService(ILogger<AccessTokenService> logger, IDatabaseContext context, IOptions<AppSettings> appSettings)
         {
             Context = context;
             AppSettings = appSettings.Value;
