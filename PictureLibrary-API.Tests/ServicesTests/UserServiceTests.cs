@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
+using PictureLibrary_API.Exceptions;
 using PictureLibrary_API.Helpers;
 using PictureLibrary_API.Model;
 using PictureLibrary_API.Services;
@@ -169,6 +170,27 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Throws<ArgumentException>(() => userService.Create(userModel));
             userModel = GetUserModelSample("username", String.Empty);
             Assert.Throws<ArgumentException>(() => userService.Create(userModel));
+        }
+
+        [Fact]
+        public void Create_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedUsernameAlreadyExists()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var username = "testUser";
+            var user = GetUserSample(username, "randomPassword");
+            var userModel = GetUserModelSample(username, "password");
+
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            Assert.Throws<UserAlreadyExistsException>(() => userService.Create(userModel));
         }
         #endregion
     }
