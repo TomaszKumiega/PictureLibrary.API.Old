@@ -49,7 +49,7 @@ namespace PictureLibrary_API.Model
         }
     }
 
-    public class ImageFile : ILibraryEntity
+    public class ImageFile 
     {
         public string Name { get; set; }
         public ImageExtension Extension { get; set; }

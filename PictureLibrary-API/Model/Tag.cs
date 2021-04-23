@@ -1,6 +1,6 @@
 ﻿namespace PictureLibrary_API.Model
 {
-    public class Tag : ILibraryEntity
+    public class Tag
     {
         public string Name { get; set; }
         public string Description { get; set; }

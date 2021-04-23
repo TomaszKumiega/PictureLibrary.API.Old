@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PictureLibrary_API.Model
 {
-    public class Library : ILibraryEntity
+    public class Library
     {
         public string FullName { get; set; }
         public string Name { get; set; }
