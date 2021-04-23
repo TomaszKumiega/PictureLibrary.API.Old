@@ -38,10 +38,9 @@ namespace PictureLibrary_API.Services
         public User Create(UserModel userModel)
         {
             if (userModel == null) throw new ArgumentNullException("Value cannot be null", "userModel");
-            if (string.IsNullOrWhiteSpace(userModel.Password))
-            {
-                throw new ArgumentException("Password is required");
-            }
+            if (string.IsNullOrEmpty(userModel.Username)) throw new ArgumentException("Value cannot be empty or null", "username");
+            if (string.IsNullOrEmpty(userModel.Password)) throw new ArgumentException("Value cannot be empty or null", "password");
+
 
             if (DatabaseContext.Users.Any(x => x.Username == userModel.Username))
             {
