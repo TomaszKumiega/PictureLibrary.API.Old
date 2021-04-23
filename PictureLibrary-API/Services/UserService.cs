@@ -26,6 +26,7 @@ namespace PictureLibrary_API.Services
 
             var user = DatabaseContext.Users.SingleOrDefault(x => x.Username == username);
 
+            if (user == null) return null;
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 return null;
