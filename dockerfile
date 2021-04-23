@@ -3,9 +3,11 @@ WORKDIR /app
 
 COPY *.sln .
 COPY ./PictureLibrary-API/ ./PictureLibrary-API
+COPY ./PictureLibrary-API.Tests ./PictureLibrary-API.Tests
 RUN dotnet restore
 
 COPY PictureLibrary-API/. ./PictureLibrary-API
+COPY PictureLibrary-API.Tests/. ./PictureLibrary-API.Tests
 WORKDIR /app/PictureLibrary-API
 RUN dotnet build
 
