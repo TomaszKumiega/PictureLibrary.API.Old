@@ -23,18 +23,9 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
-        #endregion
 
-        #region Authenticate 
-        [Fact]
-        public void Authenticate_ShouldReturnUser_WhenUsernameAndPasswordAreValid()
+        private User GetUserSample(string username, string password)
         {
-            var contextMock = new Mock<IDatabaseContext>();
-            var loggerMock = new Mock<ILogger<UserService>>();
-
-            var username = "testUser";
-            var password = "passw";
-
             byte[] passwordHash;
             byte[] passwordSalt;
 
@@ -50,6 +41,22 @@ namespace PictureLibrary_API.Tests.ServicesTests
                     PasswordSalt = passwordSalt
                 };
 
+            return user;
+        }
+
+        #endregion
+
+        #region Authenticate 
+        [Fact]
+        public void Authenticate_ShouldReturnUser_WhenUsernameAndPasswordAreValid()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var username = "testUser";
+            var password = "passw";
+
+            var user = GetUserSample(username, password);
             var dbSet = new TestDbSet<User>();
             dbSet.Add(user);
 
