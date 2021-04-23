@@ -1,22 +1,60 @@
 # Data Model
 
-## User
+## Users and authentication data model
+
+API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate).
 
 User is the owner of library.
 Diffrent users can have their own libraries on the same device.
 One library can have multiple owners.
-API uses [Authentication](https://tomaszkumiega.github.io/PictureLibrary-API/endpoints/#authenticate).
+
+### UserModel
+
+UserModel data type is used for registration and updating user data.
 
 **Properties**
 
 | Name | Type | Notes |
 |------|------|-------|
-| Id | Guid | User Id | 
 | Username | string | - |
 | Password | string | - |
 | Email | string | - |
 
-## Library
+
+### UserPresentationModel
+
+User presentation model is a data type used to describe user, without sharing vulnerable data like password.
+
+**Properties**
+| Name | Type | Notes |
+|------|------|-------|
+| Id | Guid | User Id | 
+| Username | string | - | 
+| Email | string | - |
+
+### AuthenticationRequestModel
+
+AuthenticationRequestModel is used for authentication.
+
+**Properties**
+| Name | Type | Notes |
+|------|------|-------|
+| Username | string | - |
+| Password | string | - | 
+
+### RefreshRequestModel
+
+RefreshRequestModel is used for requesting new access token from the API.
+
+**Properties**
+| Name | Type | Notes |
+|------|------|-------|
+| Token | string | Old access token |
+| RefreshToken | string | - | 
+
+## Library data model
+
+### Library
 
 Library represents .xml file that contains tags and images.
 
@@ -53,7 +91,7 @@ Library represents .xml file that contains tags and images.
 | Images | List of ImageFiles | List of all files in the library |
 | Owners | List of Users | Owners of the library |
 
-## Tag
+### Tag
 
 Tags are used for image organization.
 All tags existing in a library are stored in library xml file.
@@ -67,9 +105,9 @@ All tags existing in a library are stored in library xml file.
 | Color | string | Color associated with the tag in HEX |
 
 
-## ImageFile
+### ImageFile
 
-ImageFile describes an image and provides a way to access a file from the remote storage.
+ImageFile describes an image and provides a way to access a file remotly.
 
 **Properties**
 
