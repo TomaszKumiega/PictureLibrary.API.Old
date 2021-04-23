@@ -48,6 +48,7 @@ sudo sqlite3 MOUNTEDDIRECTORY/Database/PictureLibraryAPI.db
 
 ### 4. Create a self-signed certificate
 
+TODO
 
 ### 5. Run the container
 
