@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,6 +41,13 @@ namespace PictureLibrary_API.Helpers
         {
             _data.Add(item);
             return item as EntityEntry<T>;
+        }
+
+        public override EntityEntry<T> Update(T entity)
+        {
+            _data.Clear();
+            _data.Add(entity);
+            return entity as EntityEntry<T>;
         }
 
         public T Detach(T item)
