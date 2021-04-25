@@ -99,7 +99,7 @@ namespace PictureLibrary_API.Services
 
         public void Update(User userParam, string password = null)
         {
-            var user = DatabaseContext.Users.Find(userParam.Id);
+            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == userParam.Id);
 
             if (user == null)
             {
