@@ -225,6 +225,10 @@ namespace PictureLibrary_API.Controllers
                 await LibraryRepository.RemoveRangeAsync(libraries);
                 await Task.Run(() => UserService.Delete(user.Id));
             }
+            catch(ContentNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
             catch (Exception e)
             {
                 Logger.LogError(e, e.Message);

@@ -76,6 +76,10 @@ namespace PictureLibrary_API.Services
 
                 Logger.LogInformation("User removed: " + user.Id.ToString());
             }
+            else
+            {
+                throw new ContentNotFoundException("User " + id.ToString() + " not found.");
+            }
         }
 
         public IEnumerable<User> GetAll()
