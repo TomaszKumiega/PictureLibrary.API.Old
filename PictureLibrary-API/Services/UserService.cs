@@ -121,6 +121,11 @@ namespace PictureLibrary_API.Services
                 user.Username = userUpdateInfo.Username;
             }
 
+            if(!string.IsNullOrEmpty(userUpdateInfo.Email))
+            {
+                user.Email = userUpdateInfo.Email;
+            }
+
             if (!string.IsNullOrEmpty(password))
             {
                 byte[] passwordHash, passwordSalt;
