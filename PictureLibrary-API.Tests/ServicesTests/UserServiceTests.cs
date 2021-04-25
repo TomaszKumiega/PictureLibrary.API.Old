@@ -326,6 +326,28 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             Assert.Equal(user2, result);
         }
+
+        [Fact]
+        public void Find_ShouldReturnNullWhenNoElementSatisfiesTheCondition()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user1 = GetUserSample("name", "password");
+            var user2 = GetUserSample("name2", "password2");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user1);
+            dbSet.Add(user2);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            var result = userService.Find(x => x.Id == Guid.NewGuid());
+
+            Assert.Null(result);
+        }
         #endregion
     }
 }
