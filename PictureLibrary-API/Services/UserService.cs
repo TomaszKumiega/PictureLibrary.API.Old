@@ -99,6 +99,11 @@ namespace PictureLibrary_API.Services
 
         public void Update(User userUpdateInfo, string password = null)
         {
+            if(string.IsNullOrEmpty(userUpdateInfo.Username) && string.IsNullOrEmpty(userUpdateInfo.Email) && string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentException("At least one of the updated properties is expected to have value");
+            }
+
             var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == userUpdateInfo.Id);
 
             if (user == null)
