@@ -89,7 +89,7 @@ namespace PictureLibrary_API.Services
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            return await Task.Run(() => DatabaseContext.Users.Find(id));
+            return await Task.Run(() => DatabaseContext.Users.FirstOrDefault(x => x.Id == id));
         }
 
         public async Task<User> FindAsync(Func<User, bool> predicate)
