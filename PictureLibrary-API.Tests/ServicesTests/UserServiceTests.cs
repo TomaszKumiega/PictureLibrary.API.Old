@@ -215,6 +215,23 @@ namespace PictureLibrary_API.Tests.ServicesTests
             contextMock.Verify(x => x.SaveChanges());
         }
 
+        [Fact]
+        public void Create_ShouldReturnUser_WhenUserInfoIsValid()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var userModel = GetUserModelSample("testUser", "password");
+            var dbSet = new TestDbSet<User>();
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            var result = userService.Create(userModel);
+
+            Assert.True(result.Username == userModel.Username);
+        }
         #endregion
     }
 }
