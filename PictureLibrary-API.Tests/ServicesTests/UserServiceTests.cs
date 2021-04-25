@@ -322,6 +322,28 @@ namespace PictureLibrary_API.Tests.ServicesTests
         }
         #endregion
 
+        #region GetById
+        [Fact]
+        public async void GetById_ShouldReturnFirstUserWithMatchingId()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user = GetUserSample("name", "password");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            var result = await userService.GetByIdAsync(user.Id);
+
+            Assert.NotNull(result);
+        }
+        #endregion
+
         #region Find
         [Fact]
         public async void Find_ShouldReturnFirstElementSatisfyingTheCondition()
