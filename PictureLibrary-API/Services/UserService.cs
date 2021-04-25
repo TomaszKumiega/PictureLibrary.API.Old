@@ -111,9 +111,8 @@ namespace PictureLibrary_API.Services
                 throw new ContentNotFoundException("User not found");
             }
 
-            if (!string.IsNullOrWhiteSpace(userUpdateInfo.Username) && userUpdateInfo.Username != user.Username)
-            {
-                // throw error if the new username is already taken
+            if (!string.IsNullOrEmpty(userUpdateInfo.Username) && userUpdateInfo.Username != user.Username)
+            { 
                 if (DatabaseContext.Users.Any(x => x.Username == userUpdateInfo.Username))
                 {
                     throw new UserAlreadyExistsException("Username \"" + userUpdateInfo.Username + "\" is already taken");
@@ -122,7 +121,7 @@ namespace PictureLibrary_API.Services
                 user.Username = userUpdateInfo.Username;
             }
 
-            if (!string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrEmpty(password))
             {
                 byte[] passwordHash, passwordSalt;
                 CreatePasswordHash(password, out passwordHash, out passwordSalt);
