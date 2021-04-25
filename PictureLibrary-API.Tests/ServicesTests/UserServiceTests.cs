@@ -25,22 +25,22 @@ namespace PictureLibrary_API.Tests.ServicesTests
             }
         }
 
-        private User GetUserSample(string username, string password)
+        private User GetUserSample(string username, string password, string email = null)
         {
-            byte[] passwordHash;
-            byte[] passwordSalt;
+            byte[] passwordHash = null;
+            byte[] passwordSalt = null;
 
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            if(password != null) CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             var user =
-                new User()
-                {
-                    Id = Guid.NewGuid(),
-                    Username = username,
-                    Email = "randomEmail@example.com",
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt
-                };
+                    new User()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = username,
+                        Email = email,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt
+                    };
 
             return user;
         }
@@ -369,6 +369,39 @@ namespace PictureLibrary_API.Tests.ServicesTests
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
             Assert.Throws<ContentNotFoundException>(() => userService.Update(user2));
+        }
+
+        [Fact]
+        public void Update_ShouldThrowArgumentException_WhenAllUserPropertiesAreEitherNullOrEmpty()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user = GetUserSample("name", "password");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var updateUser = GetUserSample(null, null, null);
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
+            updateUser.Email = "";
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
+            updateUser = GetUserSample("", null, null);
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
+            updateUser = GetUserSample("", null, "");
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
+            updateUser = GetUserSample(null, "", "");
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
+            updateUser = GetUserSample("", "", null);
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
+            updateUser = GetUserSample("", "", "");
+            Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
         }
         #endregion
     }
