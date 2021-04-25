@@ -192,6 +192,29 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             Assert.Throws<UserAlreadyExistsException>(() => userService.Create(userModel));
         }
+
+        [Fact]
+        public void Create_ShouldAddUserToDatabase_WhenUserInfoIsValid()
+        {
+            var contextMock = new Mock<IDatabaseContext>();
+            var loggerMock = new Mock<ILogger<UserService>>();
+
+            var userModel = GetUserModelSample("testUser", "password");
+
+            var dbSet = new TestDbSet<User>();
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+            contextMock.Setup(x => x.SaveChanges())
+                .Verifiable();
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            userService.Create(userModel);
+
+            Assert.True(dbSet.FirstOrDefault(x => x.Username == userModel.Username) != null);
+            contextMock.Verify(x => x.SaveChanges());
+        }
+
         #endregion
     }
 }
