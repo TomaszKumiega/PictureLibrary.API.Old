@@ -278,5 +278,30 @@ namespace PictureLibrary_API.Tests.ServicesTests
             contextMock.Verify(x => x.SaveChanges());
         }
         #endregion
+
+        #region GetAll
+        [Fact]
+        public void GetAll_ShouldReturnAllUsersFromDatabase()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user1 = GetUserSample("name", "password");
+            var user2 = GetUserSample("name2", "password2");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user1);
+            dbSet.Add(user2);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            var result = userService.GetAll();
+
+            Assert.Contains(user1, result);
+            Assert.Contains(user2, result);
+        }
+        #endregion
     }
 }
