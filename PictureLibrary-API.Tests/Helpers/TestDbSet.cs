@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,22 +24,22 @@ namespace PictureLibrary_API.Helpers
             throw new NotImplementedException("Derive from FakeDbSet<T> and override Find");
         }
 
-        public T Add(T item)
+        public override EntityEntry<T> Add(T item)
         {
             _data.Add(item);
-            return item;
+            return item as EntityEntry<T>;
         }
 
-        public T Remove(T item)
+        public override EntityEntry<T> Remove(T item)
         {
             _data.Remove(item);
-            return item;
+            return item as EntityEntry<T>;
         }
 
-        public T Attach(T item)
+        public override EntityEntry<T> Attach(T item)
         {
             _data.Add(item);
-            return item;
+            return item as EntityEntry<T>;
         }
 
         public T Detach(T item)
