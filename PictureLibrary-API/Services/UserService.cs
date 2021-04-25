@@ -97,24 +97,24 @@ namespace PictureLibrary_API.Services
             return DatabaseContext.Users.FirstOrDefault(predicate);
         }
 
-        public void Update(User userParam, string password = null)
+        public void Update(User userUpdateInfo, string password = null)
         {
-            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == userParam.Id);
+            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == userUpdateInfo.Id);
 
             if (user == null)
             {
                 throw new ContentNotFoundException("User not found");
             }
 
-            if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
+            if (!string.IsNullOrWhiteSpace(userUpdateInfo.Username) && userUpdateInfo.Username != user.Username)
             {
                 // throw error if the new username is already taken
-                if (DatabaseContext.Users.Any(x => x.Username == userParam.Username))
+                if (DatabaseContext.Users.Any(x => x.Username == userUpdateInfo.Username))
                 {
-                    throw new UserAlreadyExistsException("Username \"" + userParam.Username + "\" is already taken");
+                    throw new UserAlreadyExistsException("Username \"" + userUpdateInfo.Username + "\" is already taken");
                 }
                     
-                user.Username = userParam.Username;
+                user.Username = userUpdateInfo.Username;
             }
 
             if (!string.IsNullOrWhiteSpace(password))
