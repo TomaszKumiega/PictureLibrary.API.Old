@@ -24,6 +24,24 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
+        private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
+        }
 
         private User GetUserSample(string username, string password, string email = null)
         {
@@ -412,7 +430,40 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
         }
 
+        [Fact]
+        public void Update_ShouldUpdateUserInDatabase_WhenOneOfUserPropertiesIsAssigned()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
 
+            var user = GetUserSample("name", null);
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var newPassword = "gdagda";
+            var updateUser = GetUserSample(null, newPassword);
+            updateUser.Id = user.Id;
+            userService.Update(updateUser, newPassword);
+            Assert.True(VerifyPasswordHash(newPassword, user.PasswordHash, user.PasswordSalt));
+
+            var newUsername = "username";
+            updateUser = GetUserSample(newUsername, null);
+            updateUser.Id = user.Id;
+            userService.Update(updateUser);
+            Assert.True(user.Username == newUsername);
+
+            var newEmail = "email@example.com";
+            updateUser = GetUserSample("name", null, newEmail);
+            updateUser.Id = user.Id;
+            userService.Update(updateUser);
+            Assert.True(user.Email == newEmail);
+        }
         #endregion
     }
 }
