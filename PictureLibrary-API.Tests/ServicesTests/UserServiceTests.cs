@@ -349,5 +349,27 @@ namespace PictureLibrary_API.Tests.ServicesTests
             Assert.Null(result);
         }
         #endregion
+
+        #region Update
+        [Fact]
+        public void Update_ShouldThrowContentNotFoundException_WhenUserWithSpecifiedIdDoesntExist()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user1 = GetUserSample("name", "password");
+            var user2 = GetUserSample("name2", "password2");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user1);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            Assert.Throws<ContentNotFoundException>(() => userService.Update(user2));
+        }
+        #endregion
     }
 }
