@@ -388,21 +388,31 @@ namespace PictureLibrary_API.Tests.ServicesTests
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
             var updateUser = GetUserSample(null, null, null);
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
             updateUser.Email = "";
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
             updateUser = GetUserSample("", null, null);
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
             updateUser = GetUserSample("", null, "");
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser));
             updateUser = GetUserSample(null, "", "");
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
             updateUser = GetUserSample("", "", null);
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
             updateUser = GetUserSample("", "", "");
+            updateUser.Id = user.Id;
             Assert.Throws<ArgumentException>(() => userService.Update(updateUser, ""));
         }
+
+
         #endregion
     }
 }
