@@ -68,7 +68,7 @@ namespace PictureLibrary_API.Services
 
         public void Delete(Guid id)
         {
-            var user = DatabaseContext.Users.Where(x => x.Id == id).FirstOrDefault();
+            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == id);
             if (user != null)
             {
                 DatabaseContext.Users.Remove(user);
