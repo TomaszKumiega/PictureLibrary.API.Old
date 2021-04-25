@@ -52,7 +52,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                user = await Task.Run(() => UserService.Authenticate(model.Username, model.Password));
+                user = await UserService.AuthenticateAsync(model.Username, model.Password);
 
                 if (user == null)
                 {
@@ -89,7 +89,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                result = await Task.Run(() => UserService.Create(model));
+                result = await UserService.CreateAsync(model);
             }
             catch (ArgumentException e)
             {
@@ -156,7 +156,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                var user = await Task.Run(() => UserService.Find(x => x.Username == username));
+                var user = await UserService.FindAsync(x => x.Username == username);
                 result = Mapper.Map<UserPresentationModel>(user);
                 
             }
@@ -184,7 +184,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             { 
-                await Task.Run(() => UserService.Update(user, model.Password));
+                await UserService.UpdateAsync(user, model.Password);
             }
             catch(ContentNotFoundException e)
             {
@@ -214,7 +214,7 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                var user = await Task.Run(() => UserService.GetById(Guid.Parse(id)));
+                var user = await UserService.GetByIdAsync(Guid.Parse(id));
                 var libraries = await LibraryRepository.FindAsync(x => x.Owners.Find(x => x.ToString() == id) != null);
                 
                 foreach(var t in libraries)
@@ -223,7 +223,7 @@ namespace PictureLibrary_API.Controllers
                 }
 
                 await LibraryRepository.RemoveRangeAsync(libraries);
-                await Task.Run(() => UserService.Delete(user.Id));
+                await UserService.DeleteAsync(user.Id);
             }
             catch(ContentNotFoundException e)
             {

@@ -14,42 +14,42 @@ namespace PictureLibrary_API.Services
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        User Authenticate(string username, string password);
+        Task<User> AuthenticateAsync(string username, string password);
         /// <summary>
         /// Returns all users.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<User> GetAll();
+        Task<IEnumerable<User>> GetAllAsync();
         /// <summary>
         /// Returns user with specified id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        User GetById(Guid id);
+        Task<User> GetByIdAsync(Guid id);
         /// <summary>
         /// Creates user.
         /// </summary>
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        User Create(UserModel userModel);
+        Task<User> CreateAsync(UserModel userModel);
         /// <summary>
         /// Updates specified user.
         /// </summary>
         /// <param name="userParam"></param>
         /// <param name="password"></param>
-        void Update(User userParam, string password = null);
+        Task UpdateAsync(User userParam, string password = null);
         /// <summary>
         /// Removes user with specified id.
         /// </summary>
         /// <param name="id"></param>
-        void Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
         /// <summary>
         /// Returns first element satisfying the condition.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        User Find(Func<User, bool> predicate);
+        Task<User> FindAsync(Func<User, bool> predicate);
     }
 }

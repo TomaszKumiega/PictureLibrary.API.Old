@@ -67,7 +67,7 @@ namespace PictureLibrary_API
                     {
                         var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                         var userId = Guid.Parse(context.Principal.Identity.Name);
-                        var user = userService.GetById(userId);
+                        var user = userService.GetByIdAsync(userId);
                         if (user == null)
                         {
                             //return unauthorized if user no longer exists

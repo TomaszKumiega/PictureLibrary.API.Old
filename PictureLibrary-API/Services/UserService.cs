@@ -19,12 +19,12 @@ namespace PictureLibrary_API.Services
             DatabaseContext = databaseContext;
         }
 
-        public User Authenticate(string username, string password)
+        public async Task<User> AuthenticateAsync(string username, string password)
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentException("Value cannot be empty or null", "username");
             if (string.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be empty or null", "password");
 
-            var user = DatabaseContext.Users.SingleOrDefault(x => x.Username == username);
+            var user = await Task.Run(() => DatabaseContext.Users.SingleOrDefault(x => x.Username == username));
 
             if (user == null) return null;
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
@@ -35,7 +35,7 @@ namespace PictureLibrary_API.Services
             return user;
         }
 
-        public User Create(UserModel userModel)
+        public async Task<User> CreateAsync(UserModel userModel)
         {
             if (userModel == null) throw new ArgumentNullException("Value cannot be null", "userModel");
             if (string.IsNullOrEmpty(userModel.Username)) throw new ArgumentException("Value cannot be empty or null", "username");
@@ -58,17 +58,17 @@ namespace PictureLibrary_API.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            DatabaseContext.Users.Add(user);
-            DatabaseContext.SaveChanges();
+            await Task.Run(() => DatabaseContext.Users.Add(user));
+            await Task.Run(() => DatabaseContext.SaveChanges());
 
             Logger.LogInformation("New user added: " + user.Id.ToString());
 
             return user;
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == id);
+            var user = await Task.Run(() => DatabaseContext.Users.FirstOrDefault(x => x.Id == id));
             if (user != null)
             {
                 DatabaseContext.Users.Remove(user);
@@ -82,29 +82,29 @@ namespace PictureLibrary_API.Services
             }
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return DatabaseContext.Users;
+            return await Task.Run(() => DatabaseContext.Users);
         }
 
-        public User GetById(Guid id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
-            return DatabaseContext.Users.Find(id);
+            return await Task.Run(() => DatabaseContext.Users.Find(id));
         }
 
-        public User Find(Func<User, bool> predicate)
+        public async Task<User> FindAsync(Func<User, bool> predicate)
         {
-            return DatabaseContext.Users.FirstOrDefault(predicate);
+            return await Task.Run(() => DatabaseContext.Users.FirstOrDefault(predicate));
         }
 
-        public void Update(User userUpdateInfo, string password = null)
+        public async Task UpdateAsync(User userUpdateInfo, string password = null)
         {
             if(string.IsNullOrEmpty(userUpdateInfo.Username) && string.IsNullOrEmpty(userUpdateInfo.Email) && string.IsNullOrEmpty(password))
             {
                 throw new ArgumentException("At least one of the updated properties is expected to have value");
             }
 
-            var user = DatabaseContext.Users.FirstOrDefault(x => x.Id == userUpdateInfo.Id);
+            var user = await Task.Run(() => DatabaseContext.Users.FirstOrDefault(x => x.Id == userUpdateInfo.Id));
 
             if (user == null)
             {
@@ -135,8 +135,8 @@ namespace PictureLibrary_API.Services
                 user.PasswordSalt = passwordSalt;
             }
 
-            DatabaseContext.Users.Update(user);
-            DatabaseContext.SaveChanges();
+            await Task.Run(() => DatabaseContext.Users.Update(user));
+            await Task.Run(() => DatabaseContext.SaveChanges());
 
             Logger.LogInformation("Updated user: " + user.Id);
         }
