@@ -464,6 +464,32 @@ namespace PictureLibrary_API.Tests.ServicesTests
             userService.Update(updateUser);
             Assert.True(user.Email == newEmail);
         }
+
+        [Fact]
+        public void Update_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedNameExistsInDatabase()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+            
+            var repeatedUsername = "newUsername";
+            
+            var user = GetUserSample("name", null);
+            var user2 = GetUserSample(repeatedUsername, null);
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+            dbSet.Add(user2);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+
+            var updateUser = GetUserSample(repeatedUsername, null);
+            updateUser.Id = user.Id;
+
+            Assert.Throws<UserAlreadyExistsException>(() => userService.Update(updateUser));
+        }
         #endregion
     }
 }
