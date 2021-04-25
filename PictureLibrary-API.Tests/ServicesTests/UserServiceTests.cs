@@ -78,7 +78,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region Authenticate 
         [Fact]
-        public void Authenticate_ShouldReturnUser_WhenUsernameAndPasswordAreValid()
+        public async void Authenticate_ShouldReturnUser_WhenUsernameAndPasswordAreValid()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -95,27 +95,27 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            var result = userService.AuthenticateAsync(username, password);
+            var result = await userService.AuthenticateAsync(username, password);
 
             Assert.True(result.Id == user.Id);            
         }
 
         [Fact]
-        public void Authenticate_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
+        public async void Authenticate_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<ArgumentException>(() => userService.AuthenticateAsync(null, "gdagadgd"));
-            Assert.Throws<ArgumentException>(() => userService.AuthenticateAsync("gadgag", null));
-            Assert.Throws<ArgumentException>(() => userService.AuthenticateAsync(String.Empty, "gdagdag"));
-            Assert.Throws<ArgumentException>(() => userService.AuthenticateAsync("gadgag", String.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.AuthenticateAsync(null, "gdagadgd"));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.AuthenticateAsync("gadgag", null));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.AuthenticateAsync(String.Empty, "gdagdag"));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.AuthenticateAsync("gadgag", String.Empty));
         }
 
         [Fact]
-        public void Authenticate_ShouldReturnNull_WhenPasswordIsNotValid()
+        public async void Authenticate_ShouldReturnNull_WhenPasswordIsNotValid()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -131,13 +131,13 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            var result = userService.AuthenticateAsync(username, "azxczxcxzc");
+            var result = await userService.AuthenticateAsync(username, "azxczxcxzc");
 
             Assert.Null(result);
         }
 
         [Fact]
-        public void Authenticate_ShouldReturnNull_WhenUserWithSpecifiedUsernameDoesntExist()
+        public async void Authenticate_ShouldReturnNull_WhenUserWithSpecifiedUsernameDoesntExist()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -153,7 +153,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            var result = userService.AuthenticateAsync("username", password);
+            var result = await userService.AuthenticateAsync("username", password);
 
             Assert.Null(result);
         }
@@ -161,7 +161,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region Create
         [Fact]
-        public void Create_ShouldThrowArgumentException_WhenUserModelIsNull()
+        public async void Create_ShouldThrowArgumentException_WhenUserModelIsNull()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -169,11 +169,11 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<ArgumentNullException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => userService.CreateAsync(userModel));
         }
 
         [Fact]
-        public void Create_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
+        public async void Create_ShouldThrowArgumentException_WhenUsernameOrPasswordAreNullOrEmpty()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -181,17 +181,17 @@ namespace PictureLibrary_API.Tests.ServicesTests
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
             var userModel = GetUserModelSample(null, "password");
-            Assert.Throws<ArgumentException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.CreateAsync(userModel));
             userModel = GetUserModelSample("username", null);
-            Assert.Throws<ArgumentException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.CreateAsync(userModel));
             userModel = GetUserModelSample(String.Empty, "password");
-            Assert.Throws<ArgumentException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.CreateAsync(userModel));
             userModel = GetUserModelSample("username", String.Empty);
-            Assert.Throws<ArgumentException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.CreateAsync(userModel));
         }
 
         [Fact]
-        public void Create_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedUsernameAlreadyExists()
+        public async void Create_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedUsernameAlreadyExists()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -208,11 +208,11 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<UserAlreadyExistsException>(() => userService.CreateAsync(userModel));
+            await Assert.ThrowsAsync<UserAlreadyExistsException>(() => userService.CreateAsync(userModel));
         }
 
         [Fact]
-        public void Create_ShouldAddUserToDatabase_WhenUserInfoIsValid()
+        public async void Create_ShouldAddUserToDatabase_WhenUserInfoIsValid()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -227,14 +227,14 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Verifiable();
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            userService.CreateAsync(userModel);
+            await userService.CreateAsync(userModel);
 
             Assert.True(dbSet.FirstOrDefault(x => x.Username == userModel.Username) != null);
             contextMock.Verify(x => x.SaveChanges());
         }
 
         [Fact]
-        public void Create_ShouldReturnUser_WhenUserInfoIsValid()
+        public async void Create_ShouldReturnUser_WhenUserInfoIsValid()
         {
             var contextMock = new Mock<IDatabaseContext>();
             var loggerMock = new Mock<ILogger<UserService>>();
@@ -246,7 +246,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Returns(dbSet);
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            var result = userService.CreateAsync(userModel);
+            var result = await userService.CreateAsync(userModel);
 
             Assert.True(result.Username == userModel.Username);
         }
@@ -254,7 +254,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region Delete
         [Fact]
-        public void Delete_ShouldThrowContentNotFoundException_WhenUserWasNotFound()
+        public async void Delete_ShouldThrowContentNotFoundException_WhenUserWasNotFound()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -270,11 +270,11 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<ContentNotFoundException>(() => userService.DeleteAsync(guid));
+            await Assert.ThrowsAsync<ContentNotFoundException>(() => userService.DeleteAsync(guid));
         }
 
         [Fact]
-        public void Delete_ShouldRemoveUserFromDatabase_WhenUserHaSpecifiedId()
+        public async void Delete_ShouldRemoveUserFromDatabase_WhenUserHaSpecifiedId()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -290,7 +290,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Verifiable();
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            userService.DeleteAsync(user.Id);
+            await userService.DeleteAsync(user.Id);
 
             Assert.True(!dbSet.Any(x => x.Id == user.Id));
             contextMock.Verify(x => x.SaveChanges());
@@ -299,7 +299,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region GetAll
         [Fact]
-        public void GetAll_ShouldReturnAllUsersFromDatabase()
+        public async void GetAll_ShouldReturnAllUsersFromDatabase()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -315,7 +315,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Returns(dbSet);
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            var result = userService.GetAllAsync();
+            var result = await userService.GetAllAsync();
 
             Assert.Contains(user1, result);
             Assert.Contains(user2, result);
@@ -324,7 +324,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region Find
         [Fact]
-        public void Find_ShouldReturnFirstElementSatisfyingTheCondition()
+        public async void Find_ShouldReturnFirstElementSatisfyingTheCondition()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -340,13 +340,13 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Returns(dbSet);
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            var result = userService.FindAsync(x => x.Id == user2.Id);
+            var result = await userService.FindAsync(x => x.Id == user2.Id);
 
             Assert.Equal(user2, result);
         }
 
         [Fact]
-        public void Find_ShouldReturnNullWhenNoElementSatisfiesTheCondition()
+        public async void Find_ShouldReturnNullWhenNoElementSatisfiesTheCondition()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -362,7 +362,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
                 .Returns(dbSet);
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
-            var result = userService.FindAsync(x => x.Id == Guid.NewGuid());
+            var result = await userService.FindAsync(x => x.Id == Guid.NewGuid());
 
             Assert.Null(result);
         }
@@ -370,7 +370,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
         #region Update
         [Fact]
-        public void Update_ShouldThrowContentNotFoundException_WhenUserWithSpecifiedIdDoesntExist()
+        public async void Update_ShouldThrowContentNotFoundException_WhenUserWithSpecifiedIdDoesntExist()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -386,11 +386,11 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var userService = new UserService(loggerMock.Object, contextMock.Object);
 
-            Assert.Throws<ContentNotFoundException>(() => userService.UpdateAsync(user2));
+            await Assert.ThrowsAsync<ContentNotFoundException>(() => userService.UpdateAsync(user2));
         }
 
         [Fact]
-        public void Update_ShouldThrowArgumentException_WhenAllUserPropertiesAreEitherNullOrEmpty()
+        public async void Update_ShouldThrowArgumentException_WhenAllUserPropertiesAreEitherNullOrEmpty()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -407,31 +407,31 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             var updateUser = GetUserSample(null, null, null);
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser));
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
             updateUser.Email = "";
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser));
             updateUser = GetUserSample("", null, null);
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser));
             updateUser = GetUserSample("", null, "");
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser));
             updateUser = GetUserSample(null, "", "");
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
             updateUser = GetUserSample("", "", null);
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
             updateUser = GetUserSample("", "", "");
             updateUser.Id = user.Id;
-            Assert.Throws<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
+            await Assert.ThrowsAsync<ArgumentException>(() => userService.UpdateAsync(updateUser, ""));
         }
 
         [Fact]
-        public void Update_ShouldUpdateUserInDatabase_WhenOneOfUserPropertiesIsAssigned()
+        public async void Update_ShouldUpdateUserInDatabase_WhenOneOfUserPropertiesIsAssigned()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -449,24 +449,24 @@ namespace PictureLibrary_API.Tests.ServicesTests
             var newPassword = "gdagda";
             var updateUser = GetUserSample(null, newPassword);
             updateUser.Id = user.Id;
-            userService.UpdateAsync(updateUser, newPassword);
+            await userService.UpdateAsync(updateUser, newPassword);
             Assert.True(VerifyPasswordHash(newPassword, user.PasswordHash, user.PasswordSalt));
 
             var newUsername = "username";
             updateUser = GetUserSample(newUsername, null);
             updateUser.Id = user.Id;
-            userService.UpdateAsync(updateUser);
+            await userService.UpdateAsync(updateUser);
             Assert.True(user.Username == newUsername);
 
             var newEmail = "email@example.com";
             updateUser = GetUserSample("name", null, newEmail);
             updateUser.Id = user.Id;
-            userService.UpdateAsync(updateUser);
+            await userService.UpdateAsync(updateUser);
             Assert.True(user.Email == newEmail);
         }
 
         [Fact]
-        public void Update_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedNameExistsInDatabase()
+        public async void Update_ShouldThrowUserAlreadyExistsException_WhenUserWithSpecifiedNameExistsInDatabase()
         {
             var loggerMock = new Mock<ILogger<UserService>>();
             var contextMock = new Mock<IDatabaseContext>();
@@ -488,7 +488,7 @@ namespace PictureLibrary_API.Tests.ServicesTests
             var updateUser = GetUserSample(repeatedUsername, null);
             updateUser.Id = user.Id;
 
-            Assert.Throws<UserAlreadyExistsException>(() => userService.UpdateAsync(updateUser));
+            await Assert.ThrowsAsync<UserAlreadyExistsException>(() => userService.UpdateAsync(updateUser));
         }
         #endregion
     }
