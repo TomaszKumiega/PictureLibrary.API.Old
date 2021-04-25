@@ -254,6 +254,29 @@ namespace PictureLibrary_API.Tests.ServicesTests
 
             Assert.Throws<ContentNotFoundException>(() => userService.Delete(guid));
         }
+
+        [Fact]
+        public void Delete_ShouldRemoveUserFromDatabase_WhenUserHaSpecifiedId()
+        {
+            var loggerMock = new Mock<ILogger<UserService>>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            var user = GetUserSample("name", "password");
+
+            var dbSet = new TestDbSet<User>();
+            dbSet.Add(user);
+
+            contextMock.Setup(x => x.Users)
+                .Returns(dbSet);
+            contextMock.Setup(x => x.SaveChanges())
+                .Verifiable();
+
+            var userService = new UserService(loggerMock.Object, contextMock.Object);
+            userService.Delete(user.Id);
+
+            Assert.True(!dbSet.Any(x => x.Id == user.Id));
+            contextMock.Verify(x => x.SaveChanges());
+        }
         #endregion
     }
 }
