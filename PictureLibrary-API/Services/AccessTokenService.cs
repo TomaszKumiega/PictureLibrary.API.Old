@@ -27,13 +27,13 @@ namespace PictureLibrary_API.Services
             Logger = logger;
         }
 
-        public void DeleteRefreshToken(string userId, string refreshToken)
+        public async Task DeleteRefreshToken(string userId, string refreshToken)
         {
             var token = Context.RefreshTokens
                 .Where(x => x.UserId == userId && x.Token == refreshToken)
                 .FirstOrDefault();
-            Context.RefreshTokens.Remove(token);
-            Context.SaveChanges();
+            await Task.Run(() => Context.RefreshTokens.Remove(token));
+            await Context.SaveChangesAsync();
 
             Logger.LogInformation("Removed refresh token from database: " + refreshToken);
         }
@@ -48,16 +48,16 @@ namespace PictureLibrary_API.Services
             }
         }
 
-        public string GetRefreshToken(string userId)
+        public async Task<string> GetRefreshToken(string userId)
         {
-            var token = Context.RefreshTokens
+            var token = await Task.Run(() => Context.RefreshTokens
                 .Where(x => x.UserId == userId)
-                .FirstOrDefault();
+                .FirstOrDefault());
             
             return token.Token;
         }
 
-        public void SaveRefreshToken(string userId, string refreshToken)
+        public async Task SaveRefreshToken(string userId, string refreshToken)
         {
             var refToken = new RefreshToken();
 
@@ -65,8 +65,8 @@ namespace PictureLibrary_API.Services
             refToken.UserId = userId;
             refToken.Token = refreshToken;
 
-            Context.RefreshTokens.Add(refToken);
-            Context.SaveChanges();
+            await Task.Run(() => Context.RefreshTokens.Add(refToken));
+            await Context.SaveChangesAsync();
 
             Logger.LogInformation("Added refresh token to database: " + refreshToken);
         }
