@@ -85,5 +85,32 @@ namespace PictureLibrary_API.Tests.ServicesTests
         }
         #endregion
 
+        #region SaveRefreshTokenAsync 
+        [Fact]
+        public async void SaveRefreshTokenAsync_ShouldSaveRefreshTokenInDatabase()
+        {
+            var loggerMock = new Mock<ILogger<AccessTokenService>>();
+            var optionsMock = new Mock<IOptions<AppSettings>>();
+            var appSettingsMock = new Mock<AppSettings>();
+            var contextMock = new Mock<IDatabaseContext>();
+
+            optionsMock.Setup(x => x.Value)
+                .Returns(appSettingsMock.Object);
+
+            var dbSet = new TestDbSet<RefreshToken>();
+            contextMock.Setup(x => x.RefreshTokens)
+                .Returns(dbSet);
+            contextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                .Verifiable();
+
+            var service = new AccessTokenService(loggerMock.Object, contextMock.Object, optionsMock.Object);
+            var refreshToken = GetRefreshTokenSample();
+
+            await service.SaveRefreshTokenAsync(refreshToken.UserId.ToString(), refreshToken.Token);
+
+            Assert.Contains(dbSet, x => x.Token == refreshToken.Token && x.UserId == refreshToken.UserId);
+            contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        }
+        #endregion
     }
 }
