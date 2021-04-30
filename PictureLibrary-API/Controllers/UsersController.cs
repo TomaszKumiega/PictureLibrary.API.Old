@@ -61,7 +61,7 @@ namespace PictureLibrary_API.Controllers
 
                 tokenString = AccessTokenService.GenerateAccessToken(user.Id.ToString());
                 refreshToken = AccessTokenService.GenerateRefreshToken();
-                AccessTokenService.SaveRefreshTokenAsync(user.Id.ToString(), refreshToken);
+                await AccessTokenService.SaveRefreshTokenAsync(user.Id.ToString(), refreshToken);
             }
             catch(ArgumentException e)
             {
@@ -117,9 +117,9 @@ namespace PictureLibrary_API.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequestModel refreshRequest)
         {
-            var principal = await Task.Run(() =>  AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token));
+            var principal = AccessTokenService.GetPrincipalFromExpiredToken(refreshRequest.Token);
             var userId = principal.Identity.Name;
-            var savedRefreshToken = await Task.Run(() =>  AccessTokenService.GetRefreshTokenAsync(userId)); 
+            var savedRefreshToken = await AccessTokenService.GetRefreshTokenAsync(userId); 
             if (savedRefreshToken != refreshRequest.RefreshToken)
             {
                 return BadRequest("Invalid refresh token");
@@ -130,11 +130,11 @@ namespace PictureLibrary_API.Controllers
 
             try
             {
-                newJwtToken = await Task.Run(() => AccessTokenService.GenerateAccessToken(userId));
-                newRefreshToken = await Task.Run(() => AccessTokenService.GenerateRefreshToken());
+                newJwtToken = AccessTokenService.GenerateAccessToken(userId);
+                newRefreshToken = AccessTokenService.GenerateRefreshToken();
 
-                await Task.Run(() => AccessTokenService.DeleteRefreshTokenAsync(userId, refreshRequest.RefreshToken));
-                await Task.Run(() => AccessTokenService.SaveRefreshTokenAsync(userId, newRefreshToken));
+                await AccessTokenService.DeleteRefreshTokenAsync(userId, refreshRequest.RefreshToken);
+                await AccessTokenService.SaveRefreshTokenAsync(userId, newRefreshToken);
             }
             catch(Exception e)
             {
