@@ -19,19 +19,19 @@ namespace PictureLibrary_API.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<string> GetRefreshToken(string userId);
+        Task<string> GetRefreshTokenAsync(string userId);
         /// <summary>
         /// Saves refresh token in database.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="refreshToken"></param>
-        Task SaveRefreshToken(string userId, string refreshToken);
+        Task SaveRefreshTokenAsync(string userId, string refreshToken);
         /// <summary>
         /// Removes refresh token from database.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="refreshToken"></param>
-        Task DeleteRefreshToken(string userId, string refreshToken);
+        Task DeleteRefreshTokenAsync(string userId, string refreshToken);
         /// <summary>
         /// Generates new access token.
         /// </summary>

@@ -27,7 +27,7 @@ namespace PictureLibrary_API.Services
             Logger = logger;
         }
 
-        public async Task DeleteRefreshToken(string userId, string refreshToken)
+        public async Task DeleteRefreshTokenAsync(string userId, string refreshToken)
         {
             var token = Context.RefreshTokens
                 .Where(x => x.UserId == userId && x.Token == refreshToken)
@@ -48,7 +48,7 @@ namespace PictureLibrary_API.Services
             }
         }
 
-        public async Task<string> GetRefreshToken(string userId)
+        public async Task<string> GetRefreshTokenAsync(string userId)
         {
             var token = await Task.Run(() => Context.RefreshTokens
                 .Where(x => x.UserId == userId)
@@ -57,7 +57,7 @@ namespace PictureLibrary_API.Services
             return token.Token;
         }
 
-        public async Task SaveRefreshToken(string userId, string refreshToken)
+        public async Task SaveRefreshTokenAsync(string userId, string refreshToken)
         {
             var refToken = new RefreshToken();
 
