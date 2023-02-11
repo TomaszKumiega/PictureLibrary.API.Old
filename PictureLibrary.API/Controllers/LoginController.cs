@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
 
 namespace PictureLibrary.API.Controllers
@@ -8,18 +10,25 @@ namespace PictureLibrary.API.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private IConfiguration _config;
+        private readonly IMediator _mediator;
+        private readonly IConfiguration _config;
 
-        public LoginController(IConfiguration config)
+        public LoginController(
+            IMediator mediator,
+            IConfiguration config)
         {
             _config = config;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
         {
-            var user = new User(); // download user from database
+            if (userLogin.Username == null)
+                return BadRequest();
+
+            FindUserQuery query = new(userLogin.Username);
+            var user = await _mediator.Send(query);
 
             if (user != null)
             {
