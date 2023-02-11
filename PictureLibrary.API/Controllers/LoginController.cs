@@ -11,13 +11,14 @@ namespace PictureLibrary.API.Controllers
     public class LoginController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IConfiguration _config;
+        private readonly IAccessTokenService _accessTokenService;
 
         public LoginController(
             IMediator mediator,
-            IConfiguration config)
+            IAccessTokenService accessTokenService)
         {
-            _config = config;
+            _mediator = mediator;
+            _accessTokenService = accessTokenService;
         }
 
         [AllowAnonymous]
@@ -32,8 +33,9 @@ namespace PictureLibrary.API.Controllers
 
             if (user != null)
             {
-                string token = "token"; // generate token
-                return Ok(token);
+                Tokens tokens = _accessTokenService.GenerateTokens(user);
+                // TODO: save tokens
+                return Ok(tokens);
             }
 
             return NotFound("User not found");
