@@ -6,5 +6,6 @@ namespace PictureLibrary.DataAccess.Repositories
     {
         Task AddUser(User user);
         Task<User?> FindByUsername(string username);
+        Task DeleteUser(Guid userId);
     }
 }

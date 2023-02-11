@@ -25,7 +25,7 @@ namespace PictureLibrary.DataAccess.Handlers
             var user = await _userRepository.FindByUsername(request.User.Username!);
 
             if (user != null)
-                throw new ResourceAlreadyExists(nameof(User));
+                throw new ResourceAlreadyExistsException(nameof(User));
 
             _hashAndSalt.CreateHash(request.User.Password!, out byte[] passwordHash, out byte[] passwordSalt);
 

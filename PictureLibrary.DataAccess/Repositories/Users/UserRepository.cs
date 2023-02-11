@@ -32,5 +32,15 @@ WHERE Username = @Username";
 
             return users.SingleOrDefault();
         }
+
+        public async Task DeleteUser(Guid userId)
+        {
+            var parameters = new { Id = userId.ToString() };
+            string sql = @"
+DELETE FROM Users
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, parameters);
+        }
     }
 }

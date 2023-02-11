@@ -31,5 +31,15 @@ namespace PictureLibrary.API.Controllers
 
             return Created(string.Empty, addUserCommand);
         }
+
+        [Authorize]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromQuery] string username)
+        {
+            DeleteUserCommand deleteUserCommand = new(username);
+            await _mediator.Send(deleteUserCommand);
+
+            return Ok();
+        }
     }
 }
