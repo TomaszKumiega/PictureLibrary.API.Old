@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PictureLibrary.DataAccess\PictureLibrary.DataAccess.csproj" />
     <ProjectReference Include="..\PictureLibrary.Model\PictureLibrary.Model.csproj" />
+    <ProjectReference Include="..\PictureLibrary.Tools\PictureLibrary.Tools.csproj" />
   </ItemGroup>
 
 </Project>

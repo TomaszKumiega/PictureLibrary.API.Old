@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PictureLibrary.API;
 using PictureLibrary.DataAccess.DatabaseAccess;
 using PictureLibrary.DataAccess.Repositories;
+using PictureLibrary.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services
-    .AddTransient<IAccessTokenService, AccessTokenService>()
-    .AddTransient(typeof(IDatabaseAccess<>), typeof(DatabaseAccess<>))
-    .AddTransient<ITokensRepository, TokensRepository>();
+    .AddSingleton<IAccessTokenService, AccessTokenService>()
+    .AddSingleton(typeof(IDatabaseAccess<>), typeof(DatabaseAccess<>))
+    .AddSingleton<ITokensRepository, TokensRepository>()
+    .AddSingleton<IUserRepository, UserRepository>()
+    .AddSingleton<IHashAndSalt, HashAndSalt>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
