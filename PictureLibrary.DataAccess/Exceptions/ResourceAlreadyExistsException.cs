@@ -1,8 +1,8 @@
 ﻿namespace PictureLibrary.DataAccess.Exceptions
 {
-    public class ResourceAlreadyExists : Exception
+    public class ResourceAlreadyExistsException : Exception
     {
-        public ResourceAlreadyExists(string resourceName) 
+        public ResourceAlreadyExistsException(string resourceName) 
             : base($"{resourceName} already exists.")
         {
         }

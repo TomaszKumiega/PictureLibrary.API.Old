@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PictureLibrary.Model\PictureLibrary.Model.csproj" />
+    <ProjectReference Include="..\PictureLibrary.Tools\PictureLibrary.Tools.csproj" />
   </ItemGroup>
 
 </Project>
