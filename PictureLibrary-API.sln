@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary-API", "Pictu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary-API.Tests", "PictureLibrary-API.Tests\PictureLibrary-API.Tests.csproj", "{CADC75AF-08E8-492A-B113-EF1F46DA2E58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.API", "PictureLibrary.API\PictureLibrary.API.csproj", "{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary.API", "PictureLibrary.API\PictureLibrary.API.csproj", "{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.Model", "PictureLibrary.Model\PictureLibrary.Model.csproj", "{54031DEF-25B9-4F50-8D96-3AA24ACF463A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary.Model", "PictureLibrary.Model\PictureLibrary.Model.csproj", "{54031DEF-25B9-4F50-8D96-3AA24ACF463A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.DataAccess", "PictureLibrary.DataAccess\PictureLibrary.DataAccess.csproj", "{D9A89AC9-17DD-4250-8384-BD8F45B4DBE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary.DataAccess", "PictureLibrary.DataAccess\PictureLibrary.DataAccess.csproj", "{D9A89AC9-17DD-4250-8384-BD8F45B4DBE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.Tools", "PictureLibrary.Tools\PictureLibrary.Tools.csproj", "{3E7BDEB1-7737-4F57-89C3-32D423AFBFE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary.Tools", "PictureLibrary.Tools\PictureLibrary.Tools.csproj", "{3E7BDEB1-7737-4F57-89C3-32D423AFBFE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

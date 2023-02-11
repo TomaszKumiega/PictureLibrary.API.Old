@@ -1,13 +1,19 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PictureLibrary.API;
+using PictureLibrary.DataAccess.DatabaseAccess;
+using PictureLibrary.DataAccess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddTransient<IAccessTokenService, AccessTokenService>();
+
+builder.Services
+    .AddTransient<IAccessTokenService, AccessTokenService>()
+    .AddTransient(typeof(IDatabaseAccess<>), typeof(DatabaseAccess<>))
+    .AddTransient<ITokensRepository, TokensRepository>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -22,6 +22,8 @@ namespace PictureLibrary.API
             var (accessToken, expiryDate) = GenerateAccessToken(user);
             return new()
             {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
                 AccessToken = accessToken,
                 RefreshToken = GenerateRefreshToken(),
                 ExpiryDate = expiryDate,
