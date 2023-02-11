@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary-API", "PictureLibrary-API\PictureLibrary-API.csproj", "{826E193A-4876-460B-A621-8470441887A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary-API.Tests", "PictureLibrary-API.Tests\PictureLibrary-API.Tests.csproj", "{CADC75AF-08E8-492A-B113-EF1F46DA2E58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary-API.Tests", "PictureLibrary-API.Tests\PictureLibrary-API.Tests.csproj", "{CADC75AF-08E8-492A-B113-EF1F46DA2E58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.API", "PictureLibrary.API\PictureLibrary.API.csproj", "{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{CADC75AF-08E8-492A-B113-EF1F46DA2E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CADC75AF-08E8-492A-B113-EF1F46DA2E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CADC75AF-08E8-492A-B113-EF1F46DA2E58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
