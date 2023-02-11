@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary-API.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.API", "PictureLibrary.API\PictureLibrary.API.csproj", "{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.Model", "PictureLibrary.Model\PictureLibrary.Model.csproj", "{54031DEF-25B9-4F50-8D96-3AA24ACF463A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6093E45-B6B7-4B98-8D62-5ADCBD09A854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54031DEF-25B9-4F50-8D96-3AA24ACF463A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54031DEF-25B9-4F50-8D96-3AA24ACF463A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54031DEF-25B9-4F50-8D96-3AA24ACF463A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54031DEF-25B9-4F50-8D96-3AA24ACF463A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
