@@ -1,9 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PictureLibrary.API;
+using PictureLibrary.API.ExceptionHandler;
 using PictureLibrary.DataAccess.DatabaseAccess;
 using PictureLibrary.DataAccess.Repositories;
 using PictureLibrary.Tools;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,5 +47,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.UseExceptionHandler(appError => appError.Run(ExceptionHandler.Handle));
 
 app.Run();
