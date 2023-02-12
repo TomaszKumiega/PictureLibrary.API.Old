@@ -27,8 +27,4 @@
     <ProjectReference Include="..\PictureLibrary.Tools\PictureLibrary.Tools.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validation\" />
-  </ItemGroup>
-
 </Project>

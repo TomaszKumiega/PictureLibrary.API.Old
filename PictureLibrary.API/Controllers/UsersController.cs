@@ -21,11 +21,6 @@ namespace PictureLibrary.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegister user)
         {
-            if (user.EmailAddress == null || user.Password == null || user.EmailAddress == null)
-            {
-                return BadRequest();
-            }
-
             AddUserCommand addUserCommand = new(user);
             await _mediator.Send(addUserCommand);
 
@@ -36,6 +31,11 @@ namespace PictureLibrary.API.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                return BadRequest("Username must not be empty");
+            }
+
             DeleteUserCommand deleteUserCommand = new(username);
             await _mediator.Send(deleteUserCommand);
 
