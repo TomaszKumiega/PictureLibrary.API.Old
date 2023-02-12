@@ -1,11 +1,4 @@
-﻿using System.Net;
-
-namespace PictureLibrary.API.ExceptionHandler
+﻿namespace PictureLibrary.API
 {
-    public class ErrorDetails
-    {
-        public required HttpStatusCode StatusCode { get; set; }
-        public required string Title { get; set; }
-        public string? Details { get; set; }
-    }
+    public record ErrorDetails(string FieldName, string Message);
 }

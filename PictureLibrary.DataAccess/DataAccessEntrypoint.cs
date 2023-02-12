@@ -1,6 +1,6 @@
 ﻿namespace PictureLibrary.DataAccess
 {
-    public class MediatorEntrypoint
+    public class DataAccessEntrypoint
     { 
     }
 }
