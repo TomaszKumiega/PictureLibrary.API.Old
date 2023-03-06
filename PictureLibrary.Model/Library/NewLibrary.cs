@@ -1,8 +1,7 @@
 ﻿namespace PictureLibrary.Model
 {
-    public class Library
+    public class NewLibrary
     {
-        public Guid Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
     }

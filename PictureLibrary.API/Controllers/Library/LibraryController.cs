@@ -34,14 +34,24 @@ namespace PictureLibrary.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Guid>> AddLibrary([FromBody] Library library)
+        public async Task<ActionResult<Guid>> AddLibrary([FromBody] NewLibrary library)
         {
-            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            Guid? userId = GetCurrentUserId();
             
-            var addLibraryCommand = new AddLibraryCommand(library, userId);
+            if (!userId.HasValue)
+                return Unauthorized();
+
+            var addLibraryCommand = new AddLibraryCommand(library, userId.Value);
             Guid libraryId = await _mediator.Send(addLibraryCommand);
 
             return Created(string.Empty, libraryId);
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task UpdateLibrary([FromBody] Library library)
+        {
+
         }
     }
 }

@@ -7,8 +7,16 @@ namespace PictureLibrary.API.Controllers
     {
         protected bool IsUserAuthorized(Guid userId)
         {
+            Guid? currentUserId = GetCurrentUserId();
+            return currentUserId.HasValue && currentUserId == userId;
+        }
+
+        protected Guid? GetCurrentUserId()
+        {
             string? id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Guid.TryParse(id, out Guid currentUserId) && currentUserId == userId;
+            return Guid.TryParse(id, out Guid currentUserId)
+                ? currentUserId
+                : null;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Repositories;
+using PictureLibrary.Model;
 
 namespace PictureLibrary.DataAccess.Handlers
 {
@@ -14,6 +15,14 @@ namespace PictureLibrary.DataAccess.Handlers
         }
 
         public async Task<Guid> Handle(AddLibraryCommand request, CancellationToken cancellationToken)
-            => await _libraryRepository.AddLibrary(request.Library, request.UserId);
+        {
+            Library library = new()
+            {
+                Name = request.Library.Name,
+                Description = request.Library.Description,
+            };
+
+            return await _libraryRepository.AddLibrary(library, request.UserId);
+        }
     }
 }

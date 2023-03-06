@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.Model;
-using System.Security.Claims;
 
 namespace PictureLibrary.API.Controllers
 {
