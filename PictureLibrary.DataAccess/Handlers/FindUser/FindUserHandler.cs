@@ -1,16 +1,22 @@
 ﻿using MediatR;
 using PictureLibrary.DataAccess.Queries;
+using PictureLibrary.DataAccess.Repositories;
 using PictureLibrary.Model;
 
 namespace PictureLibrary.DataAccess.Handlers
 {
-    public class FindUserHandler : IRequestHandler<FindUserQuery, User>
+    public class FindUserHandler : IRequestHandler<FindUserQuery, User?>
     {
-        public Task<User> Handle(FindUserQuery request, CancellationToken cancellationToken)
-        {
-            // find username
+        private readonly IUserRepository _userRepository;
 
-            return null!;
+        public FindUserHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;    
+        }
+
+        public async Task<User?> Handle(FindUserQuery request, CancellationToken cancellationToken)
+        {
+            return await _userRepository.FindByUsername(request.Username);
         }
     }
 }
