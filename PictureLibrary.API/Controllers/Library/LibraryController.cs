@@ -45,7 +45,7 @@ namespace PictureLibrary.API.Controllers
             var addLibraryCommand = new AddLibraryCommand(library, userId);
             Guid libraryId = await _mediator.Send(addLibraryCommand);
 
-            return Ok(libraryId);
+            return Created(string.Empty, libraryId);
         }
     }
 }
