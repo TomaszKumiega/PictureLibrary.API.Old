@@ -7,5 +7,6 @@ namespace PictureLibrary.DataAccess.Repositories
         Task<Guid> AddLibrary(Library library, Guid userId);
         Task<Library?> FindByIdAsync(Guid id);
         Task<IEnumerable<Library>> GetAll(Guid userId);
+        Task UpdateLibrary(Library library);
     }
 }

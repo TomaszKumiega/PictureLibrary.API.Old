@@ -53,5 +53,17 @@ VALUES (@LibraryId, @UserId)";
 
             return library.Id;
         }
+
+        public async Task UpdateLibrary(Library library)
+        {
+            string sql = @"
+UPDATE Libraries
+SET 
+Name = @Name,
+Description = @Description
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, library);
+        }
     }
 }

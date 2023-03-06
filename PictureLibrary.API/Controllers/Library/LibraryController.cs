@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
-using System.Security.Claims;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -49,9 +48,18 @@ namespace PictureLibrary.API.Controllers
 
         [HttpPut]
         [Authorize]
-        public async Task UpdateLibrary([FromBody] Library library)
+        public async Task<IActionResult> UpdateLibrary([FromBody] Library library)
         {
+            var findLibraryCommand = new FindLibraryByIdQuery(library.Id);
+            var existingLibrary = await _mediator.Send(findLibraryCommand);
 
+            if (existingLibrary == null)
+                return BadRequest();
+
+            var updateLibraryCommand = new UpdateLibraryCommand(library);
+            await _mediator.Send(updateLibraryCommand);
+
+            return Ok();
         }
     }
 }
