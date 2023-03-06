@@ -12,6 +12,18 @@ namespace PictureLibrary.DataAccess.Repositories
             _databaseAccess = databaseAccess;
         }
 
+        public async Task<IEnumerable<Library>> GetAll(Guid userId)
+        {
+            var parameters = new { UserId = userId };
+            string sql = @"
+SELECT * FROM Libraries _library
+LEFT JOIN UserLibraries _userLibrary
+ON _library.Id = _userLibrary.LibraryId
+WHERE _userLibrary.UserId = @UserId";
+        
+            return await _databaseAccess.LoadDataAsync(sql, parameters);
+        }
+
         public async Task<Library?> FindByIdAsync(Guid id)
         {
             var parameters = new { Id = id };

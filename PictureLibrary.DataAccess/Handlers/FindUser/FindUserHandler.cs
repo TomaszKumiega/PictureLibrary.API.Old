@@ -15,8 +15,6 @@ namespace PictureLibrary.DataAccess.Handlers
         }
 
         public async Task<User?> Handle(FindUserQuery request, CancellationToken cancellationToken)
-        {
-            return await _userRepository.FindByUsername(request.Username);
-        }
+            => await _userRepository.FindByUsername(request.Username);
     }
 }
