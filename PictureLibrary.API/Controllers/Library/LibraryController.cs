@@ -10,7 +10,7 @@ namespace PictureLibrary.API.Controllers
 {
     [Route("library")]
     [ApiController]
-    public class LibraryController : Controller
+    public class LibraryController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -23,12 +23,8 @@ namespace PictureLibrary.API.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<Library>>> GetAllLibraries([FromQuery] Guid userId)
         {
-             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(id, out Guid currentUserId) || currentUserId != userId)
-            {
+            if (!IsUserAuthorized(userId))
                 return Unauthorized();
-            }
 
             var query = new GetUserLibrariesQuery(userId);
             var libraries = await _mediator.Send(query);

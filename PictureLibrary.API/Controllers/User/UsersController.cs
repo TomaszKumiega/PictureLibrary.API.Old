@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.Model;
+using System.Security.Claims;
 
 namespace PictureLibrary.API.Controllers
 {
     [Route("users")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -29,12 +30,10 @@ namespace PictureLibrary.API.Controllers
 
         [Authorize]
         [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromQuery] string username)
+        public async Task<IActionResult> Delete([FromQuery] Guid userId)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                return BadRequest("Username must not be empty");
-            }
+            if (!IsUserAuthorized(userId))
+                return Unauthorized();
 
             DeleteUserCommand deleteUserCommand = new(username);
             await _mediator.Send(deleteUserCommand);
