@@ -35,13 +35,23 @@ WHERE Id = @Id";
             return libraries.FirstOrDefault();
         }
 
-        public async Task AddLibrary(Library library)
+        public async Task<Guid> AddLibrary(Library library, Guid userId)
         {
-            string sql = @"
+            library.Id = Guid.NewGuid();
+
+            string addUserSql = @"
 INSERT INTO Libraries (Id, Name, Description)
 VALUES (@Id, Name, Description)";
 
-            await _databaseAccess.SaveDataAsync(sql, library);
+            await _databaseAccess.SaveDataAsync(addUserSql, library);
+
+            string addRelationshipSql = @"
+INSERT INTO UserLibraries (LibraryId, UserId)
+VALUES (@LibraryId, @UserId)";
+
+            await _databaseAccess.SaveDataAsync(addRelationshipSql, new { LibraryId = library.Id, UserId = userId });
+
+            return library.Id;
         }
     }
 }

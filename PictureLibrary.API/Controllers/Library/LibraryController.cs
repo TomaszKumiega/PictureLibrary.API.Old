@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
 using System.Security.Claims;
@@ -12,15 +14,14 @@ namespace PictureLibrary.API.Controllers
     {
         private readonly IMediator _mediator;
 
-        public LibraryController(
-            IMediator mediator
-            )
+        public LibraryController(IMediator mediator)
         {
             _mediator = mediator;    
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Library>>> GetAllLibraries([FromBody] Guid userId)
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Library>>> GetAllLibraries([FromQuery] Guid userId)
         {
              var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -33,6 +34,18 @@ namespace PictureLibrary.API.Controllers
             var libraries = await _mediator.Send(query);
 
             return Ok(libraries);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Guid>> AddLibrary([FromBody] Library library)
+        {
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            
+            var addLibraryCommand = new AddLibraryCommand(library, userId);
+            Guid libraryId = await _mediator.Send(addLibraryCommand);
+
+            return Ok(libraryId);
         }
     }
 }
