@@ -46,5 +46,17 @@ WHERE Id = @Id";
 
             await _databaseAccess.SaveDataAsync(sql, parameters);
         }
+
+        public async Task<User?> FindById(Guid userId)
+        {
+            var parameters = new { Id = userId.ToString() };
+            string sql = @"
+SELECT * FROM Users
+WHERE Id = @Id";
+
+            var users = await _databaseAccess.LoadDataAsync(sql, parameters);
+            
+            return users.SingleOrDefault();
+        }
     }
 }

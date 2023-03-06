@@ -35,7 +35,7 @@ namespace PictureLibrary.API.Controllers
             if (!IsUserAuthorized(userId))
                 return Unauthorized();
 
-            DeleteUserCommand deleteUserCommand = new(username);
+            DeleteUserCommand deleteUserCommand = new(userId);
             await _mediator.Send(deleteUserCommand);
 
             return Ok();
