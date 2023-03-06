@@ -22,9 +22,9 @@ namespace PictureLibrary.API.Controllers
         public async Task<IActionResult> Register([FromBody] UserRegister user)
         {
             AddUserCommand addUserCommand = new(user);
-            await _mediator.Send(addUserCommand);
+            Guid userId = await _mediator.Send(addUserCommand);
 
-            return Created(string.Empty, addUserCommand);
+            return Created(string.Empty, userId);
         }
 
         [Authorize]
