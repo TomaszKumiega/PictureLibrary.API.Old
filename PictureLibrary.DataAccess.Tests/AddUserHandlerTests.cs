@@ -33,6 +33,52 @@ namespace PictureLibrary.DataAccess.Tests
             Assert.ThrowsAsync<ResourceAlreadyExistsException>(() => handler.Handle(command, CancellationToken.None));
         }
 
+        [Fact]
+        public async Task Handle_ShouldSaveUserInDatabase()
+        {
+            User user = null!;
+            byte[] hash = new byte[] { 4, 5, 6 };
+            byte[] salt = new byte[] { 1, 2, 3 };
+            var userRegistration = new UserRegister()
+            {
+                Username = "testUser",
+                Password = "testPassword",
+                EmailAddress = "email@email.com",
+            };
+
+            void addUserAction(User param) => user = param;
+
+            AddUserCommand command = new(userRegistration);
+
+            Mock<IHashAndSalt> hashAndSaltMock = new(MockBehavior.Strict);
+
+            hashAndSaltMock.Setup(x => x.CreateHash(userRegistration.Password, out hash, out salt))
+                .Verifiable();
+
+            Mock<IUserRepository> userRepositoryMock = new(MockBehavior.Strict);
+
+            userRepositoryMock.Setup(x => x.FindByUsername(userRegistration.Username))
+                .Returns(() => Task.FromResult<User>(null!)!)
+                .Verifiable();
+
+            userRepositoryMock.Setup(x => x.AddUser(It.IsAny<User>()))
+                .Returns(Task.CompletedTask)
+                .Callback((Action<User>)addUserAction);
+
+            AddUserHandler handler = new(hashAndSaltMock.Object, userRepositoryMock.Object);
+            await handler.Handle(command, CancellationToken.None);
+
+            hashAndSaltMock.Verify();
+            userRepositoryMock.Verify();
+
+            Assert.NotNull(user);
+            Assert.True(user.Username == userRegistration.Username);
+            Assert.Equal(user.PasswordHash, hash);
+            Assert.Equal(user.PasswordSalt, salt);
+            Assert.True(user.EmailAddress == userRegistration.EmailAddress);
+            Assert.True(user.Role == UserRoles.UserRole);
+        }
+
         private static User? User => new()
         {
             Id = Guid.NewGuid(),

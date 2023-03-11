@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.Model;
+using System.Security.Claims;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -36,7 +37,15 @@ namespace PictureLibrary.API.Controllers
                 return BadRequest("Username must not be empty");
             }
 
-            DeleteUserCommand deleteUserCommand = new(username);
+            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null) 
+            {
+                return Unauthorized();
+            }
+
+            Guid userGuid = Guid.Parse(userId);
+            DeleteUserCommand deleteUserCommand = new(userGuid, username);
             await _mediator.Send(deleteUserCommand);
 
             return Ok();
