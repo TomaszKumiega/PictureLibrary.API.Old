@@ -12,13 +12,17 @@ namespace PictureLibrary.DataAccess.Repositories
             _databaseAccess = databaseAccess;
         }
 
-        public async Task AddUser(User user)
+        public async Task<Guid> AddUser(User user)
         {
+            user.Id = Guid.NewGuid();
+
             string sql = @"
 INSERT INTO Users (Id, Username, PasswordSalt, PasswordHash, EmailAddress, Role)
 VALUES (@Id, @Username, @PasswordSalt, @PasswordHash, @EmailAddress, @Role)";
 
             await _databaseAccess.SaveDataAsync(sql, user);
+
+            return user.Id;
         }
 
         public async Task<User?> FindByUsername(string username)
@@ -41,6 +45,18 @@ DELETE FROM Users
 WHERE Id = @Id";
 
             await _databaseAccess.SaveDataAsync(sql, parameters);
+        }
+
+        public async Task<User?> FindById(Guid userId)
+        {
+            var parameters = new { Id = userId.ToString() };
+            string sql = @"
+SELECT * FROM Users
+WHERE Id = @Id";
+
+            var users = await _databaseAccess.LoadDataAsync(sql, parameters);
+            
+            return users.SingleOrDefault();
         }
     }
 }

@@ -3,5 +3,5 @@ using PictureLibrary.Model;
 
 namespace PictureLibrary.DataAccess.Commands
 {
-    public record AddUserCommand(UserRegister User) : IRequest<Guid>;
+    public record AddLibraryCommand(NewLibrary Library, Guid UserId) : IRequest<Guid>;
 }

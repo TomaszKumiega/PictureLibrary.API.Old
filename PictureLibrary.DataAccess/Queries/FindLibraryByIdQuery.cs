@@ -3,5 +3,5 @@ using PictureLibrary.Model;
 
 namespace PictureLibrary.DataAccess.Queries
 {
-    public record FindUserQuery(string Username) : IRequest<User?>;
+    public record FindLibraryByIdQuery(Guid LibraryId) : IRequest<Library?>;
 }

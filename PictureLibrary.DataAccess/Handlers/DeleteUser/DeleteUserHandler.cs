@@ -17,10 +17,8 @@ namespace PictureLibrary.DataAccess.Handlers
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindByUsername(request.Username);
-
-            if (user == null)
-                throw new NotFoundException(nameof(User));
+            var user = await _userRepository.FindById(request.UserId) 
+                ?? throw new NotFoundException(nameof(User));
 
             await _userRepository.DeleteUser(user.Id);
 

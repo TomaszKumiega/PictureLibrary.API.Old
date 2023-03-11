@@ -9,7 +9,7 @@ namespace PictureLibrary.API.Controllers
 {
     [Route("users")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -23,29 +23,19 @@ namespace PictureLibrary.API.Controllers
         public async Task<IActionResult> Register([FromBody] UserRegister user)
         {
             AddUserCommand addUserCommand = new(user);
-            await _mediator.Send(addUserCommand);
+            Guid userId = await _mediator.Send(addUserCommand);
 
-            return Created(string.Empty, addUserCommand);
+            return Created(string.Empty, userId);
         }
 
         [Authorize]
         [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromQuery] string username)
+        public async Task<IActionResult> Delete([FromQuery] Guid userId)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                return BadRequest("Username must not be empty");
-            }
-
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userId == null) 
-            {
+            if (!IsUserAuthorized(userId))
                 return Unauthorized();
-            }
 
-            Guid userGuid = Guid.Parse(userId);
-            DeleteUserCommand deleteUserCommand = new(userGuid, username);
+            DeleteUserCommand deleteUserCommand = new(userId);
             await _mediator.Send(deleteUserCommand);
 
             return Ok();

@@ -7,7 +7,7 @@ using PictureLibrary.Tools;
 
 namespace PictureLibrary.DataAccess.Handlers
 {
-    public class AddUserHandler : IRequestHandler<AddUserCommand>
+    public class AddUserHandler : IRequestHandler<AddUserCommand, Guid>
     {
         private readonly IHashAndSalt _hashAndSalt;
         private readonly IUserRepository _userRepository;
@@ -20,7 +20,7 @@ namespace PictureLibrary.DataAccess.Handlers
             _userRepository = userRepository;
         }
 
-        public async Task<Unit> Handle(AddUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindByUsername(request.User.Username!);
 
@@ -29,9 +29,8 @@ namespace PictureLibrary.DataAccess.Handlers
 
             _hashAndSalt.CreateHash(request.User.Password!, out byte[] passwordHash, out byte[] passwordSalt);
 
-            await _userRepository.AddUser(new User()
+            Guid userId = await _userRepository.AddUser(new User()
             {
-                Id = Guid.NewGuid(),
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Username = request.User.Username!,
@@ -39,7 +38,7 @@ namespace PictureLibrary.DataAccess.Handlers
                 Role = "User",
             });
 
-            return Unit.Value;
+            return userId;
         }
     }
 }
