@@ -3,6 +3,7 @@ using PictureLibrary.DataAccess.Exceptions;
 using PictureLibrary.DataAccess.Handlers;
 using PictureLibrary.DataAccess.Repositories;
 using PictureLibrary.Model;
+using PictureLibrary.Model.Users;
 using PictureLibrary.Tools;
 
 namespace PictureLibrary.DataAccess.Tests
@@ -62,7 +63,7 @@ namespace PictureLibrary.DataAccess.Tests
                 .Verifiable();
 
             userRepositoryMock.Setup(x => x.AddUser(It.IsAny<User>()))
-                .Returns(Task.CompletedTask)
+                .Returns(Task.FromResult(Guid.NewGuid()))
                 .Callback((Action<User>)addUserAction);
 
             AddUserHandler handler = new(hashAndSaltMock.Object, userRepositoryMock.Object);
