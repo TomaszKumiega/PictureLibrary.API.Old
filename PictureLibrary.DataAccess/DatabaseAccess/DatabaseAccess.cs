@@ -15,6 +15,12 @@ namespace PictureLibrary.DataAccess.DatabaseAccess
             return await connection.QueryAsync<TModel>(sql, parameters, commandType: CommandType.Text);
         }
 
+        public async Task<IEnumerable<TModel>> LoadDataAsync<TFirst, TSecond>(string sql, Type[] types, Func<object[], TModel> map, object? parameters = null)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync(sql, types, map, parameters, commandType: CommandType.Text);
+        }
+
         public async Task SaveDataAsync<TParameters>(string sql, TParameters parameters)
             where TParameters : class
         {
