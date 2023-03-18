@@ -1,4 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using PictureLibrary.DataAccess.Exceptions;
+using PictureLibrary.DataAccess.Repositories;
 using PictureLibrary.Model;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,6 +11,17 @@ namespace PictureLibrary.DataAccess.Services
 {
     public class AccessTokenService : IAccessTokenService
     {
+        private readonly IUserRepository _userRepository;
+        private readonly ITokensRepository _tokensRepository;
+
+        public AccessTokenService(
+            IUserRepository userRepository,
+            ITokensRepository tokensRepository)
+        {
+            _userRepository = userRepository;
+            _tokensRepository = tokensRepository;
+        }
+
         public Tokens GenerateTokens(User user, string privateKey)
         {
             var (accessToken, expiryDate) = GenerateAccessToken(user, privateKey);
@@ -54,6 +67,26 @@ namespace PictureLibrary.DataAccess.Services
             rng.GetBytes(randomNumber);
 
             return Convert.ToBase64String(randomNumber);
+        }
+
+        public async Task<Tokens> RefreshTokensAsync(TokenValidationParameters tokenValidationParams, string accessToken, string refreshToken, string privateKey)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var validationResult = await handler.ValidateTokenAsync(accessToken, tokenValidationParams);
+
+            if (!validationResult.IsValid)
+                throw new InvalidTokenException();
+
+            var id = (string)validationResult.Claims[ClaimTypes.NameIdentifier];
+            Guid userId = Guid.Parse(id);
+
+            var tokens = await _tokensRepository.FindByUserIdAsync(userId);
+            var user = await _userRepository.FindById(userId);
+
+            if (tokens?.RefreshToken != refreshToken || user == null)
+                throw new InvalidTokenException();
+
+            return GenerateTokens(user, privateKey);
         }
     }
 }

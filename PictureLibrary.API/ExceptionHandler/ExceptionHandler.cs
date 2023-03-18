@@ -36,6 +36,14 @@ namespace PictureLibrary.API
                     Title = ex.Message,
                 };
             }
+            else if (ex is InvalidTokenException)
+            {
+                return new ErrorResponse()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Title = "Invalid token"
+                };
+            }
             else
             {
                 return new ErrorResponse()

@@ -26,6 +26,7 @@ builder.Services
     .AddSingleton(typeof(IDatabaseAccess<>), typeof(DatabaseAccess<>))
     .AddSingleton<ITokensRepository, TokensRepository>()
     .AddSingleton<IUserRepository, UserRepository>()
+    .AddSingleton<ILibraryRepository, LibraryRepository>()
     .AddSingleton<IHashAndSalt, HashAndSalt>()
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

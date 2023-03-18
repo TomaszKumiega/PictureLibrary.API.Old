@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.API.Dtos;
@@ -11,13 +12,16 @@ namespace PictureLibrary.API.Controllers
     [ApiController]
     public class AuthorizationController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IConfiguration _config;
 
-        public AuthorizationController( 
+        public AuthorizationController(
+            IMapper mapper,
             IMediator mediator,
             IConfiguration config)
         {
+            _mapper = mapper;
             _config = config;
             _mediator = mediator;
         }
@@ -41,6 +45,19 @@ namespace PictureLibrary.API.Controllers
             }
 
             return NotFound("User not found");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> RefreshTokens([FromBody] RefreshTokensDto refreshTokensDto)
+        {
+            var query = new RefreshTokensQuery(new PictureLibraryTokenValidationParameters(_config), refreshTokensDto.AccessToken, refreshTokensDto.RefreshToken, _config["PrivateKey"]);
+            var tokens = await _mediator.Send(query);
+
+            if (tokens == null)
+                return BadRequest();
+
+            return Ok(tokens);
         }
     }
 }
