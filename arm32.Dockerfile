@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 COPY *.sln .
-COPY ./PictureLibrar.API/ ./PictureLibrary.API
+COPY ./PictureLibrary.API/ ./PictureLibrary.API
 RUN dotnet restore -r linux-arm
 
 COPY PictureLibrary.API/. ./PictureLibrary.API
