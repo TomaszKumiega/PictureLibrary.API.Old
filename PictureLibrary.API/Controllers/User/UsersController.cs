@@ -2,10 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PictureLibrary.Api.Dtos;
+using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
-using PictureLibrary.Model;
 
 namespace PictureLibrary.API.Controllers
 {

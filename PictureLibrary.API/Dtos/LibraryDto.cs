@@ -1,6 +1,6 @@
 ﻿using PictureLibrary.Model;
 
-namespace PictureLibrary.Api.Dtos
+namespace PictureLibrary.API.Dtos
 {
     public class LibraryDto
     {

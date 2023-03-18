@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PictureLibrary.Api.Dtos;
+using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
-using PictureLibrary.Model;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -13,32 +12,28 @@ namespace PictureLibrary.API.Controllers
     public class LoginController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IAccessTokenService _accessTokenService;
+        private readonly IConfiguration _config;
 
-        public LoginController(
+        public LoginController( 
             IMediator mediator,
-            IAccessTokenService accessTokenService)
+            IConfiguration config)
         {
+            _config = config;
             _mediator = mediator;
-            _accessTokenService = accessTokenService;
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
-            if (userLogin.Username == null)
+            if (userLogin.Username == null || userLogin.Password == null)
                 return BadRequest();
 
-            FindUserQuery findUserQuery = new(userLogin.Username);
-            var user = await _mediator.Send(findUserQuery);
-            
-            //TODO: autoryzacja
+            AuthorizeUserQuery authorizeUserQuery = new AuthorizeUserQuery(userLogin.Username, userLogin.Password!, _config["PrivateKey"]!);
+            var tokens = await _mediator.Send(authorizeUserQuery);
 
-            if (user != null)
+            if (tokens != null)
             {
-                Tokens tokens = _accessTokenService.GenerateTokens(user);
-
                 SaveTokensCommand saveTokensCommand = new(tokens);
                 await _mediator.Send(saveTokensCommand);
 

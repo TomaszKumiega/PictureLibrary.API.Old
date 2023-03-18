@@ -5,6 +5,7 @@ using PictureLibrary.API;
 using PictureLibrary.API.Filters;
 using PictureLibrary.DataAccess.DatabaseAccess;
 using PictureLibrary.DataAccess.Repositories;
+using PictureLibrary.DataAccess.Services;
 using PictureLibrary.Tools;
 using System.Reflection;
 

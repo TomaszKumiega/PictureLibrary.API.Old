@@ -5,21 +5,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PictureLibrary.API
+namespace PictureLibrary.DataAccess.Services
 {
     public class AccessTokenService : IAccessTokenService
     {
-        private readonly IConfiguration _config;
-
-        public AccessTokenService(IConfiguration config)
+        public Tokens GenerateTokens(User user, string privateKey)
         {
-            _config = config;
-        }
-
-        #region GenerateTokens
-        public Tokens GenerateTokens(User user)
-        {
-            var (accessToken, expiryDate) = GenerateAccessToken(user);
+            var (accessToken, expiryDate) = GenerateAccessToken(user, privateKey);
             return new()
             {
                 Id = Guid.NewGuid(),
@@ -30,11 +22,11 @@ namespace PictureLibrary.API
             };
         }
 
-        private (string accessToken, DateTime expiryDate) GenerateAccessToken(User user)
+        private static (string accessToken, DateTime expiryDate) GenerateAccessToken(User user, string privateKey)
         {
             DateTime expires = DateTime.UtcNow.AddHours(1);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(GetPrivateKey());
+            var key = Encoding.ASCII.GetBytes(privateKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -63,25 +55,5 @@ namespace PictureLibrary.API
 
             return Convert.ToBase64String(randomNumber);
         }
-        #endregion
-
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new PictureLibraryTokenValidationParameters(_config);
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-
-            if (securityToken is JwtSecurityToken jwtSecurityToken 
-                && !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new SecurityTokenException("Invalid token");
-            }
-
-            return principal;
-        }
-
-        private string GetPrivateKey()
-            => _config["PrivateKey"]!;
     }
 }

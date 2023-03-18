@@ -1,4 +1,4 @@
-﻿namespace PictureLibrary.Api.Dtos
+﻿namespace PictureLibrary.API.Dtos
 {
     public class UserRegisterDto
     {

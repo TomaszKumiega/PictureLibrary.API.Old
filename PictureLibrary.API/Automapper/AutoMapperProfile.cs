@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PictureLibrary.Api.Dtos;
+using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.Model;
 
