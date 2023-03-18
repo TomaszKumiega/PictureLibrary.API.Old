@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PictureLibrary.Api.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
@@ -24,13 +25,15 @@ namespace PictureLibrary.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
             if (userLogin.Username == null)
                 return BadRequest();
 
             FindUserQuery findUserQuery = new(userLogin.Username);
             var user = await _mediator.Send(findUserQuery);
+            
+            //TODO: autoryzacja
 
             if (user != null)
             {

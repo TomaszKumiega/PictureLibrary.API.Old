@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PictureLibrary.Api.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
@@ -11,18 +13,22 @@ namespace PictureLibrary.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator)
+        public UsersController(
+            IMapper mapper,
+            IMediator mediator)
         {
+            _mapper = mapper;
             _mediator = mediator;
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserRegister user)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto user)
         {
-            AddUserCommand addUserCommand = new(user);
+            AddUserCommand addUserCommand = _mapper.Map<AddUserCommand>(user);
             Guid userId = await _mediator.Send(addUserCommand);
 
             return Created(string.Empty, userId);
@@ -52,7 +58,7 @@ namespace PictureLibrary.API.Controllers
             var user = await _mediator.Send(findUserQuery);
 
             if (user == null || !IsUserAuthorized(user.Id))
-                return NotFound();
+                return NotFound("User not found.");
 
             return Ok(user);
         }

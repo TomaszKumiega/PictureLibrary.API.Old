@@ -22,19 +22,19 @@ namespace PictureLibrary.DataAccess.Handlers
 
         public async Task<Guid> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindByUsername(request.User.Username!);
+            var user = await _userRepository.FindByUsername(request.Username!);
 
             if (user != null)
                 throw new ResourceAlreadyExistsException(nameof(User));
 
-            _hashAndSalt.CreateHash(request.User.Password!, out byte[] passwordHash, out byte[] passwordSalt);
+            _hashAndSalt.CreateHash(request.Password!, out byte[] passwordHash, out byte[] passwordSalt);
 
             Guid userId = await _userRepository.AddUser(new User()
             {
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Username = request.User.Username!,
-                EmailAddress = request.User.EmailAddress!,
+                Username = request.Username!,
+                EmailAddress = request.EmailAddress!,
                 Role = "User",
             });
 

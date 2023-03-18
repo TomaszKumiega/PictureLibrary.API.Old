@@ -1,6 +1,6 @@
-﻿namespace PictureLibrary.Model
+﻿namespace PictureLibrary.Api.Dtos
 {
-    public class UserLogin
+    public class UserLoginDto
     {
         public string? Username { get; set; }
         public string? Password { get; set; }

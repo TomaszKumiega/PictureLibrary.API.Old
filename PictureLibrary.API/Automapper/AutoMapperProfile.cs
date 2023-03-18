@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PictureLibrary.Api.Dtos;
+using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.Model;
 
 namespace PictureLibrary.API.Automapper
@@ -8,7 +9,8 @@ namespace PictureLibrary.API.Automapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<NewLibraryDto, Library>();
+            CreateMap<LibraryDto, Library>();
+            CreateMap<UserRegisterDto, AddUserCommand>();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PictureLibrary.Api.Dtos
 {
-    public class NewLibraryDto
+    public class LibraryDto
     {
         public required string Name { get; set; }
         public string? Description { get; set; }
