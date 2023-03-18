@@ -7,14 +7,14 @@ using PictureLibrary.DataAccess.Queries;
 
 namespace PictureLibrary.API.Controllers
 {
-    [Route("login")]
+    [Route("authorization")]
     [ApiController]
-    public class LoginController : Controller
+    public class AuthorizationController : Controller
     {
         private readonly IMediator _mediator;
         private readonly IConfiguration _config;
 
-        public LoginController( 
+        public AuthorizationController( 
             IMediator mediator,
             IConfiguration config)
         {
@@ -23,13 +23,13 @@ namespace PictureLibrary.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
             if (userLogin.Username == null || userLogin.Password == null)
                 return BadRequest();
 
-            AuthorizeUserQuery authorizeUserQuery = new AuthorizeUserQuery(userLogin.Username, userLogin.Password!, _config["PrivateKey"]!);
+            AuthorizeUserQuery authorizeUserQuery = new(userLogin.Username, userLogin.Password!, _config["PrivateKey"]!);
             var tokens = await _mediator.Send(authorizeUserQuery);
 
             if (tokens != null)
