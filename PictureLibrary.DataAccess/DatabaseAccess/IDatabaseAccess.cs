@@ -4,6 +4,7 @@
         where TModel : class
     {
         Task<IEnumerable<TModel>> LoadDataAsync(string sql, object parameters);
+        Task<IEnumerable<T>> LoadDataAsync<T>(string sql, object parameters);
         Task<IEnumerable<(TFirst First, TSecond Second)>> LoadDataAsync<TFirst, TSecond>(
             string sql,
             Func<TFirst, TSecond, (TFirst, TSecond)> map,

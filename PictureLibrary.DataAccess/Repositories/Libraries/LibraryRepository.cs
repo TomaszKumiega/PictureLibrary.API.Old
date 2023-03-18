@@ -1,5 +1,6 @@
 ﻿using PictureLibrary.DataAccess.DatabaseAccess;
 using PictureLibrary.Model;
+using System.Linq;
 
 namespace PictureLibrary.DataAccess.Repositories
 {
@@ -41,11 +42,26 @@ WHERE _userLibrary.UserId = @UserId";
         {
             var parameters = new { Id = id };
             string sql = @"
-SELECT * FROM Libraries
-WHERE Id = @Id";
+SELECT * FROM Libraries _library
+LEFT JOIN UserLibraries _userLibrary
+ON _library.Id = _userLibrary.LibraryId
+LEFT JOIN Users _user
+ON _user.Id = _userLibrary.UserId
+WHERE _library.Id = @Id";
 
-            var libraries = await _databaseAccess.LoadDataAsync(sql, parameters);
-            return libraries.FirstOrDefault();
+            IEnumerable<(Library Library, User User)> result = await _databaseAccess.LoadDataAsync<Library, User>(sql, (library, user) => (library, user), parameters);
+            
+            return result.GroupBy(x => x.Library.Id)
+                .Select(g =>
+                {
+                    var library = g.First().Library;
+                    library.Owners = g.Select(x => x.User)
+                    .Where(x => x != null)
+                    .ToList();
+
+                    return library;
+                })
+                .FirstOrDefault();
         }
 
         public async Task<Guid> AddLibrary(Library library, Guid userId)
@@ -58,11 +74,7 @@ VALUES (@Id, Name, Description)";
 
             await _databaseAccess.SaveDataAsync(addUserSql, library);
 
-            string addRelationshipSql = @"
-INSERT INTO UserLibraries (LibraryId, UserId)
-VALUES (@LibraryId, @UserId)";
-
-            await _databaseAccess.SaveDataAsync(addRelationshipSql, new { LibraryId = library.Id, UserId = userId });
+            await UpdateOwners(library);
 
             return library.Id;
         }
@@ -77,6 +89,68 @@ Description = @Description
 WHERE Id = @Id";
 
             await _databaseAccess.SaveDataAsync(sql, library);
+
+            await UpdateOwners(library);
+        }
+
+        private async Task UpdateOwners(Library library, bool isNewLibrary = false)
+        {
+            IEnumerable<Guid> newOwnerIds = library.Owners?.Select(x => x.Id) ?? Enumerable.Empty<Guid>();
+
+            if (!isNewLibrary)
+            {
+                string sql = @"
+SELECT UserId FROM UserLibraries
+WHERE LibraryId = @LibraryId";
+
+                var userIds = await _databaseAccess.LoadDataAsync<Guid>(sql, new { LibraryId = library.Id });
+                var owners = library.Owners?.Select(x => x.Id) ?? Enumerable.Empty<Guid>();
+                newOwnerIds = owners.Except(userIds);
+                var removedOwners = userIds.Except(owners);
+
+                foreach (var removedOwner in removedOwners)
+                {
+                    await RemoveOwner(library.Id, removedOwner);
+                }
+            }
+
+
+            foreach (var newOwnerId in newOwnerIds)
+            {
+                await AddOwner(library.Id, newOwnerId);
+            }
+        }
+
+        private async Task RemoveOwner(Guid libraryId, Guid ownerId)
+        {
+            var parameters = new
+            {
+                LibraryId = libraryId,
+                OwnerId = ownerId,
+            };
+
+            string sql = @"
+DELETE FROM UserLibraries
+WHERE LibraryId = @LibraryId
+AND UserId = @OwnerId";
+
+            await _databaseAccess.SaveDataAsync(sql, parameters);
+        }
+
+        private async Task AddOwner(Guid libraryId, Guid ownerId)
+        {
+            var parameters = new
+            {
+                Id = Guid.NewGuid(),
+                LibraryId = libraryId,
+                OwnerId = ownerId,
+            };
+
+            string sql = @"
+INSERT INTO UserLibraries (Id, LibraryId, UserId)
+VALUES (@Id, @LibraryId, @OwnerId)";
+
+            await _databaseAccess.SaveDataAsync(sql, parameters);
         }
     }
 }

@@ -9,6 +9,12 @@ namespace PictureLibrary.DataAccess.DatabaseAccess
     {
         private const string _connectionString = @"Data Source=.\PictureLibrary.db;Version=3;";
 
+        public async Task<IEnumerable<T>> LoadDataAsync<T>(string sql, object parameters)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<T>(sql, parameters, commandType: CommandType.Text);
+        }
+
         public async Task<IEnumerable<TModel>> LoadDataAsync(string sql, object parameters)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
