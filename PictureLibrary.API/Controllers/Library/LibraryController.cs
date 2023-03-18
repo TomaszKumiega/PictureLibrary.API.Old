@@ -72,5 +72,18 @@ namespace PictureLibrary.API.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteLibrary(string id)
+        {
+            if (!Guid.TryParse(id, out Guid libraryId))
+                return BadRequest();
+
+            var command = new DeleteLibraryCommand(libraryId);
+            await _mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

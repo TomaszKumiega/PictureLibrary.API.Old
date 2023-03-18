@@ -8,5 +8,6 @@ namespace PictureLibrary.DataAccess.Repositories
         Task<Library?> FindByIdAsync(Guid id);
         Task<IEnumerable<Library>> GetAll(Guid userId);
         Task UpdateLibrary(Library library);
+        Task DeleteLibrary(Library library);
     }
 }

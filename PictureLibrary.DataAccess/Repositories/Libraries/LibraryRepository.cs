@@ -93,6 +93,18 @@ WHERE Id = @Id";
             await UpdateOwners(library);
         }
 
+        public async Task DeleteLibrary(Library library)
+        {
+            await DeleteRelatedEntities(library.Id);
+            
+            string sql = @"
+DELETE FROM Libraries
+WHERE Library.Id = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(sql, new { LibraryId = library.Id });
+        }
+
+        #region Private methods
         private async Task UpdateOwners(Library library, bool isNewLibrary = false)
         {
             IEnumerable<Guid> newOwnerIds = library.Owners?.Select(x => x.Id) ?? Enumerable.Empty<Guid>();
@@ -152,5 +164,74 @@ VALUES (@Id, @LibraryId, @OwnerId)";
 
             await _databaseAccess.SaveDataAsync(sql, parameters);
         }
+
+        private async Task DeleteRelatedEntities(Guid libraryId)
+        {
+            await DeleteRelatedTags(libraryId);
+            await DeleteRelatedImageFiles(libraryId);
+            await DeleteOwners(libraryId);
+        }
+
+        private async Task DeleteRelatedTags(Guid libraryId)
+        {
+            string deleteLibraryTagSql = @"
+DELETE FROM LibraryTags
+WHERE LibraryId = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(deleteLibraryTagSql, new { LibraryId = libraryId });
+
+            string getOrphanedTagsSql = @"
+SELECT _tag.Id FROM Tags _tag
+LEFT JOIN LibraryTags _libraryTag
+ON _tag.Id = _libraryTag.Id
+WHERE _libraryTag.Id IS NULL";
+
+            var orphanedTagsIds = await _databaseAccess.LoadDataAsync<Guid>(getOrphanedTagsSql, null!);
+
+            string deleteTagSql = @"
+DELETE FROM Tags 
+WHERE Id = @TagId";
+
+            foreach (var tagId in orphanedTagsIds)
+            {
+                await _databaseAccess.SaveDataAsync(deleteTagSql, new { TagId = tagId });   
+            }
+        }
+
+        private async Task DeleteRelatedImageFiles(Guid libraryId)
+        {
+            string deleteLibraryImageFiles = @"
+DELETE FROM LibraryImageFiles
+WHERE LibraryId = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(deleteLibraryImageFiles, new { LibraryId = libraryId });
+
+            string getOrphanedImageFileIds = @"
+SELECT _imageFile.Id FROM ImageFiles _imageFile
+LEFT JOIN LibraryImageFiles _libraryImageFile
+ON _imageFile.Id = _libraryImageFile.Id
+WHERE _libraryImageFile.Id IS NULL";  
+
+            var orphanedImageFiles = await _databaseAccess.LoadDataAsync<Guid>(getOrphanedImageFileIds, null!);
+
+            string deleteImageFile = @"
+DELETE FROM ImageFiles
+WHERE Id = @ImageFileId";
+
+            foreach (var imageId in orphanedImageFiles)
+            {
+                await _databaseAccess.SaveDataAsync(deleteImageFile, new { ImageId = imageId });
+            }
+        }
+
+        private async Task DeleteOwners(Guid libraryId)
+        {
+            string deleteUserLibraries = @"
+DELETE FROM UserLibraries
+WHERE LibraryId = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(deleteUserLibraries, new { LibraryId = libraryId });
+        }
+        #endregion
     }
 }
