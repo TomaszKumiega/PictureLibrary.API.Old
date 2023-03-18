@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PictureLibrary.Api.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
@@ -11,10 +13,14 @@ namespace PictureLibrary.API.Controllers
     [ApiController]
     public class LibraryController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public LibraryController(IMediator mediator)
+        public LibraryController(
+            IMapper mapper,
+            IMediator mediator)
         {
+            _mapper = mapper;
             _mediator = mediator;    
         }
 
@@ -33,13 +39,14 @@ namespace PictureLibrary.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Guid>> AddLibrary([FromBody] NewLibrary library)
+        public async Task<ActionResult<Guid>> AddLibrary([FromBody] LibraryDto libraryDto)
         {
             Guid? userId = GetCurrentUserId();
             
             if (!userId.HasValue)
                 return Unauthorized();
 
+            var library = _mapper.Map<LibraryDto, Library>(libraryDto);
             var addLibraryCommand = new AddLibraryCommand(library, userId.Value);
             Guid libraryId = await _mediator.Send(addLibraryCommand);
 

@@ -25,7 +25,8 @@ builder.Services
     .AddSingleton(typeof(IDatabaseAccess<>), typeof(DatabaseAccess<>))
     .AddSingleton<ITokensRepository, TokensRepository>()
     .AddSingleton<IUserRepository, UserRepository>()
-    .AddSingleton<IHashAndSalt, HashAndSalt>();
+    .AddSingleton<IHashAndSalt, HashAndSalt>()
+    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
