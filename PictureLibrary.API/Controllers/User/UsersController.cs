@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.DataAccess.Commands;
+using PictureLibrary.DataAccess.Queries;
 using PictureLibrary.Model;
-using System.Security.Claims;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -29,9 +29,12 @@ namespace PictureLibrary.API.Controllers
         }
 
         [Authorize]
-        [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromQuery] Guid userId)
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
         {
+            if (!Guid.TryParse(id, out Guid userId))
+                return BadRequest();
+
             if (!IsUserAuthorized(userId))
                 return Unauthorized();
 
@@ -39,6 +42,19 @@ namespace PictureLibrary.API.Controllers
             await _mediator.Send(deleteUserCommand);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("find/{username}")]
+        public async Task<IActionResult> FindUser(string username)
+        {
+            FindUserQuery findUserQuery = new(username);
+            var user = await _mediator.Send(findUserQuery);
+
+            if (user == null || !IsUserAuthorized(user.Id))
+                return NotFound();
+
+            return Ok(user);
         }
     }
 }
