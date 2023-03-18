@@ -12,7 +12,6 @@ namespace PictureLibrary.API.Controllers
     [ApiController]
     public class AuthorizationController : Controller
     {
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IConfiguration _config;
 
@@ -21,7 +20,6 @@ namespace PictureLibrary.API.Controllers
             IMediator mediator,
             IConfiguration config)
         {
-            _mapper = mapper;
             _config = config;
             _mediator = mediator;
         }
