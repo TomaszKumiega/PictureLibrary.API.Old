@@ -53,16 +53,20 @@ namespace PictureLibrary.API.Controllers
             return Created(string.Empty, libraryId);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateLibrary([FromBody] Library library)
+        public async Task<IActionResult> UpdateLibrary(string id, [FromBody] LibraryDto libraryDto)
         {
-            var findLibraryCommand = new FindLibraryByIdQuery(library.Id);
+            if (!Guid.TryParse(id, out Guid libraryId))
+                return BadRequest();
+
+            var findLibraryCommand = new FindLibraryByIdQuery(libraryId);
             var existingLibrary = await _mediator.Send(findLibraryCommand);
 
             if (existingLibrary == null)
                 return BadRequest();
 
+            var library = _mapper.Map<LibraryDto, Library>(libraryDto);
             var updateLibraryCommand = new UpdateLibraryCommand(library);
             await _mediator.Send(updateLibraryCommand);
 
