@@ -31,6 +31,17 @@ VALUES (@Id, @Name, @Description, @ColorHex)";
             return tag.Id;
         }
 
+        public async Task<IEnumerable<Tag>> GetTags(Guid libraryId)
+        {
+            string sql = @"
+SELECT * FROM Tags _tag
+INNER JOIN LibraryTags _libraryTag
+ON _tag.Id = _libraryTag.TagId
+WHERE _libraryTag.LibraryId = @LibraryId";
+
+            return await _databaseAccess.LoadDataAsync(sql, new { Libraryid = libraryId });
+        }
+
         private async Task AddLibraryRelationships(Guid tagId, List<Library> libraries)
         {
             string sql = @"
