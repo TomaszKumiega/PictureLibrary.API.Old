@@ -6,5 +6,7 @@ namespace PictureLibrary.DataAccess.Repositories
     {
         Task<Guid> AddTag(Tag tag);
         Task<IEnumerable<Tag>> GetTags(Guid libraryId);
+        Task<Tag?> FindTagById(Guid id);
+        Task DeleteTag(Guid id, Guid libraryId);
     }
 }

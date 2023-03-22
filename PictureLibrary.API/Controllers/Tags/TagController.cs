@@ -61,5 +61,20 @@ namespace PictureLibrary.API.Controllers
 
             return Ok(tagDtos);
         }
+
+        [HttpDelete()]
+        [Authorize]
+        public async Task<IActionResult> DeleteTag([FromQuery] string libraryId, [FromQuery] string tagId)
+        {
+            if (!Guid.TryParse(libraryId, out Guid libraryIdParsed))
+                return BadRequest();
+            if (!Guid.TryParse(tagId, out Guid tagIdParsed))
+                return BadRequest();
+
+            var command = new DeleteTagCommand(libraryIdParsed, tagIdParsed);
+            await _mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

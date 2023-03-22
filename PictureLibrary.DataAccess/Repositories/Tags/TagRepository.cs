@@ -31,10 +31,44 @@ VALUES (@Id, @Name, @Description, @ColorHex)";
             return tag.Id;
         }
 
+        public async Task DeleteTag(Guid id, Guid libraryId)
+        {
+            string deleteLibaryTagSql = @"
+DELETE FROM LibraryTags
+WHERE TagId = @TagId AND LibraryId = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(deleteLibaryTagSql, new { TagId = id, LibraryId = libraryId });
+
+            string countLibraryTagsAssociatedWithTag = @"
+SELECT Count(*) FROM LibraryTags
+WHERE TagId = @TagId";
+
+            IEnumerable<int> libraryTagsCount = await _databaseAccess.LoadDataAsync<int>(countLibraryTagsAssociatedWithTag, new { TagId = id });
+            
+            if (libraryTagsCount.First() == 0)
+            {
+                string deleteTagSql = @"
+DELETE FROM Tags
+WHERE Id = @Id";
+
+                await _databaseAccess.SaveDataAsync(deleteTagSql, new { Id = id });
+            }
+        }
+
+        public async Task<Tag?> FindTagById(Guid id)
+        {
+            string sql = @"
+SELECT * FROM Tags
+WHERE Id = @Id";
+
+            var tags = await _databaseAccess.LoadDataAsync(sql, new { Id = id });
+            return tags.FirstOrDefault();
+        }
+
         public async Task<IEnumerable<Tag>> GetTags(Guid libraryId)
         {
             string sql = @"
-SELECT * FROM Tags _tag
+SELECT _tag.* FROM Tags _tag
 INNER JOIN LibraryTags _libraryTag
 ON _tag.Id = _libraryTag.TagId
 WHERE _libraryTag.LibraryId = @LibraryId";
