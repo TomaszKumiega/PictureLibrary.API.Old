@@ -24,11 +24,11 @@ namespace PictureLibrary.API.Controllers
         public async Task<IActionResult> AddTag([FromBody] AddTagDto tagDto)
         {
             Guid? userId = GetCurrentUserId();
-            
+
             if (userId == null)
                 return Unauthorized();
 
-            var command = new AddTagCommand(userId.Value, tagDto.Name, tagDto.Description, tagDto.Description, tagDto.Libraries);
+            var command = new AddTagCommand(userId.Value, tagDto.Name, tagDto.Description, tagDto.ColorHex, tagDto.Libraries);
             var tagId = await _mediator.Send(command);
 
             return Created(string.Empty, new { TagId = tagId });
@@ -39,7 +39,7 @@ namespace PictureLibrary.API.Controllers
         public async Task<IActionResult> GetTags(string libraryId)
         {
             Guid? userId = GetCurrentUserId();
-            
+
             if (userId == null)
                 return Unauthorized();
 
@@ -72,6 +72,24 @@ namespace PictureLibrary.API.Controllers
                 return BadRequest();
 
             var command = new DeleteTagCommand(libraryIdParsed, tagIdParsed);
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPatch("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateTag(string id, [FromBody] UpdateTagDto updateTagDto)
+        {
+            Guid? userId = GetCurrentUserId();
+            
+            if (userId == null)
+                return Unauthorized();
+
+            if (!Guid.TryParse(id, out Guid tagId))
+                return BadRequest();
+
+            var command = new UpdateTagCommand(userId.Value, tagId, updateTagDto.Name, updateTagDto.Description, updateTagDto.ColorHex, updateTagDto.Libraries);
             await _mediator.Send(command);
 
             return Ok();

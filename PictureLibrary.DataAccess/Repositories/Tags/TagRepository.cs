@@ -76,6 +76,20 @@ WHERE _libraryTag.LibraryId = @LibraryId";
             return await _databaseAccess.LoadDataAsync(sql, new { Libraryid = libraryId });
         }
 
+        public async Task UpdateTag(Tag tag, IEnumerable<Guid>? libraries)
+        {
+            string updateTagSql = @"
+UPDATE Tags
+SET Name = @Name, 
+    Description = @Description
+    ColorHex = @ColorHex
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(updateTagSql, tag);
+
+            await UpdateLibraries(tag, libraries);
+        }
+
         private async Task AddLibraryRelationships(Guid tagId, List<Library> libraries)
         {
             string sql = @"
@@ -86,6 +100,46 @@ VALUES (@Id, @TagId, @LibraryId)";
             {
                 await _databaseAccess.SaveDataAsync(sql, new { Id = Guid.NewGuid(), TagId = tagId, LibraryId = library.Id });
             }
+        }
+
+        private async Task UpdateLibraries(Tag tag, IEnumerable<Guid>? libraries)
+        {
+            string sql = @"
+SELECT LibraryId FROM LibraryTags
+WHERE TagId = @Id";
+
+            var libraryIds = await _databaseAccess.LoadDataAsync<Guid>(sql, new { tag.Id });
+            var updatedTagLibraryIds = libraries ?? Enumerable.Empty<Guid>();
+            var newLibraries = updatedTagLibraryIds.Except(libraryIds);
+            var removedLibraries = libraryIds.Except(updatedTagLibraryIds);
+
+            foreach (var libraryId in newLibraries)
+            {
+                await AddLibraryTag(tag.Id, libraryId);
+            }
+
+            foreach (var libraryId in removedLibraries)
+            {
+                await RemoveLibraryTag(tag.Id, libraryId);
+            }
+        }
+
+        private async Task RemoveLibraryTag(Guid tagId, Guid libraryId)
+        {
+            string sql = @"
+DELETE FROM LibraryTags
+WHERE TagId = @TagId AND LibraryId = @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(sql, new { TagId = tagId, LibraryId = libraryId });
+        }
+
+        private async Task AddLibraryTag(Guid tagId, Guid libraryId)
+        {
+            string sql = @"
+INSERT INTO LibraryTags(Id, TagId, LibraryId)
+VALUES (@Id, @TagId, @LibraryId";
+
+            await _databaseAccess.SaveDataAsync(sql, new { Id = Guid.NewGuid(), TagId = tagId, LibraryId = libraryId });
         }
     }
 }
