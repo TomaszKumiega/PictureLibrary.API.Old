@@ -23,7 +23,7 @@ namespace PictureLibrary.DataAccess.Handlers.UpdateTag
             tag.Description = request.Description!;
             tag.ColorHex = request.ColorHex!;
 
-            await _tagRepository.UpdateTag(tag, request.Libraries!);
+            await _tagRepository.UpdateTag(tag, request.Libraries);
 
             return Unit.Value;
         }
