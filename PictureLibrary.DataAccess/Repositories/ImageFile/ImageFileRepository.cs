@@ -76,6 +76,18 @@ WHERE _libraryImageFile.ImageFileId = @Id";
                 .FirstOrDefault();
         }
 
+        public async Task DeleteImageFile(Guid imageFileId)
+        {
+            await DeleteLibraryImageFile(imageFileId);
+
+            string sql = @"
+DELETE FROM ImageFiles
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, new { Id = imageFileId });
+                
+        }
+
         #region Private methods
         private async Task UpdateLibraryImages(ImageFile imageFile, bool isNewImageFile = false)
         {
@@ -130,6 +142,15 @@ VALUES (@Id, @ImageFileId, @LibraryId)";
                 ImageFileId = imageFileId.ToString(),
                 LibraryId = libraryId.ToString()
             });
+        }
+
+        private async Task DeleteLibraryImageFile(Guid imageFileId)
+        {
+            string sql = @"
+DELETE FROM LibraryImageFiles
+WHERE ImageFileId = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, new { Id = imageFileId.ToString() });
         }
         #endregion
     }

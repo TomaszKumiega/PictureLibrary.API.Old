@@ -85,5 +85,26 @@ namespace PictureLibrary.API.Controllers.ImageFile
 
             return Ok(new { UploadUrl = $"{Url}/uploadFile/{uploadSessionId}" });
         }
+
+        [HttpDelete("{imageFileId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteImageFile(string imageFileId)
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId == null)
+                return Unauthorized();
+
+            if(!Guid.TryParse(imageFileId, out Guid id)) 
+            {
+                return BadRequest();
+            }
+
+            var command = new DeleteImageFileCommand(userId.Value, id);
+
+            await _mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

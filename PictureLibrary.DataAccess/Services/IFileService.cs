@@ -4,5 +4,6 @@
     {
         FileStream OpenFile(string path);
         string CreateFile(string fileName);
+        void DeleteFile(string filePath);
     }
 }

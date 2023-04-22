@@ -7,5 +7,6 @@ namespace PictureLibrary.DataAccess.Repositories
         Task<IEnumerable<ImageFile>> GetAll(Guid libraryId);
         Task<Guid> AddImageFile(ImageFile imageFile);
         Task<ImageFile?> FindImageFileById(Guid id);
+        Task DeleteImageFile(Guid imageFileId);
     }
 }
