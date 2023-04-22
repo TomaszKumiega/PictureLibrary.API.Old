@@ -64,7 +64,7 @@ WHERE _library.Id = @Id";
                 .FirstOrDefault();
         }
 
-        public async Task<Guid> AddLibrary(Library library, Guid userId)
+        public async Task<Guid> AddLibrary(Library library)
         {
             library.Id = Guid.NewGuid();
 

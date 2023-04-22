@@ -15,6 +15,6 @@ namespace PictureLibrary.DataAccess.Handlers
         }
 
         public async Task<Guid> Handle(AddLibraryCommand request, CancellationToken cancellationToken)
-            => await _libraryRepository.AddLibrary(request.Library, request.UserId);
+            => await _libraryRepository.AddLibrary(request.Library);
     }
 }
