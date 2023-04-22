@@ -28,6 +28,7 @@ builder.Services
     .AddSingleton<IUserRepository, UserRepository>()
     .AddSingleton<ILibraryRepository, LibraryRepository>()
     .AddSingleton<IImageFileRepository, ImageFileRepository>()
+    .AddSingleton<IUploadSessionRepository, UploadSessionRepository>()
     .AddSingleton<ITagRepository, TagRepository>()
     .AddSingleton<IHashAndSalt, HashAndSalt>()
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
