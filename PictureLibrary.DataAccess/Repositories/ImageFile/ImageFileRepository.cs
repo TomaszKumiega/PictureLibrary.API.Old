@@ -51,6 +51,31 @@ VALUES (@Id, @Name, @FilePath, @Extension, @Size)";
             return imageFile.Id;
         }
 
+        public async Task<ImageFile?> FindImageFileById(Guid id)
+        {
+            string sql = @"
+SELECT _imageFile.*, _library.* FROM ImageFiles _imageFile
+LEFT JOIN LibraryImageFiles _libraryImageFile
+ON _imageFile.Id = _libraryImageFIle.ImageFileId
+LEFT JOIN Libraries _library
+ON _library.Id = _libraryImageFile.Id
+WHERE _libraryImageFile.ImageFileId = @Id";
+
+            IEnumerable<(ImageFile ImageFile, Library Library)> result = await _databaseAccess.LoadDataAsync<ImageFile, Library>(sql, (imageFile, library) => (imageFile, library), new { Id = id });
+
+            return result.GroupBy(x => x.ImageFile.Id)
+                .Select(g =>
+                {
+                    var imageFile = g.First().ImageFile;
+                    imageFile.Libraries = g.Select(x => x.Library)
+                    .Where(x => x != null)
+                    .ToList();
+
+                    return imageFile;
+                })
+                .FirstOrDefault();
+        }
+
         #region Private methods
         private async Task UpdateLibraryImages(ImageFile imageFile, bool isNewImageFile = false)
         {
