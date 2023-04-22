@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Net.Http.Headers;
+using PictureLibrary.API.Dtos;
+using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
 
 namespace PictureLibrary.API.Controllers.ImageFile
@@ -61,6 +63,27 @@ namespace PictureLibrary.API.Controllers.ImageFile
             }
 
             return new FileStreamResult(response.FileStream, MediaTypeHeaderValue.Parse(contentType));
+        }
+
+        [HttpPost("createUploadSession")]
+        [Authorize]
+        public async Task<IActionResult> CreateUploadSession([FromBody] CreateUploadSessionDto createUploadSessionDto)
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId == null)
+                return Unauthorized();
+
+            if (!Request.Headers.TryGetValue("Content-Range", out var contentRange))
+            {
+                return BadRequest("Request doesn't contain content range header.");
+            }
+
+            var command = new CreateUploadSessionCommand(userId.Value, createUploadSessionDto.FileName, contentRange!);
+
+            var uploadSessionId = await _mediator.Send(command);
+
+            return Ok(new { UploadUrl = $"{Url}/uploadFile/{uploadSessionId}" });
         }
     }
 }

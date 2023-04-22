@@ -29,7 +29,7 @@ WHERE Id = @Id";
 
             string sql = @"
 INSERT INTO UploadSessions
-VALUES (@Id, @ContentRange, @FilePath)";
+VALUES (@Id, @ContentRange, @FilePath, @UserId)";
 
             await _databaseAccess.SaveDataAsync(sql, uploadSession);
 
