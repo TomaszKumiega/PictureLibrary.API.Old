@@ -170,6 +170,7 @@ VALUES (@Id, @LibraryId, @OwnerId)";
             await DeleteRelatedTags(libraryId);
             await DeleteRelatedImageFiles(libraryId);
             await DeleteOwners(libraryId);
+            await DeleteUploadSessions(libraryId);
         }
 
         private async Task DeleteRelatedTags(Guid libraryId)
@@ -231,6 +232,35 @@ DELETE FROM UserLibraries
 WHERE LibraryId = @LibraryId";
 
             await _databaseAccess.SaveDataAsync(deleteUserLibraries, new { LibraryId = libraryId });
+        }
+
+        private async Task DeleteUploadSessions(Guid libraryId)
+        {
+            var libraryIdParam = new { Id = libraryId.ToString() };
+
+            string getUploadSessionIdsSql = @"
+SELECT UploadSessionId FROM LibraryUploadSessions
+WHERE LibraryId = @Id";
+
+            var uploadSessionIds = await _databaseAccess.LoadDataAsync<Guid>(getUploadSessionIdsSql, libraryIdParam);
+
+            if (uploadSessionIds.Any())
+            {
+                string deleteLibraryUploadSessionsSql = @"
+DELETE FROM LibraryUploadSessions
+WHERE LibraryId = @Id";
+
+                await _databaseAccess.SaveDataAsync(deleteLibraryUploadSessionsSql, libraryIdParam);
+
+                string deleteUploadSessionSql = @"
+DELETE FROM UploadSessions
+WHERE Id = @Id";
+
+                foreach (var uploadSessionId in uploadSessionIds)
+                {
+                    await _databaseAccess.SaveDataAsync(deleteUploadSessionSql, new { Id = uploadSessionId.ToString() });
+                }
+            }
         }
         #endregion
     }

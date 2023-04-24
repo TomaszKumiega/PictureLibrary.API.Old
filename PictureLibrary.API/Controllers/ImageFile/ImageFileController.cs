@@ -6,6 +6,7 @@ using Microsoft.Net.Http.Headers;
 using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
+using PictureLibrary.Tools.ContentRangeValidator;
 
 namespace PictureLibrary.API.Controllers.ImageFile
 {
@@ -14,11 +15,14 @@ namespace PictureLibrary.API.Controllers.ImageFile
     public class ImageFileController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IContentRangeValidator _contentRangeValidator;
 
         public ImageFileController(
-            IMediator mediator)
+            IMediator mediator,
+            IContentRangeValidator contentRangeValidator)
         {
             _mediator = mediator;
+            _contentRangeValidator = contentRangeValidator;
         }
 
         [HttpGet("all/{libraryId}")]
@@ -79,11 +83,40 @@ namespace PictureLibrary.API.Controllers.ImageFile
                 return BadRequest("Request doesn't contain content range header.");
             }
 
-            var command = new CreateUploadSessionCommand(userId.Value, createUploadSessionDto.FileName, contentRange!);
+            var command = new CreateUploadSessionCommand(userId.Value, createUploadSessionDto.FileName, contentRange!, createUploadSessionDto.Libraries);
 
             var uploadSessionId = await _mediator.Send(command);
 
             return Ok(new { UploadUrl = $"{Url}/uploadFile/{uploadSessionId}" });
+        }
+
+        [HttpPost("uploadFile/{uploadSessionId}")]
+        [Authorize]
+        public async Task<IActionResult> UploadFile(string uploadSessionId)
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId == null)
+                return Unauthorized();
+
+            if (!Guid.TryParse(uploadSessionId, out Guid uploadSessionIdParsed))
+                return BadRequest();
+
+            if (!Request.Headers.TryGetValue("Content-Range", out var contentRange))
+                return BadRequest("Request doesn't contain content range header.");
+
+            if (!_contentRangeValidator.IsContentRangeValid(contentRange.ToString()))
+                return BadRequest("Content-Range header is invalid.");
+
+            long contentLength = Request.ContentLength!.Value;
+            byte[] buffer = new byte[contentLength];
+            int bytesRead = await Request.Body.ReadAsync(buffer.AsMemory(0, (int)contentLength));
+
+            var command = new UploadFileCommand(userId.Value, uploadSessionIdParsed, buffer, contentRange.ToString(), bytesRead);
+
+            await _mediator.Send(command);
+
+            return Ok();
         }
 
         [HttpDelete("{imageFileId}")]
