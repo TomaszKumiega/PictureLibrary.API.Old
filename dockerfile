@@ -1,21 +1,27 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 COPY *.sln .
-COPY ./PictureLibrary-API/ ./PictureLibrary-API
-COPY ./PictureLibrary-API.Tests ./PictureLibrary-API.Tests
+COPY ./PictureLibrary.API/ ./PictureLibrary.API
+COPY ./PictureLibrary.DataAccess/ ./PictureLibrary.DataAccess
+COPY ./PictureLibrary.Model/ ./PictureLibrary.Model
+COPY ./PictureLibrary.Tools/ ./PictureLibrary.Tools
+COPY ./PictureLibrary.DataAccess.Tests/ ./PictureLibrary.DataAccess.Tests
 RUN dotnet restore
 
-COPY PictureLibrary-API/. ./PictureLibrary-API
-COPY PictureLibrary-API.Tests/. ./PictureLibrary-API.Tests
-WORKDIR /app/PictureLibrary-API
+COPY ./PictureLibrary.API/ ./PictureLibrary.API
+COPY ./PictureLibrary.DataAccess/ ./PictureLibrary.DataAccess
+COPY ./PictureLibrary.Model/ ./PictureLibrary.Model
+COPY ./PictureLibrary.Tools/ ./PictureLibrary.Tools
+COPY ./PictureLibrary.DataAccess.Tests/ ./PictureLibrary.DataAccess.Tests
+WORKDIR /app/PictureLibrary.API
 RUN dotnet build
 
 FROM build AS publish
-WORKDIR /app/PictureLibrary-API
+WORKDIR /app/PictureLibrary.API
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 WORKDIR /app
-COPY --from=publish /app/PictureLibrary-API/out ./
-ENTRYPOINT ["dotnet", "PictureLibrary-API.dll"]
+COPY --from=publish /app/PictureLibrary.API/out ./
+ENTRYPOINT ["dotnet", "PictureLibrary.API.dll"]
