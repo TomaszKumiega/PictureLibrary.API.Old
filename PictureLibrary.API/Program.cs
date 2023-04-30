@@ -7,6 +7,7 @@ using PictureLibrary.DataAccess.DatabaseAccess;
 using PictureLibrary.DataAccess.Repositories;
 using PictureLibrary.DataAccess.Services;
 using PictureLibrary.Tools;
+using PictureLibrary.Tools.ContentRangeValidator;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,8 @@ builder.Services
     .AddSingleton<IUploadSessionRepository, UploadSessionRepository>()
     .AddSingleton<ITagRepository, TagRepository>()
     .AddSingleton<IHashAndSalt, HashAndSalt>()
+    .AddSingleton<IFileService, FileService>()
+    .AddSingleton<IContentRangeValidator, ContentRangeValidator>()
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services
