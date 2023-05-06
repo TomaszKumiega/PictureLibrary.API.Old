@@ -30,7 +30,7 @@ namespace PictureLibrary.API.Controllers
             AddUserCommand addUserCommand = _mapper.Map<AddUserCommand>(user);
             Guid userId = await _mediator.Send(addUserCommand);
 
-            return Created(string.Empty, userId);
+            return Created(string.Empty, new { UserId = userId });
         }
 
         [Authorize]
