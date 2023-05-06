@@ -77,7 +77,7 @@ namespace PictureLibrary.DataAccess.Tests
             Assert.Equal(user.PasswordHash, hash);
             Assert.Equal(user.PasswordSalt, salt);
             Assert.True(user.EmailAddress == userRegistration.EmailAddress);
-            Assert.True(user.Role == UserRoles.UserRole);
+            Assert.True(user.Role == UserRole.Regular);
         }
 
         private static User? User => new()
@@ -85,7 +85,7 @@ namespace PictureLibrary.DataAccess.Tests
             Id = Guid.NewGuid(),
             Username = "username1",
             EmailAddress = "emailAddress@info.com",
-            Role = "role",
+            Role = UserRole.Regular,
             PasswordHash = Array.Empty<byte>(),
             PasswordSalt = Array.Empty<byte>(),
         };

@@ -1,7 +1,10 @@
 ﻿namespace PictureLibrary.Model.Users
 {
-    public static class UserRoles
+    [Flags]
+    public enum UserRole : long
     {
-        public static string UserRole => "User";
+        Admin = 0,
+        Regular = 1,
+        Hidden = 2,
     }
 }

@@ -35,7 +35,7 @@ namespace PictureLibrary.DataAccess.Handlers
                 PasswordSalt = passwordSalt,
                 Username = request.Username!,
                 EmailAddress = request.EmailAddress!,
-                Role = "User",
+                Role = Model.Users.UserRole.Regular,
             });
 
             return userId;

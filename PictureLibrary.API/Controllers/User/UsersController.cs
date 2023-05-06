@@ -56,7 +56,9 @@ namespace PictureLibrary.API.Controllers
             FindUsersQuery findUsersQuery = new(username);
             var users = await _mediator.Send(findUsersQuery);
 
-            return Ok(users);
+            IEnumerable<GetUserDto> userDtos = users.Select(_mapper.Map<GetUserDto>);
+
+            return Ok(userDtos);
         }
     }
 }
