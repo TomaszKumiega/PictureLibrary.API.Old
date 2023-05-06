@@ -4,11 +4,11 @@ using PictureLibrary.APIClient.Model.Responses;
 
 namespace PictureLibrary.APIClient.Libraries
 {
-    public class LibraryClient : ClientBase
+    public class LibraryClient : ClientBase, ILibraryClient
     {
         public async Task<IEnumerable<Library>> GetAllLibrariesAsync(AuthorizationData authorizationData, Guid userId)
         {
-            var result =  await SendRequestAndDeserializeResponseAsync<GetAllLibrariesResponse>(HttpMethod.Get, $"library/all?userId={userId}", authorizationData: authorizationData);
+            var result = await SendRequestAndDeserializeResponseAsync<GetAllLibrariesResponse>(HttpMethod.Get, $"library/all?userId={userId}", authorizationData: authorizationData);
             return result?.Libraries ?? Enumerable.Empty<Library>();
         }
 
