@@ -7,6 +7,11 @@ namespace PictureLibrary.APIClient
 {
     public class UserClient : ClientBase
     {   
+        public async Task<AuthorizationData?> Login(LoginRequest request)
+        {
+            return await SendRequestAndDeserializeResponseAsync<AuthorizationData>(HttpMethod.Post, "authorization/login", request);
+        }
+
         public async Task<UserRegisterResponse?> RegisterUserAsync(UserRegisterRequest request)
         {
             return await SendRequestAndDeserializeResponseAsync<UserRegisterResponse>(HttpMethod.Post, "users/register", request);
