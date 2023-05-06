@@ -18,6 +18,7 @@ namespace PictureLibrary.API.Automapper
                 .ForMember(dest => dest.PasswordSalt, x => x.MapFrom((dto) => Array.Empty<byte>()));
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<Library, LibraryDto>();
             CreateMap<LibraryDto, Library>();
         }
     }

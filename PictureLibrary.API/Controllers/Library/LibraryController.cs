@@ -41,7 +41,7 @@ namespace PictureLibrary.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Guid>> AddLibrary([FromBody] LibraryDto libraryDto)
+        public async Task<IActionResult> AddLibrary([FromBody] LibraryDto libraryDto)
         {
             Guid? userId = GetCurrentUserId();
             
@@ -52,7 +52,7 @@ namespace PictureLibrary.API.Controllers
             var addLibraryCommand = new AddLibraryCommand(library, userId.Value);
             Guid libraryId = await _mediator.Send(addLibraryCommand);
 
-            return Created(string.Empty, libraryId);
+            return Created(string.Empty, new { Libraryid = libraryId });
         }
 
         [HttpPut("{id}")]
