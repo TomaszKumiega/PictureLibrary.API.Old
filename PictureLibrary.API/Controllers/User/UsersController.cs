@@ -83,5 +83,23 @@ namespace PictureLibrary.API.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(string id)
+        {
+            if (!Guid.TryParse(id, out Guid userId))
+                return BadRequest();
+
+            if (!IsUserAuthorized(userId))
+                return Unauthorized();
+
+            var query = new GetUserQuery(userId);
+            var user = await _mediator.Send(query);
+
+            var userDto = _mapper.Map<GetUserDto>(user);
+
+            return Ok(userDto);
+        }
     }
 }
