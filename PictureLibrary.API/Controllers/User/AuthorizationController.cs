@@ -46,7 +46,7 @@ namespace PictureLibrary.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost("refresh")]
         public async Task<IActionResult> RefreshTokens([FromBody] RefreshTokensDto refreshTokensDto)
         {
             var query = new RefreshTokensQuery(new PictureLibraryTokenValidationParameters(_config), refreshTokensDto.AccessToken, refreshTokensDto.RefreshToken, _config["PrivateKey"]);
