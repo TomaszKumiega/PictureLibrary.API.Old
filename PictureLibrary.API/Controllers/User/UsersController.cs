@@ -58,7 +58,10 @@ namespace PictureLibrary.API.Controllers
 
             IEnumerable<GetUserDto> userDtos = users.Select(_mapper.Map<GetUserDto>);
 
-            return Ok(userDtos);
+            return Ok(new FindUsersDto()
+            { 
+                Users = userDtos,
+            });
         }
     }
 }
