@@ -10,14 +10,15 @@ namespace PictureLibrary.API.Automapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<LibraryDto, Library>();
             CreateMap<UserRegisterDto, AddUserCommand>();
             CreateMap<RefreshTokensDto, RefreshTokensQuery>();
             CreateMap<UpdateUserDto, User>()
                 .ForMember(dest => dest.Id, x => x.Ignore())
                 .ForMember(dest => dest.PasswordHash, x => x.MapFrom((dto) => Array.Empty<byte>()))
                 .ForMember(dest => dest.PasswordSalt, x => x.MapFrom((dto) => Array.Empty<byte>()));
-            CreateMap<User, GetUserDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
+            CreateMap<LibraryDto, Library>();
         }
     }
 }

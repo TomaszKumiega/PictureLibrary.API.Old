@@ -2,7 +2,7 @@
 
 namespace PictureLibrary.API.Dtos
 {
-    public class GetUserDto
+    public class UserDto
     {
         public Guid Id { get; set; }
         public required string Username { get; set; }

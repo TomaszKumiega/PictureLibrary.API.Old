@@ -2,6 +2,6 @@
 {
     public class FindUsersDto
     {
-        public required IEnumerable<GetUserDto> Users { get; set; }
+        public required IEnumerable<UserDto> Users { get; set; }
     }
 }
