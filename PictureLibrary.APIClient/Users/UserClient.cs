@@ -1,4 +1,5 @@
-﻿using PictureLibrary.APIClient.Model.Authorization;
+﻿using PictureLibrary.APIClient.Model;
+using PictureLibrary.APIClient.Model.Authorization;
 using PictureLibrary.APIClient.Model.Requests;
 using PictureLibrary.APIClient.Model.Responses;
 
@@ -13,7 +14,13 @@ namespace PictureLibrary.APIClient
 
         public async Task DeleteUserAsync(AuthorizationData authorizationData, Guid userId)
         {
-            await SendRequest(HttpMethod.Delete, $"users/delete/{userId.ToString()}", null, authorizationData);
+            await SendRequest(HttpMethod.Delete, $"users/delete/{userId}", null, authorizationData);
+        }
+
+        public async Task<IEnumerable<User>> FindUserByPartOfUsername(AuthorizationData authorizationData, string partOfUsername)
+        {
+            var response = await SendRequestAndDeserializeResponseAsync<FindUsersResponse>(HttpMethod.Get, $"users/find/{partOfUsername}", authorizationData: authorizationData);
+            return response?.Users ?? Enumerable.Empty<User>();
         }
     }
 }
