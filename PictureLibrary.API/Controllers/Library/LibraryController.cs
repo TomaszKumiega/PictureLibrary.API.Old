@@ -26,7 +26,7 @@ namespace PictureLibrary.API.Controllers
 
         [HttpGet("all")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Library>>> GetAllLibraries([FromQuery] Guid userId)
+        public async Task<IActionResult> GetAllLibraries([FromQuery] Guid userId)
         {
             if (!IsUserAuthorized(userId))
                 return Unauthorized();
@@ -34,7 +34,9 @@ namespace PictureLibrary.API.Controllers
             var query = new GetUserLibrariesQuery(userId);
             var libraries = await _mediator.Send(query);
 
-            return Ok(libraries);
+            var libraryDtos = libraries.Select(_mapper.Map<LibraryDto>);
+
+            return Ok(new { Libraries = libraryDtos });
         }
 
         [HttpPost]
