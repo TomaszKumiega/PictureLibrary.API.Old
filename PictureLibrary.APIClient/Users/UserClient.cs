@@ -5,7 +5,7 @@ using PictureLibrary.APIClient.Model.Responses;
 
 namespace PictureLibrary.APIClient
 {
-    internal class UserClient : ClientBase, IUserClient
+    public class UserClient : ClientBase, IUserClient
     {
         public async Task<AuthorizationData?> Login(LoginRequest request)
         {
