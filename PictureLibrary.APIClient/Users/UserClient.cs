@@ -32,5 +32,10 @@ namespace PictureLibrary.APIClient
         {
             await SendRequest(HttpMethod.Patch, $"users/update/{userId}", request, authorizationData);
         }
+
+        public async Task<User?> GetUserAsync(AuthorizationData authorizationData, Guid userId)
+        {
+            return await SendRequestAndDeserializeResponseAsync<User>(HttpMethod.Get, $"users/{userId}", authorizationData: authorizationData);
+        }
     }
 }
