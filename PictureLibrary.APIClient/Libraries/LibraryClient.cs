@@ -22,5 +22,11 @@ namespace PictureLibrary.APIClient.Libraries
         {
             await SendRequest(HttpMethod.Put, $"library/{libraryId}", library, authorizationData);
         }
+
+
+        public async Task DeleteLibraryAsync(AuthorizationData authorizationData, Guid libraryId)
+        {
+            await SendRequest(HttpMethod.Delete, $"library/{libraryId}", null, authorizationData);
+        }
     }
 }
