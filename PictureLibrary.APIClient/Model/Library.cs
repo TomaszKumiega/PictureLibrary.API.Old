@@ -1,6 +1,8 @@
-﻿namespace PictureLibrary.APIClient.Model
+﻿using PictureLibrary.APIClient.Model.Requests;
+
+namespace PictureLibrary.APIClient.Model
 {
-    public class Library
+    public class Library : IRequest
     {
         public required string Name { get; set; }
         public string? Description { get; set; }

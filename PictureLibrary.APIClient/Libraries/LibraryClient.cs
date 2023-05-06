@@ -11,5 +11,11 @@ namespace PictureLibrary.APIClient.Libraries
             var result =  await SendRequestAndDeserializeResponseAsync<GetAllLibrariesResponse>(HttpMethod.Get, $"library/all?userId={userId}", authorizationData: authorizationData);
             return result?.Libraries ?? Enumerable.Empty<Library>();
         }
+
+        public async Task<Guid?> AddLibraryAsync(AuthorizationData authorizationData, Library library)
+        {
+            var response = await SendRequestAndDeserializeResponseAsync<AddLibraryResponse>(HttpMethod.Post, $"library", library, authorizationData);
+            return response?.LibraryId;
+        }
     }
 }
