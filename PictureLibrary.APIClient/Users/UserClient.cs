@@ -5,8 +5,8 @@ using PictureLibrary.APIClient.Model.Responses;
 
 namespace PictureLibrary.APIClient
 {
-    public class UserClient : ClientBase
-    {   
+    public class UserClient : ClientBase, IUserClient
+    {
         public async Task<AuthorizationData?> Login(LoginRequest request)
         {
             return await SendRequestAndDeserializeResponseAsync<AuthorizationData>(HttpMethod.Post, "authorization/login", request);
