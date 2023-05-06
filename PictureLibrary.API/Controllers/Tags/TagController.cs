@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
-using System.Linq;
 
 namespace PictureLibrary.API.Controllers
 {

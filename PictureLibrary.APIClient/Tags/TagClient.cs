@@ -18,5 +18,10 @@ namespace PictureLibrary.APIClient.Tags
             var response = await SendRequestAndDeserializeResponseAsync<GetAllTagsResponse>(HttpMethod.Get, $"tags/{libraryId}", null, authorizationData);
             return response?.Tags ?? Enumerable.Empty<Tag>();
         }
+
+        public async Task DeleteTagAsync(AuthorizationData authorizationData, Guid libraryId, Guid tagId)
+        {
+            await SendRequest(HttpMethod.Delete, $"tags?libraryId={libraryId}&tagId={tagId}", null, authorizationData);
+        }
     }
 }
