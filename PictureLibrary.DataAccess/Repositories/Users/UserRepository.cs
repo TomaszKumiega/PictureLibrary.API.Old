@@ -58,5 +58,15 @@ WHERE Id = @Id";
             
             return users.SingleOrDefault();
         }
+
+        public async Task<IEnumerable<User>> FindByPartialUsername(string username)
+        {
+            var parameters = new { Username = username };
+            string sql = @"
+SELECT * FROM Users 
+WHERE Username LIKE '%@Username%'";
+
+            return await _databaseAccess.LoadDataAsync(sql, parameters);
+        }
     }
 }

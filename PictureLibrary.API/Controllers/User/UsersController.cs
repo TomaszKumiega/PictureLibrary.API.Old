@@ -51,15 +51,12 @@ namespace PictureLibrary.API.Controllers
 
         [Authorize]
         [HttpGet("find/{username}")]
-        public async Task<IActionResult> FindUser(string username)
+        public async Task<IActionResult> FindUsers(string username)
         {
-            FindUserQuery findUserQuery = new(username);
-            var user = await _mediator.Send(findUserQuery);
+            FindUsersQuery findUsersQuery = new(username);
+            var users = await _mediator.Send(findUsersQuery);
 
-            if (user == null || !IsUserAuthorized(user.Id))
-                return NotFound("User not found.");
-
-            return Ok(user);
+            return Ok(users);
         }
     }
 }
