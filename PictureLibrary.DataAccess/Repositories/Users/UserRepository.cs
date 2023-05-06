@@ -68,5 +68,16 @@ WHERE Username LIKE '%@Username%'";
 
             return await _databaseAccess.LoadDataAsync(sql, parameters);
         }
+
+        public async Task UpdateUser(User user)
+        {
+            string sql = @"
+UPDATE Users
+SET Username = @Username,
+    EmailAddress = @EmailAddress
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, user);
+        }
     }
 }

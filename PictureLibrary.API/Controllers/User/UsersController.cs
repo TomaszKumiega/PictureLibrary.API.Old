@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
+using PictureLibrary.Model;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -62,6 +63,25 @@ namespace PictureLibrary.API.Controllers
             { 
                 Users = userDtos,
             });
+        }
+
+        [Authorize]
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody]UpdateUserDto updateUserDto, string id)
+        {
+            if (!Guid.TryParse(id, out Guid userId))
+                return BadRequest();
+
+            if (!IsUserAuthorized(userId))
+                return Unauthorized();
+
+            var user = _mapper.Map<User>(updateUserDto);
+            user.Id = userId;
+
+            var command = new UpdateUserCommand(user);
+            await _mediator.Send(command);
+
+            return Ok();
         }
     }
 }

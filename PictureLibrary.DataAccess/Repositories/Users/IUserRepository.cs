@@ -9,5 +9,6 @@ namespace PictureLibrary.DataAccess.Repositories
         Task<User?> FindByUsername(string username);
         Task<User?> FindById(Guid userId);
         Task DeleteUser(Guid userId);
+        Task UpdateUser(User user);
     }
 }
