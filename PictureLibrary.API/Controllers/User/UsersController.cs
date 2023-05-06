@@ -66,7 +66,7 @@ namespace PictureLibrary.API.Controllers
         }
 
         [Authorize]
-        [HttpPatch("{id}")]
+        [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdateUser([FromBody]UpdateUserDto updateUserDto, string id)
         {
             if (!Guid.TryParse(id, out Guid userId))
