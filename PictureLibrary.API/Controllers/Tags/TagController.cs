@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PictureLibrary.API.Dtos;
 using PictureLibrary.DataAccess.Commands;
 using PictureLibrary.DataAccess.Queries;
+using System.Linq;
 
 namespace PictureLibrary.API.Controllers
 {
@@ -50,14 +51,14 @@ namespace PictureLibrary.API.Controllers
             var tags = await _mediator.Send(query);
 
 
-            var tagDtos = tags.Select(x => new GetTagDto()
+            var tagDtos = tags?.Select(x => new GetTagDto()
             {
                 Id = x.Id,
                 Name = x.Name,
                 ColorHex = x.ColorHex,
                 Description = x.Description,
                 Libraries = x.Libraries?.Select(x => x.Id) ?? Enumerable.Empty<Guid>(),
-            });
+            }) ?? Enumerable.Empty<GetTagDto>();
 
             return Ok(tagDtos);
         }
