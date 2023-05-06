@@ -22,10 +22,15 @@ namespace PictureLibrary.APIClient
             await SendRequest(HttpMethod.Delete, $"users/delete/{userId}", null, authorizationData);
         }
 
-        public async Task<IEnumerable<User>> FindUserByPartOfUsername(AuthorizationData authorizationData, string partOfUsername)
+        public async Task<IEnumerable<User>> FindUserByPartOfUsernameAsync(AuthorizationData authorizationData, string partOfUsername)
         {
             var response = await SendRequestAndDeserializeResponseAsync<FindUsersResponse>(HttpMethod.Get, $"users/find/{partOfUsername}", authorizationData: authorizationData);
             return response?.Users ?? Enumerable.Empty<User>();
+        }
+
+        public async Task UpdateUserAsync(AuthorizationData authorizationData, Guid userId, UpdateUserRequest request)
+        {
+            await SendRequest(HttpMethod.Patch, $"users/update/{userId}", request, authorizationData);
         }
     }
 }
