@@ -5,7 +5,7 @@ using PictureLibrary.APIClient.Model.Responses;
 
 namespace PictureLibrary.APIClient.Tags
 {
-    public class TagClient : ClientBase
+    public class TagClient : ClientBase, ITagClient
     {
         public async Task<Guid?> AddTagAsync(AuthorizationData authorizationData, AddTagRequest addTagRequest)
         {
