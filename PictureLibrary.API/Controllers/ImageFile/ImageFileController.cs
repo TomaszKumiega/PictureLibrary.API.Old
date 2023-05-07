@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -14,13 +15,16 @@ namespace PictureLibrary.API.Controllers.ImageFile
     [ApiController]
     public class ImageFileController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IContentRangeValidator _contentRangeValidator;
 
         public ImageFileController(
+            IMapper mapper,
             IMediator mediator,
             IContentRangeValidator contentRangeValidator)
         {
+            _mapper = mapper;
             _mediator = mediator;
             _contentRangeValidator = contentRangeValidator;
         }
@@ -39,8 +43,9 @@ namespace PictureLibrary.API.Controllers.ImageFile
 
             var query = new GetImageFilesQuery(libraryIdParsed, userId.Value);
             var imageFiles = await _mediator.Send(query);
-
-            return Ok(new { ImageFiles = imageFiles });
+            var imageFileDtos = imageFiles.Select(_mapper.Map<ImageFileDto>);
+            
+            return Ok(new { ImageFiles = imageFileDtos });
         }
 
         [HttpGet("file/{imageFileId}")]

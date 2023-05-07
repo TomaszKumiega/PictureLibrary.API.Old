@@ -20,6 +20,7 @@ namespace PictureLibrary.API.Automapper
             CreateMap<UserDto, User>();
             CreateMap<Library, LibraryDto>();
             CreateMap<LibraryDto, Library>();
+            CreateMap<ImageFile, ImageFileDto>();
         }
     }
 }
