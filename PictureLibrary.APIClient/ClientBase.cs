@@ -59,7 +59,7 @@ namespace PictureLibrary.APIClient
             return await httpResponse.Content.ReadFromJsonAsync<TResponse>();
         }
 
-        protected async Task SendRequest(HttpMethod method, string requestUrl, IRequest? content = null, AuthorizationData? authorizationData = null)
+        protected async Task SendRequestAsync(HttpMethod method, string requestUrl, IRequest? content = null, AuthorizationData? authorizationData = null)
         {
             var request = CreateRequest(method, requestUrl, content);
 

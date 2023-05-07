@@ -21,13 +21,13 @@ namespace PictureLibrary.APIClient.Tags
 
         public async Task DeleteTagAsync(AuthorizationData authorizationData, Guid libraryId, Guid tagId)
         {
-            await SendRequest(HttpMethod.Delete, $"tags?libraryId={libraryId}&tagId={tagId}", null, authorizationData);
+            await SendRequestAsync(HttpMethod.Delete, $"tags?libraryId={libraryId}&tagId={tagId}", null, authorizationData);
         }
 
 
         public async Task UpdateTagAsync(AuthorizationData authorizationData, Guid tagId, UpdateTagRequest request)
         {
-            await SendRequest(HttpMethod.Patch, $"tags/{tagId}", request, authorizationData);
+            await SendRequestAsync(HttpMethod.Patch, $"tags/{tagId}", request, authorizationData);
         }
     }
 }

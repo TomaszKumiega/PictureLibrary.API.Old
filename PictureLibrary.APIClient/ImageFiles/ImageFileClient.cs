@@ -11,5 +11,10 @@ namespace PictureLibrary.APIClient.ImageFiles
             var response = await SendRequestAndDeserializeResponseAsync<GetAllImageFilesResponse>(HttpMethod.Get, $"imageFile/all/{libraryId}", null, authorizationData);
             return response?.ImageFiles ?? Enumerable.Empty<ImageFile>();
         }
+
+        public async Task DeleteImageFileAsync(AuthorizationData authorizationData, Guid imageFileId)
+        {
+            await SendRequestAsync(HttpMethod.Delete, $"imageFile/{imageFileId}", null, authorizationData);
+        }
     }
 }

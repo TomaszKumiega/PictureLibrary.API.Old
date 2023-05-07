@@ -19,7 +19,7 @@ namespace PictureLibrary.APIClient
 
         public async Task DeleteUserAsync(AuthorizationData authorizationData, Guid userId)
         {
-            await SendRequest(HttpMethod.Delete, $"users/delete/{userId}", null, authorizationData);
+            await SendRequestAsync(HttpMethod.Delete, $"users/delete/{userId}", null, authorizationData);
         }
 
         public async Task<IEnumerable<User>> FindUserByPartOfUsernameAsync(AuthorizationData authorizationData, string partOfUsername)
@@ -30,7 +30,7 @@ namespace PictureLibrary.APIClient
 
         public async Task UpdateUserAsync(AuthorizationData authorizationData, Guid userId, UpdateUserRequest request)
         {
-            await SendRequest(HttpMethod.Patch, $"users/update/{userId}", request, authorizationData);
+            await SendRequestAsync(HttpMethod.Patch, $"users/update/{userId}", request, authorizationData);
         }
 
         public async Task<User?> GetUserAsync(AuthorizationData authorizationData, Guid userId)
