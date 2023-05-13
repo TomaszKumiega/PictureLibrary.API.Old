@@ -119,9 +119,14 @@ namespace PictureLibrary.API.Controllers.ImageFile
 
             var command = new UploadFileCommand(userId.Value, uploadSessionIdParsed, buffer, contentRange.ToString(), bytesRead);
 
-            await _mediator.Send(command);
+            var imageFile = await _mediator.Send(command);
 
-            return Ok();
+            if (imageFile != null)
+            {
+                return Ok(_mapper.Map<ImageFileDto>(imageFile));
+            }
+            
+            return StatusCode(100);
         }
 
         [HttpDelete("{imageFileId}")]
