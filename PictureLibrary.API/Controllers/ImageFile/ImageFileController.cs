@@ -144,5 +144,30 @@ namespace PictureLibrary.API.Controllers.ImageFile
 
             return Ok();
         }
+
+        [HttpPatch("{imageFileId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateImageFile(string imageFileId, [FromBody] UpdateImageFileDto updateImageFileDto)
+        {
+            var userId = GetCurrentUserId();
+
+            if (userId == null)
+                return Unauthorized();
+
+            if (!Guid.TryParse(imageFileId, out Guid id))
+            {
+                return BadRequest();
+            }
+
+            if (updateImageFileDto.Name == null)
+            {
+                return BadRequest();
+            }
+
+            var command = new UpdateImageFileCommand(userId.Value, id, updateImageFileDto.Name);
+            await _mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

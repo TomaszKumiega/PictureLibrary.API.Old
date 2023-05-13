@@ -8,5 +8,6 @@ namespace PictureLibrary.DataAccess.Repositories
         Task<Guid> AddImageFile(ImageFile imageFile);
         Task<ImageFile?> FindImageFileById(Guid id);
         Task DeleteImageFile(Guid imageFileId);
+        Task UpdateImageFile(ImageFile imageFile);
     }
 }

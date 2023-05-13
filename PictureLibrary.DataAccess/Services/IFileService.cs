@@ -9,5 +9,6 @@
         string GetFileExtension(string filePath);
         string GetFileName(string filePath);
         long GetFileSize(string filePath);
+        string RenameFile(string filePath, string newName);
     }
 }

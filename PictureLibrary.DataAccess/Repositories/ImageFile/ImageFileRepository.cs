@@ -88,6 +88,17 @@ WHERE Id = @Id";
                 
         }
 
+        public async Task UpdateImageFile(ImageFile imageFile)
+        {
+            string sql = @"
+UPDATE ImageFiles
+SET Name = @Name,
+    FilePath = @FilePath
+WHERE Id = @Id";
+
+            await _databaseAccess.SaveDataAsync(sql, imageFile);
+        }
+
         #region Private methods
         private async Task UpdateLibraryImages(ImageFile imageFile, bool isNewImageFile = false)
         {

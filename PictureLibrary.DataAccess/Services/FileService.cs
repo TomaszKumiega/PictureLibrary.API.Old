@@ -43,5 +43,16 @@
         {
             return File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None);
         }
+
+        public string RenameFile(string filePath, string newName)
+        {
+            var fileInfo = new FileInfo(filePath);
+            var directoryFullName = fileInfo?.Directory?.FullName ?? throw new ArgumentException(nameof(filePath));
+            string newPath = directoryFullName + Path.PathSeparator + newName;
+            
+            fileInfo.MoveTo(newPath);
+
+            return newPath;
+        }
     }
 }
