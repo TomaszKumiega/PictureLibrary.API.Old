@@ -3,6 +3,7 @@ WORKDIR /app
 
 COPY *.sln .
 COPY ./PictureLibrary.API/ ./PictureLibrary.API
+COPY ./PictureLibrary.APIClient/ ./PictureLibrary.APIClient
 COPY ./PictureLibrary.DataAccess/ ./PictureLibrary.DataAccess
 COPY ./PictureLibrary.Model/ ./PictureLibrary.Model
 COPY ./PictureLibrary.Tools/ ./PictureLibrary.Tools
@@ -10,6 +11,7 @@ COPY ./PictureLibrary.DataAccess.Tests/ ./PictureLibrary.DataAccess.Tests
 RUN dotnet restore
 
 COPY ./PictureLibrary.API/ ./PictureLibrary.API
+COPY ./PictureLibrary.APIClient/ ./PictureLibrary.APIClient
 COPY ./PictureLibrary.DataAccess/ ./PictureLibrary.DataAccess
 COPY ./PictureLibrary.Model/ ./PictureLibrary.Model
 COPY ./PictureLibrary.Tools/ ./PictureLibrary.Tools
