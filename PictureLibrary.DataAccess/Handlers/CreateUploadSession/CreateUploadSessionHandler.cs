@@ -43,6 +43,7 @@ namespace PictureLibrary.DataAccess.Handlers.CreateUploadSession
 
             var uploadSession = new UploadSession()
             {
+                Type = UploadSessionType.Add,
                 FilePath = filePath,
                 ContentRange = request.ContentRange,
                 UserId = user.Id,
