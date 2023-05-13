@@ -5,7 +5,7 @@ using PictureLibrary.APIClient.Model.Responses;
 
 namespace PictureLibrary.APIClient.ImageFiles
 {
-    public class ImageFileClient : ClientBase
+    public class ImageFileClient : ClientBase, IImageFileClient
     {
         public async Task<IEnumerable<ImageFile>> GetAllImageFilesAsync(AuthorizationData authorizationData, Guid libraryId)
         {
