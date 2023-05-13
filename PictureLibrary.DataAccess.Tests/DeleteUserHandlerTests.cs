@@ -1,6 +1,6 @@
-﻿namespace PictureLibrary.DataAccess.Tests
-{
-    public class DeleteUserHandlerTests
-    {
-    }
-}
+﻿//namespace PictureLibrary.DataAccess.Tests
+//{
+//    public class DeleteUserHandlerTests
+//    {
+//    }
+//}
