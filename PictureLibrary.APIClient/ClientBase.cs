@@ -33,6 +33,21 @@ namespace PictureLibrary.APIClient
             return httpRequest;
         }
 
+        private HttpRequestMessage CreateRequest(HttpMethod method, string requestUrl, Stream stream, string rangeHeader)
+        {
+            EnsureInitialized();
+
+            HttpRequestMessage httpRequest = new(method, requestUrl);
+            if (stream != null)
+            {
+                httpRequest.Content = new StreamContent(stream);
+            }
+
+            httpRequest.Headers.TryAddWithoutValidation("Content-Range", rangeHeader);
+
+            return httpRequest;
+        }
+
         #region SendRequest
         protected async Task<TResponse?> SendRequestAndDeserializeResponseAsync<TResponse>(HttpMethod method, string requestUrl, IRequest? content = null, AuthorizationData? authorizationData = null)
             where TResponse : class
@@ -77,6 +92,31 @@ namespace PictureLibrary.APIClient
             HttpResponseMessage? httpResponse = await client.SendAsync(request);
 
             _ = httpResponse?.EnsureSuccessStatusCode();
+        }
+
+        protected async Task<TResponse?> SendRequestWithStreamContentAndDeserializeResponseAsync<TResponse>(HttpMethod method, string requestUrl, Stream stream, string rangeHeader, AuthorizationData authorizationData)
+            where TResponse : class
+        {
+            var request = CreateRequest(method, requestUrl, stream, rangeHeader);
+
+            HttpClient client = new()
+            {
+                BaseAddress = new Uri(BaseUrl!),
+            };
+
+
+            if (authorizationData != null)
+            {
+                client = await AddAuthorizationHeaderAsync(client, authorizationData);
+            }
+
+            HttpResponseMessage httpResponse = await client.SendAsync(request);
+
+            _ = httpResponse.EnsureSuccessStatusCode();
+
+            return httpResponse.StatusCode == System.Net.HttpStatusCode.Continue
+                ? null
+                : await httpResponse.Content.ReadFromJsonAsync<TResponse>();
         }
         #endregion
 
