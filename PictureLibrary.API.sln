@@ -16,10 +16,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{043B0B62-76D1-47E3-B4C8-D28099E6E3E5}"
 	ProjectSection(SolutionItems) = preProject
 		arm32.Dockerfile = arm32.Dockerfile
+		ClientVersion.xml = ClientVersion.xml
 		dockerfile = dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureLibrary.APIClient", "PictureLibrary.APIClient\PictureLibrary.APIClient.csproj", "{7070C32F-DA29-41FC-A459-9D91F4E28558}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureLibrary.APIClient", "PictureLibrary.APIClient\PictureLibrary.APIClient.csproj", "{7070C32F-DA29-41FC-A459-9D91F4E28558}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
