@@ -123,7 +123,7 @@ namespace PictureLibrary.API.Controllers.ImageFile
 
             if (imageFile != null)
             {
-                return Ok(_mapper.Map<ImageFileDto>(imageFile));
+                return Ok(new { ImageFile = _mapper.Map<ImageFileDto>(imageFile) });
             }
             
             return StatusCode(100);
